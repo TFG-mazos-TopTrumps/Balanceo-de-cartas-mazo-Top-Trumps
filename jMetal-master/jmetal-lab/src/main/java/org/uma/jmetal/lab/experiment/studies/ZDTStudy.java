@@ -51,14 +51,19 @@ import java.util.List;
  */
 
 public class ZDTStudy {
-  private static final int INDEPENDENT_RUNS = 25;
+  private static final int INDEPENDENT_RUNS = 25; // R
 
   public static void main(String[] args) throws IOException {
+	  
+	 
     if (args.length != 1) {
       throw new JMetalException("Missing argument: experimentBaseDirectory");
     }
+    
     String experimentBaseDirectory = args[0];
+    
 
+    // Lista de problemas a resolver preconfigurada.
     List<ExperimentProblem<DoubleSolution>> problemList = List.of(
             new ExperimentProblem<>(new ZDT1()),
             // new ExperimentProblem<>(new ZDT1().setReferenceFront("front.csv"))
@@ -67,18 +72,20 @@ public class ZDTStudy {
             new ExperimentProblem<>(new ZDT4()),
             new ExperimentProblem<>(new ZDT6()));
 
+    // Lista con los algoritmos configurados para ser ejecutados.
     List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
             configureAlgorithmList(problemList);
 
+    // Configuración del experimento, usando la clase ExperimentBuilder.
     Experiment<DoubleSolution, List<DoubleSolution>> experiment =
-            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("ZDTStudy")
-                    .setAlgorithmList(algorithmList)
+            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("ZDTStudy") // Directorio salida.
+                    .setAlgorithmList(algorithmList) 
                     .setProblemList(problemList)
-                    .setReferenceFrontDirectory("resources/referenceFrontsCSV")
+                    .setReferenceFrontDirectory("resources/referenceFrontsCSV") // Directorio frentes de referencia de los problemas.
                     .setExperimentBaseDirectory(experimentBaseDirectory)
-                    .setOutputParetoFrontFileName("FUN")
+                    .setOutputParetoFrontFileName("FUN") // Prefijo de los archivos de salida para cada combinación algoritmo + problema.
                     .setOutputParetoSetFileName("VAR")
-                    .setIndicatorList(List.of(
+                    .setIndicatorList(List.of( // Lista de los indicadores de calidad.
                             new Epsilon(),
                             new Spread(),
                             new GenerationalDistance(),
@@ -86,8 +93,8 @@ public class ZDTStudy {
                             new NormalizedHypervolume(),
                             new InvertedGenerationalDistance(),
                             new InvertedGenerationalDistancePlus()))
-                    .setIndependentRuns(INDEPENDENT_RUNS)
-                    .setNumberOfCores(8)
+                    .setIndependentRuns(INDEPENDENT_RUNS) // Número de ejecuciones independientes.
+                    .setNumberOfCores(8) // Número de núcleos usados para ejecuciones en paralelo.
                     .build();
 
     new ExecuteAlgorithms<>(experiment).run();
@@ -129,7 +136,7 @@ public class ZDTStudy {
                         20.0),
                 100)
                 .build();
-        algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
+        algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run)); // Se agrega algoritmo configurado a la lista.
       }
 
       for (var experimentProblem : problemList) {

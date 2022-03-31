@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{graphicx}
+\title{Results}
+\author{}
+\date{\today}
+\begin{document}
+\oddsidemargin 0in \topmargin 0in\maketitle
+
+\section{Tables}
+\begin{table}[!htp]
+\centering
+\begin{tabular}{c|c|c|c|c}
+Algorithm&Ranking&p-value&Holm&Hypothesis\\
+\hline
+NSGAIId & 1,2 & 0E0 & 0 & -\\
+NSGAIIc & 2,2 & 1,734E-34 & 0,05 & Rejected\\
+NSGAIIa & 3 & 1,057E-107 & 0,025 & Rejected\\
+NSGAIIb & 3,6 & 6,576E-190 & 0,017 & Rejected\\
+\end{tabular}
+\caption{Average ranking of the algorithms}
+\end{table}
+
+
+Friedman statistic considering reduction performance (distributed according to chi-square with 3 degrees of freedom: 9.720000000000006).
+
+
+\end{document}
