@@ -20,7 +20,7 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class BLXAlphaCrossover implements CrossoverOperator<DoubleSolution> {
-  private static final double DEFAULT_ALPHA = 0.5;
+  private static final double DEFAULT_ALPHA = 0.05;
 
   private double crossoverProbability;
   private double alpha ;
