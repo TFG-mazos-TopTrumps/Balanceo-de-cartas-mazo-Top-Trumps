@@ -18,6 +18,8 @@ import org.uma.jmetal.lab.experiment.component.impl.GenerateWilcoxonTestTablesWi
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.lab.visualization.StudyVisualizer;
+import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
+import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
 import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsInicial;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
@@ -54,6 +56,7 @@ public class MazoInicialTopTrumpsStudy {
 	                    .setOutputParetoFrontFileName("FUN")
 	                    .setOutputParetoSetFileName("VAR")
 	                    .setIndicatorList(List.of(
+	                    	
 	                            new Epsilon(),
 	                            new Spread(),
 	                            new GenerationalDistance(),
@@ -79,17 +82,11 @@ public class MazoInicialTopTrumpsStudy {
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
 	    for (int run = 0; run < INDEPENDENT_RUNS; run++) {
 	      for (var experimentProblem : problemList) {
-	        double mutationProbability = 1.0 / experimentProblem.getProblem().getNumberOfVariables();
-	        double mutationDistributionIndex = 20.0;
-	        
-	        Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>>(
-	                experimentProblem.getProblem(), BLXAlphaCrossover(mutationProbability, 1.0/experimentProblem.getProblem().getNumberOfVariables()),
-	                PolynomialMutation(20.0, 15.0))
-	        		.setPopulationSize(10);
-	        		.setMaxEvaluations(100);
-	        	
-	                
-	        algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
+	        Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>(experimentProblem.getProblem(),
+	        		new SBXCrossover(1.0, 20.0), new PolynomialMutation(1.0/experimentProblem.getProblem().getNumberOfVariables(),
+	        		20.0))
+	        		.build();
+	       algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
 	        
 	      }
 	      }
