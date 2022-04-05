@@ -9,7 +9,7 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 public class MazoTopTrumpsInicial extends AbstractDoubleProblem {
 
 	public MazoTopTrumpsInicial() {
-	    setNumberOfVariables(4);
+	    setNumberOfVariables(128);
 	    setNumberOfObjectives(3);
 	    setName("MazoTopTrumpsInicial");
 	    
@@ -37,6 +37,25 @@ public class MazoTopTrumpsInicial extends AbstractDoubleProblem {
 	    return solution ;
 	}
 	
+//	public boolean simulacion() {
+//		
+//	}
+//	
+//	public double fB1(DoubleSolution solution) {
+//		
+//		for(int i=0;i<25000;i++) {
+//			boolean t4 = ()
+//		}
+//		
+//	}
+//	
+//	public double fB2(DoubleSolution solution) {
+//		
+//	}
+//	
+//	public double fB3(DoubleSolution solution) {
+//		
+//	}
 	
 	
 

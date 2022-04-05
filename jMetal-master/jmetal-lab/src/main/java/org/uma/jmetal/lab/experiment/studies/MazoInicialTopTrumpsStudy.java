@@ -21,6 +21,7 @@ import org.uma.jmetal.lab.visualization.StudyVisualizer;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
 import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsInicial;
+import org.uma.jmetal.problem.singleobjective.MazoTopTrumpsInicialSO;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
@@ -42,7 +43,8 @@ public class MazoInicialTopTrumpsStudy {
 	    String experimentBaseDirectory = args[0];
 	    
 	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
-	            new ExperimentProblem<>(new MazoTopTrumpsInicial()));
+	    		//new ExperimentProblem<>(new MazoTopTrumpsInicial()), fB o fS
+	            new ExperimentProblem<>(new MazoTopTrumpsInicialSO()));
 	    
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
 	            configureAlgorithmList(problemList);
