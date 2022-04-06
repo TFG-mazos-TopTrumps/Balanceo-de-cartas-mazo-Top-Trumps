@@ -8,10 +8,10 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 
-	private Double vi;
-	private Double vk;
+	private int cartas;
+	private int categorias;
 	public MazoTopTrumpsInicialSO() {
-	    setNumberOfVariables(4);
+	    setNumberOfVariables(cartas * categorias);
 	    setNumberOfObjectives(1);
 	    setName("MazoTopTrumpsInicial");
 	    
@@ -19,7 +19,7 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 	    List<Double> upperLimit = new ArrayList<>(getNumberOfVariables()) ;
 
 	    for (int i = 0; i < getNumberOfVariables(); i++) {
-	      lowerLimit.add(0.00);
+	      lowerLimit.add(1.00);
 	      upperLimit.add(10.00);
 	    }
 
@@ -48,22 +48,24 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 	    
 	    double sum = 0;
 	    for(int k=0;k<32;k++) {
-	    	double lk1 = solution.variables().get(k);
-	    	double lk2 = solution.variables().get(k+1);
-	    	double lk3 = solution.variables().get(k+2);
-	    	double lk4 = solution.variables().get(k+3);
+	    	double lk1 = solution.variables().get(k * categorias);
+	    	double lk2 = solution.variables().get((k * categorias) +1);
+	    	double lk3 = solution.variables().get((k * categorias) +2);
+	    	double lk4 = solution.variables().get((k * categorias) +3);
 	    	
-	    	for(int i=0;i<128;i++) {
+	    	
+	    	for(int i=0;i<32;i++) {
 	    		
-	    		double li1 = solution.variables().get(i);
-		    	double li2 = solution.variables().get(i+1);
-		    	double li3 = solution.variables().get(i+2);
-		    	double li4 = solution.variables().get(i+3);
+	    		if(i != k) {
+	    		double li1 = solution.variables().get(i * categorias);
+		    	double li2 = solution.variables().get((i * categorias) +1);
+		    	double li3 = solution.variables().get((i * categorias)+2);
+		    	double li4 = solution.variables().get((i * categorias)+3);
 		    	
 		    	boolean comparacion = (lk1 > li1) && (lk2 > li2) && (lk3 > li3) && (lk4 > li4);
 	    		double condicionResta = (comparacion) ? 1.00:0.00;
 	    		sum += 1 - condicionResta;
-	    		
+	    		}
 	    		
 	    		}
 	    	}

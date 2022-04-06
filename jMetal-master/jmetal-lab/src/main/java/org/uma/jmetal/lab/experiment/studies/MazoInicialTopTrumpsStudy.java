@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.smsemoa.SMSEMOABuilder;
 import org.uma.jmetal.lab.experiment.Experiment;
 import org.uma.jmetal.lab.experiment.ExperimentBuilder;
@@ -59,11 +60,11 @@ public class MazoInicialTopTrumpsStudy {
 	                    .setOutputParetoSetFileName("VAR")
 	                    .setIndicatorList(List.of(
 	                    	
-	                            new Epsilon(),
-	                            new Spread(),
+//	                            new Epsilon(),
+//	                            new Spread(),
 	                            new GenerationalDistance(),
-	                            new PISAHypervolume(),
-	                            new NormalizedHypervolume(),
+//	                            new PISAHypervolume(),
+//	                            new NormalizedHypervolume(),
 	                            new InvertedGenerationalDistance(),
 	                            new InvertedGenerationalDistancePlus()))
 	                    .setIndependentRuns(INDEPENDENT_RUNS)
@@ -71,12 +72,12 @@ public class MazoInicialTopTrumpsStudy {
 	                    .build();
 
 	    new ExecuteAlgorithms<>(experiment).run();
-	    new ComputeQualityIndicators<>(experiment).run();
-	    new GenerateLatexTablesWithStatistics(experiment).run();
-	    new GenerateFriedmanHolmTestTables<>(experiment).run();
-	    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-	    new GenerateBoxplotsWithR<>(experiment).setRows(2).setColumns(3).run();
-	    new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
+//	    new ComputeQualityIndicators<>(experiment).run();
+//	    new GenerateLatexTablesWithStatistics(experiment).run();
+//	    new GenerateFriedmanHolmTestTables<>(experiment).run();
+//	    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
+//	    new GenerateBoxplotsWithR<>(experiment).setRows(2).setColumns(3).run();
+//	    new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
 	  }
 	
 	static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
@@ -84,10 +85,18 @@ public class MazoInicialTopTrumpsStudy {
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
 	    for (int run = 0; run < INDEPENDENT_RUNS; run++) {
 	      for (var experimentProblem : problemList) {
-	        Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>(experimentProblem.getProblem(),
-	        		new SBXCrossover(1.0, 20.0), new PolynomialMutation(1.0/experimentProblem.getProblem().getNumberOfVariables(),
-	        		20.0))
-	        		.build();
+//	        Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>(experimentProblem.getProblem(),
+//	        		new SBXCrossover(1.0, 20.0), new PolynomialMutation(1.0/experimentProblem.getProblem().getNumberOfVariables(),
+//	        		20.0))
+//	        		.build();
+	    	  
+	    	  Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<DoubleSolution>(
+	                  experimentProblem.getProblem(),
+	                  new SBXCrossover(1.0, 20.0),
+	                  new PolynomialMutation(1.0 / experimentProblem.getProblem().getNumberOfVariables(),
+	                          20.0),
+	                  100)
+	                  .build();
 	       algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
 	        
 	      }
