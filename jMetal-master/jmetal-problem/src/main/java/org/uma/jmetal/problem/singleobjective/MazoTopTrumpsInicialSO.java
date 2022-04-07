@@ -8,8 +8,8 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 
-	private int cartas;
-	private int categorias;
+	private int cartas = 32;
+	private int categorias = 4;
 	public MazoTopTrumpsInicialSO() {
 	    setNumberOfVariables(cartas * categorias);
 	    setNumberOfObjectives(1);
@@ -46,7 +46,7 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 		double fD = 0;
 		// Función fitness fD:
 	    
-	    double sum = 0;
+	    double sum = 0.0;
 	    for(int k=0;k<32;k++) {
 	    	double lk1 = solution.variables().get(k * categorias);
 	    	double lk2 = solution.variables().get((k * categorias) +1);
@@ -69,7 +69,7 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 	    		
 	    		}
 	    	}
-	    fD = (-1.00)*(1/32) * sum;
+	    fD = (-1.00)*(1/32.00) * sum;
 	    return fD;
 	}
 	
