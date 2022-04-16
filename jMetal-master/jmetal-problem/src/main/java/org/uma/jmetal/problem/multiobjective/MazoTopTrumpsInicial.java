@@ -8,8 +8,10 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class MazoTopTrumpsInicial extends AbstractDoubleProblem {
 
+	private int cartas = 32;
+	private int categorias = 4;
 	public MazoTopTrumpsInicial() {
-	    setNumberOfVariables(128);
+	    setNumberOfVariables(cartas * categorias);
 	    setNumberOfObjectives(3);
 	    setName("MazoTopTrumpsInicial");
 	    
@@ -33,6 +35,7 @@ public class MazoTopTrumpsInicial extends AbstractDoubleProblem {
 
 	    solution.objectives()[0] = f[0];
 	    solution.objectives()[1] = f[1];
+	    solution.objectives()[2] = f[2];
 
 	    return solution ;
 	}

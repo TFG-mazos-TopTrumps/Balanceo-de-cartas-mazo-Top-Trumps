@@ -44,8 +44,8 @@ public class MazoInicialTopTrumpsStudy {
 	    String experimentBaseDirectory = args[0];
 	    
 	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
-	    		//new ExperimentProblem<>(new MazoTopTrumpsInicial()), fB o fS
-	            new ExperimentProblem<>(new MazoTopTrumpsInicialSO()));
+	    		new ExperimentProblem<>(new MazoTopTrumpsInicial()), // fB
+	            new ExperimentProblem<>(new MazoTopTrumpsInicialSO())); // fD
 	    
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
 	            configureAlgorithmList(problemList);
