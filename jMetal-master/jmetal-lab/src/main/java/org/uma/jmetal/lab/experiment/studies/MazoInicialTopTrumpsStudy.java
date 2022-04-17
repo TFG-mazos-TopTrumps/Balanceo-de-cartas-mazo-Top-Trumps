@@ -9,27 +9,16 @@ import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.algorithm.multiobjective.smsemoa.SMSEMOABuilder;
 import org.uma.jmetal.lab.experiment.Experiment;
 import org.uma.jmetal.lab.experiment.ExperimentBuilder;
-import org.uma.jmetal.lab.experiment.component.impl.ComputeQualityIndicators;
 import org.uma.jmetal.lab.experiment.component.impl.ExecuteAlgorithms;
-import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
-import org.uma.jmetal.lab.experiment.component.impl.GenerateFriedmanHolmTestTables;
-import org.uma.jmetal.lab.experiment.component.impl.GenerateHtmlPages;
-import org.uma.jmetal.lab.experiment.component.impl.GenerateLatexTablesWithStatistics;
-import org.uma.jmetal.lab.experiment.component.impl.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
-import org.uma.jmetal.lab.visualization.StudyVisualizer;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
-import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsInicial;
+import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsFB;
 import org.uma.jmetal.problem.singleobjective.MazoTopTrumpsInicialSO;
-import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
-import org.uma.jmetal.qualityindicator.impl.NormalizedHypervolume;
-import org.uma.jmetal.qualityindicator.impl.Spread;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.errorchecking.JMetalException;
 
@@ -44,7 +33,7 @@ public class MazoInicialTopTrumpsStudy {
 	    String experimentBaseDirectory = args[0];
 	    
 	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
-	    		new ExperimentProblem<>(new MazoTopTrumpsInicial()), // fB
+	    		new ExperimentProblem<>(new MazoTopTrumpsFB()), // fB
 	            new ExperimentProblem<>(new MazoTopTrumpsInicialSO())); // fD
 	    
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
@@ -85,10 +74,7 @@ public class MazoInicialTopTrumpsStudy {
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
 	    for (int run = 0; run < INDEPENDENT_RUNS; run++) {
 	      for (var experimentProblem : problemList) {
-//	        Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>(experimentProblem.getProblem(),
-//	        		new SBXCrossover(1.0, 20.0), new PolynomialMutation(1.0/experimentProblem.getProblem().getNumberOfVariables(),
-//	        		20.0))
-//	        		.build();
+	        
 	    	  
 	    	  Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<DoubleSolution>(
 	                  experimentProblem.getProblem(),
@@ -99,6 +85,15 @@ public class MazoInicialTopTrumpsStudy {
 	                  .build();
 	       algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
 	        
+	      }
+	      
+	      for (var experimentProblem : problemList) {
+	    	  Algorithm<List<DoubleSolution>> algorithm = new SMSEMOABuilder<DoubleSolution>(experimentProblem.getProblem(),
+	    	     		new SBXCrossover(1.0, 20.0), new PolynomialMutation(1.0/experimentProblem.getProblem().getNumberOfVariables(),
+	    	      		20.0))
+	    	      		.build();
+	    	  algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
+	    	  
 	      }
 	      }
 	    return algorithms;

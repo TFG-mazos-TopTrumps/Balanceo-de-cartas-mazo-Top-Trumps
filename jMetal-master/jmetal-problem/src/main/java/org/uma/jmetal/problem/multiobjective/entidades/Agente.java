@@ -14,9 +14,6 @@ public class Agente implements Bot {
 		int res = 0;
 		List<Double> valores = new ArrayList<>();
 		
-		
-	
-		
 		for (int n = 0; n < baza.size(); n++) {
 			
 			Carta c = baza.get(n);
