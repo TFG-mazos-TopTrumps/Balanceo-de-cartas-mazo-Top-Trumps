@@ -6,10 +6,11 @@ import java.util.List;
 import org.uma.jmetal.problem.doubleproblem.impl.AbstractDoubleProblem;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
+@SuppressWarnings("serial")
 public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 
-	private int cartas = 32;
-	private int categorias = 4;
+	private final int cartas = 32;
+	private final int categorias = 4;
 	public MazoTopTrumpsInicialSO() {
 	    setNumberOfVariables(cartas * categorias);
 	    setNumberOfObjectives(1);
@@ -47,14 +48,14 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 		// Función fitness fD:
 	    
 	    double sum = 0.0;
-	    for(int k=0;k<32;k++) {
+	    for(int k=0;k<cartas;k++) {
 	    	double lk1 = solution.variables().get(k * categorias);
 	    	double lk2 = solution.variables().get((k * categorias) +1);
 	    	double lk3 = solution.variables().get((k * categorias) +2);
 	    	double lk4 = solution.variables().get((k * categorias) +3);
 	    	
 	    	
-	    	for(int i=0;i<32;i++) {
+	    	for(int i=0;i<cartas;i++) {
 	    		
 	    		if(i != k) {
 	    		double li1 = solution.variables().get(i * categorias);
@@ -69,7 +70,7 @@ public class MazoTopTrumpsInicialSO extends AbstractDoubleProblem {
 	    		
 	    		}
 	    	}
-	    fD = (-1.00)*(1/32.00) * sum;
+	    fD = (-1.00)*(1/cartas) * sum;
 	    return fD;
 	}
 	

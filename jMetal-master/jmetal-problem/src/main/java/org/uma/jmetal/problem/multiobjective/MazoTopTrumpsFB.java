@@ -10,12 +10,13 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 @SuppressWarnings("serial")
 public class MazoTopTrumpsFB extends AbstractDoubleProblem {
 
-	private int cartas = 32;
-	private int categorias = 4;
-	private int RG = 25000; // Número de simulaciones que se efectúan.
+	private final int cartas = 32;
+	private final int categorias = 4;
+	private final int RG = 4; // Número de simulaciones que se efectúan.
+	private final int objetivos = 3;
 	public MazoTopTrumpsFB() {
 	    setNumberOfVariables(cartas * categorias);
-	    setNumberOfObjectives(3);
+	    setNumberOfObjectives(objetivos);
 	    setName("MazoTopTrumpsFB");
 	    
 	    List<Double> lowerLimit = new ArrayList<>(getNumberOfVariables()) ;

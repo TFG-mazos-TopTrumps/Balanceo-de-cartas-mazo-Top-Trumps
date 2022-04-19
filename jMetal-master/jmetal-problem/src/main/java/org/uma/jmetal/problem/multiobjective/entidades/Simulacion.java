@@ -3,11 +3,13 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class Simulacion implements Partida {
 	private Agente p4;
 	private Agente p0;
 	private List<Carta> mazo;
+	private List<Carta> cartasPorJugar;
 	private int tc;
 	private int categoriaEnJuego;
 	
@@ -22,7 +24,7 @@ public class Simulacion implements Partida {
 		for(int i=0; i < valoresCartas.size(); i++) {
 			
 			Double c1 = valoresCartas.get(i * 4);
-	    	Double c2 = valoresCartas.get((i * 4) +1);
+	    	Double c2 = valoresCartas.get((i * 4) + 1);
 	    	Double c3 = valoresCartas.get((i * 4) + 2);
 	    	Double c4 = valoresCartas.get((i * 4) + 3);
 	    	
@@ -35,7 +37,7 @@ public class Simulacion implements Partida {
 	    	mazo.add(c);
 		}
 		
-		Collections.shuffle(mazo); // Barajamos las cartas del mazo antes de repartirlas.
+		
 		int i = 0;
 		for(Carta c : mazo) {
 			if(i % 2 == 0) {
