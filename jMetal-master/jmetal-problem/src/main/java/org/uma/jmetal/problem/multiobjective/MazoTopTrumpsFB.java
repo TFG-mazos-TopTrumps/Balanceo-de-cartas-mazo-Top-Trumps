@@ -34,13 +34,13 @@ public class MazoTopTrumpsFB extends AbstractDoubleProblem {
 		double[] f = new double[solution.objectives().length];
 
 	    f[0] = fB1(solution);
-	    f[1] = fB2(solution);
+	    //f[1] = fB2(solution);
 	    f[2] = fB3(solution);
 	    
 	   
 
 	    solution.objectives()[0] = f[0];
-	    solution.objectives()[1] = f[1];
+	    //solution.objectives()[1] = f[1];
 	    solution.objectives()[2] = f[2];
 
 	    return solution ;
@@ -64,24 +64,24 @@ public double fB1(DoubleSolution solution) {
 		return res;
 		
 	}
-	public double fB2(DoubleSolution solution) {
-		double res = 0.0;
-		double sum = 0.0;
-		
-		for(int i=0;i<RG;i++) {
-			
-			Simulacion partida = new Simulacion(); 
-			partida.partida(solution.variables());
-			
-			sum += (partida.getTc()) * 1.00;
-			
-		}
-		
-		res = (-1.00) * (1.00/RG) * sum;
-		return res;
-
-		
-	}
+//	public double fB2(DoubleSolution solution) {
+//		double res = 0.0;
+//		double sum = 0.0;
+//		
+//		for(int i=0;i<RG;i++) {
+//			
+//			Simulacion partida = new Simulacion(); 
+//			partida.partida(solution.variables());
+//			
+//			sum += (partida.getTc()) * 1.00;
+//			
+//		}
+//		
+//		res = (-1.00) * (1.00/RG) * sum;
+//		return res;
+//
+//		
+//	}
 	
 	public double fB3(DoubleSolution solution) {
 		double res = 0.0;

@@ -3,14 +3,15 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
+
+
 
 public class Simulacion implements Partida {
 	private Agente p4;
 	private Agente p0;
 	private List<Carta> mazo;
 	private List<Carta> cartasPorJugar;
-	private int tc;
+	private int numeroRondasJugadas;
 	private int categoriaEnJuego;
 	
 	public Simulacion() {
@@ -37,7 +38,7 @@ public class Simulacion implements Partida {
 	    	mazo.add(c);
 		}
 		
-		
+		Collections.shuffle(mazo); // Se barajan las cartas.
 		int i = 0;
 		for(Carta c : mazo) {
 			if(i % 2 == 0) {
@@ -47,6 +48,8 @@ public class Simulacion implements Partida {
 				p0.getBaza().add(c);
 			}
 			
+			i++;
+			
 		}
 		
 	}
@@ -54,17 +57,31 @@ public class Simulacion implements Partida {
 	
 	public void ronda() {
 		
+		if(numeroRondasJugadas==0) {
+			double turnoInicial = Math.random();
+			
+			if(turnoInicial <= 0.5) {
+				p0.setTurno(true);
+			} else {
+				p4.setTurno(true);
+			}
+			
+		}
+		
 	
 		if(p4.isTurno()) {
 			categoriaEnJuego = p4.elegirCategoria();
-			tc++;
+		
 		} else {
 			categoriaEnJuego = p0.elegirCategoria();
-			tc++;
+			
 		}
 		
 		Carta cartaP4 = p4.jugar(categoriaEnJuego);
 		Carta cartaP0 = p0.jugar(categoriaEnJuego);
+		
+		cartasPorJugar.remove(cartaP4);
+		cartasPorJugar.remove(cartaP0);
 		
 		
 		Double valorP4 = cartaP4.getValores().get(categoriaEnJuego);
@@ -87,40 +104,32 @@ public class Simulacion implements Partida {
 			
 		} 
 		
+		numeroRondasJugadas++;
+		
 		// Duda: qué ocurre en caso de empate de los valores.
 		
 		
 	}
 	
 	public boolean finaliza() { 
-		boolean res = true;
-		
-		for(Carta c : mazo) {
-			
-			if(!c.jugada) {
-				res = false;
-				break;
-			} 
-			
-		}
-		
+		boolean res = (cartasPorJugar.isEmpty()) ? true : false;
 		return res;
 	}
 
 	public void partida(List<Double> valoresCartas) {
 		
-		int rondas = 0;
+		
 		boolean condicionParada = finaliza();
 		while(true) {
 		
-		if(rondas==0) {
+		if(numeroRondasJugadas==0) {
 			
 			repartirCartas(valoresCartas);
 			
 		}
 			
 		ronda();
-		rondas++;
+		
 		
 		if(condicionParada) {
 			break;
@@ -160,14 +169,25 @@ public class Simulacion implements Partida {
 	public void setCategoriaEnJuego(int categoriaEnJuego) {
 		this.categoriaEnJuego = categoriaEnJuego;
 	}
-
-	public int getTc() {
-		return tc;
+	
+	public List<Carta> getCartasPorJugar() {
+		return cartasPorJugar;
 	}
 
-	public void setTc(int tc) {
-		this.tc = tc;
+	public void setCartasPorJugar(List<Carta> cartasPorJugar) {
+		this.cartasPorJugar = cartasPorJugar;
 	}
+
+	public int getNumeroRondasJugadas() {
+		return numeroRondasJugadas;
+	}
+
+	public void setNumeroRondasJugadas(int numeroRondasJugadas) {
+		this.numeroRondasJugadas = numeroRondasJugadas;
+	}
+
+
+
 	
 	
 

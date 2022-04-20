@@ -45,9 +45,9 @@ public class Agente implements Bot {
 		return res;
 		
 	}
-	public void recogerCartas(List<Carta> cartas) {
+	public void recogerCartas(List<Carta> cartasObtenidas) {
 		
-		for(Carta c : cartas) {
+		for(Carta c : cartasObtenidas) {
 			baza.add(c);
 		}
 		
@@ -97,6 +97,7 @@ public class Agente implements Bot {
 	public void setCartasJugadas(List<Carta> cartasJugadas) {
 		this.cartasJugadas = cartasJugadas;
 	}
+	
 
 	
 	
