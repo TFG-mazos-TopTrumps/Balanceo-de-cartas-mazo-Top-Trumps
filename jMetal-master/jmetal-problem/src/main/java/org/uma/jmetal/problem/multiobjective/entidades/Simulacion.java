@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-
 public class Simulacion implements Partida {
-	private Agente p4;
-	private Agente p0;
+	private Bot p4;
+	private Bot p0;
 	private List<Carta> mazo;
 	private List<Carta> cartasPorJugar;
 	private int numeroRondasJugadas;
 	private int categoriaEnJuego;
 	
+	
 	public Simulacion() {
+		
 		
 	}
 	
@@ -36,6 +36,7 @@ public class Simulacion implements Partida {
 	    	c.getValores().add(c4);
 	    	
 	    	mazo.add(c);
+	    	cartasPorJugar.add(c);
 		}
 		
 		Collections.shuffle(mazo); // Se barajan las cartas.
@@ -137,19 +138,19 @@ public class Simulacion implements Partida {
 		
 		}
 	}
-	public Agente getP4() {
+	public Bot getP4() {
 		return p4;
 	}
 
-	public void setP4(Agente p4) {
+	public void setP4(Bot p4) {
 		this.p4 = p4;
 	}
 
-	public Agente getP0() {
+	public Bot getP0() {
 		return p0;
 	}
 
-	public void setP0(Agente p0) {
+	public void setP0(Bot p0) {
 		this.p0 = p0;
 	}
 

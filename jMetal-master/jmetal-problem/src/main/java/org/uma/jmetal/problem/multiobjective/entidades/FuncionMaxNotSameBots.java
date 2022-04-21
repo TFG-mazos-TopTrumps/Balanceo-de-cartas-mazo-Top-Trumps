@@ -3,7 +3,10 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class FuncionMaxNotSameBots extends FuncionObjetivo{
-	private int RG;
+	
+	private DummyBot b1;
+	private Agente b2;
+	
 
 
 	public double funcion(DoubleSolution solution) {
@@ -11,7 +14,9 @@ public class FuncionMaxNotSameBots extends FuncionObjetivo{
 		double sum = 0.0;
 		for(int i=0;i<RG;i++) {
 			
-			Simulacion partida = new Simulacion(); 
+			Simulacion partida = new Simulacion();
+			partida.setP0(b1);
+			partida.setP4(b2);
 			partida.partida(solution.variables());
 			
 			int cartasB1 = partida.getP0().getBaza().size();

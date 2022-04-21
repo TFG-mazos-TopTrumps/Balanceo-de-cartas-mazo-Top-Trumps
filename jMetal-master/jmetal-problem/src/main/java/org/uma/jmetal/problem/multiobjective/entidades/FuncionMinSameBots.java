@@ -14,6 +14,8 @@ public class FuncionMinSameBots extends FuncionObjetivo{
 		for(int i=0;i<RG;i++) {
 			
 			Simulacion partida = new Simulacion(); 
+			partida.setP0(b1);
+			partida.setP4(b2);
 			partida.partida(solution.variables());
 			
 			int cartasB1 = partida.getP0().getBaza().size();
