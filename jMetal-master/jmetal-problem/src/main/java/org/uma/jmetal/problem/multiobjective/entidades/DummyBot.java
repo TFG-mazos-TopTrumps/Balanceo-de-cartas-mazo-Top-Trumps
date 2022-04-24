@@ -18,9 +18,7 @@ public class DummyBot extends Bot{
 
 	public Carta jugar(int categoria) {
 		int i = (int) ((Math.round(Math.random()) * (baza.size() - 1)));
-		
 		Carta c = baza.get(i);
-		c = baza.get(categoria); 
 		cartasJugadas.add(c);
 		return c;
 		

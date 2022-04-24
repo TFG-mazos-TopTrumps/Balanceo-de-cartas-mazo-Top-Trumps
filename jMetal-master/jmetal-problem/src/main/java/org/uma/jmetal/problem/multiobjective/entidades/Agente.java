@@ -16,9 +16,9 @@ public class Agente extends Bot{
 			Carta c = baza.get(n);
 			
 	
-			for(int i = 0; i<c.getValores().size(); i++) {
+			for(int i = 0; i<c.getCategorias().size(); i++) {
 				
-				valores.add(c.getValores().get(i));
+				valores.add(c.getCategorias().get(i));
 				
 				
 			}
@@ -43,7 +43,7 @@ public class Agente extends Bot{
 	}
 	public void recogerCartas(List<Carta> cartasObtenidas) {
 		
-		for(Carta c : cartasObtenidas) {
+		for (Carta c : cartasObtenidas) {
 			baza.add(c);
 		}
 		
@@ -56,8 +56,8 @@ public class Agente extends Bot{
 		// Comprobamos de las cartas disponibles en la baza cual es la que tiene un valor más alto para esa categoría.
 		for(int i=1; i<baza.size(); i++) {
 			Carta nueva = baza.get(i);
-			double valorActual = c.getValores().get(categoria);
-			double valorNuevo = nueva.getValores().get(categoria);
+			double valorActual = c.getCategorias().get(categoria);
+			double valorNuevo = nueva.getCategorias().get(categoria);
 			if(valorNuevo > valorActual) {
 				c = nueva;
 			}

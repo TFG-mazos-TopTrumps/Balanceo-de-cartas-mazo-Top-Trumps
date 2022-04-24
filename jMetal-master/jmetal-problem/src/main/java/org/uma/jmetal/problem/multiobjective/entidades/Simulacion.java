@@ -7,10 +7,10 @@ import java.util.List;
 public class Simulacion implements Partida {
 	private Bot p4;
 	private Bot p0;
-	private List<Carta> mazo;
-	private List<Carta> cartasPorJugar;
-	private List<Integer> diferenciaRondas;
-	private int numeroRondasJugadas;
+	private List<Carta> mazo = new ArrayList<>();
+	private List<Carta> cartasPorJugar = new ArrayList<>();
+	private List<Integer> diferenciaRondas = new ArrayList<>();
+	private int numeroRondasJugadas = 0;
 	private int categoriaEnJuego;
 	
 	
@@ -23,7 +23,7 @@ public class Simulacion implements Partida {
 		
 		// Completamos las cartas del mazo con las variables.
 		
-		for(int i=0; i < valoresCartas.size(); i++) {
+		for(int i=0; i < valoresCartas.size()/4; i++) {
 			
 			Double c1 = valoresCartas.get(i * 4);
 	    	Double c2 = valoresCartas.get((i * 4) + 1);
@@ -31,10 +31,10 @@ public class Simulacion implements Partida {
 	    	Double c4 = valoresCartas.get((i * 4) + 3);
 	    	
 	    	Carta c = new Carta();
-	    	c.getValores().put(1, c1);
-	    	c.getValores().put(2,c2);
-	    	c.getValores().put(3,c3);
-	    	c.getValores().put(4,c4);
+	    	c.getCategorias().put(0, c1);
+	    	c.getCategorias().put(1,c2);
+	    	c.getCategorias().put(2,c3);
+	    	c.getCategorias().put(3,c4);
 	    	
 	    	mazo.add(c);
 	    	cartasPorJugar.add(c);
@@ -86,8 +86,8 @@ public class Simulacion implements Partida {
 		cartasPorJugar.remove(cartaP0);
 		
 		
-		Double valorP4 = cartaP4.getValores().get(categoriaEnJuego);
-		Double valorP0 = cartaP0.getValores().get(categoriaEnJuego);
+		Double valorP4 = cartaP4.getCategorias().get(categoriaEnJuego);
+		Double valorP0 = cartaP0.getCategorias().get(categoriaEnJuego);
 		List<Carta> truco = new ArrayList<>();
 		
 		
@@ -116,6 +116,7 @@ public class Simulacion implements Partida {
 	}
 	
 	public boolean finaliza() { 
+		
 		boolean res = (cartasPorJugar.isEmpty()) ? true : false;
 		return res;
 	}
@@ -123,7 +124,6 @@ public class Simulacion implements Partida {
 	public void partida(List<Double> valoresCartas) {
 		
 		
-		boolean condicionParada = finaliza();
 		while(true) {
 		
 		if(numeroRondasJugadas==0) {
@@ -135,7 +135,7 @@ public class Simulacion implements Partida {
 		ronda();
 		
 		
-		if(condicionParada) {
+		if(finaliza()) {
 			break;
 		}
 		

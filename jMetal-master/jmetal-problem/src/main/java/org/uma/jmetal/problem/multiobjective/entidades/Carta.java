@@ -3,17 +3,23 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 
 import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
+
 public class Carta {
 	
 	
-	private Map<Integer,Double> valores;
+	private Map<Integer,Double> categorias = new HashedMap<>();
+	
+	public Carta() {
+		
+	}
 	
 
-	public Map<Integer,Double> getValores() {
-		return valores;
+	public Map<Integer,Double> getCategorias() {
+		return categorias;
 	}
-	public void setValores(Map<Integer,Double> valores) {
-		this.valores = valores;
+	public void setCategorias(Map<Integer,Double> categorias) {
+		this.categorias = categorias;
 	}
 
 }

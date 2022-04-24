@@ -1,13 +1,14 @@
 package org.uma.jmetal.problem.multiobjective.entidades;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Bot {
 	
 	protected boolean turno;
 	protected String nombre;
-	protected List<Carta> baza;
-	protected List<Carta> cartasJugadas;
+	protected List<Carta> baza = new ArrayList<>();
+	protected List<Carta> cartasJugadas = new ArrayList<>();
 
 	/**
 	 * Método empleado para que, si es turno, elija la categoria más conveniente para jugar con base a las cartas de la que dispone en su
