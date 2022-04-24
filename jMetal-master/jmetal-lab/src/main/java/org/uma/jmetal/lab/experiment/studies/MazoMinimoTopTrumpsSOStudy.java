@@ -14,6 +14,7 @@ import org.uma.jmetal.lab.experiment.component.impl.GenerateBoxplotsWithR;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateFriedmanHolmTestTables;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateHtmlPages;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateLatexTablesWithStatistics;
+import org.uma.jmetal.lab.experiment.component.impl.GenerateReferenceParetoSetAndFrontFromDoubleSolutions;
 import org.uma.jmetal.lab.experiment.component.impl.GenerateWilcoxonTestTablesWithR;
 import org.uma.jmetal.lab.experiment.util.ExperimentAlgorithm;
 import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
@@ -53,10 +54,10 @@ public class MazoMinimoTopTrumpsSOStudy {
 	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("MazoMinimoTopTrumpsSOStudy")
 	                    .setAlgorithmList(algorithmList)
 	                    .setProblemList(problemList)
-	                    .setReferenceFrontDirectory("resources/referenceFrontsCSV")
 	                    .setExperimentBaseDirectory(experimentBaseDirectory)
 	                    .setOutputParetoFrontFileName("FUN")
 	                    .setOutputParetoSetFileName("VAR")
+	                    .setReferenceFrontDirectory(experimentBaseDirectory + "/MazoMinimoTopTrumpsSOStudy/referenceFronts")
 	                    .setIndicatorList(List.of(
 	                    	
 	                            new Epsilon(),
@@ -71,6 +72,7 @@ public class MazoMinimoTopTrumpsSOStudy {
 	                    .build();
 
 	    new ExecuteAlgorithms<>(experiment).run();
+	    new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
 	    new ComputeQualityIndicators<>(experiment).run();
 	    new GenerateLatexTablesWithStatistics(experiment).run();
 	    new GenerateFriedmanHolmTestTables<>(experiment).run();
