@@ -2,7 +2,7 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
-public class FuncionMaxNotSameBots extends FuncionObjetivo{
+public class FuncionMaxNotSameBots extends FuncionObjetivo{	
 	
 	private DummyBot b1;
 	private Agente b2;
