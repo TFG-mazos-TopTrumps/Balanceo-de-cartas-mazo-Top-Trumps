@@ -1,22 +1,18 @@
 package org.uma.jmetal.problem.multiobjective.entidades;
 
-import java.util.List;
+
+import java.util.Map;
 
 public class Carta {
 	
-	boolean jugada;
-	private List<Double> valores;
 	
-	public boolean isJugada() {
-		return jugada;
-	}
-	public void setJugada(boolean jugada) {
-		this.jugada = jugada;
-	}
-	public List<Double> getValores() {
+	private Map<Integer,Double> valores;
+	
+
+	public Map<Integer,Double> getValores() {
 		return valores;
 	}
-	public void setValores(List<Double> valores) {
+	public void setValores(Map<Integer,Double> valores) {
 		this.valores = valores;
 	}
 
