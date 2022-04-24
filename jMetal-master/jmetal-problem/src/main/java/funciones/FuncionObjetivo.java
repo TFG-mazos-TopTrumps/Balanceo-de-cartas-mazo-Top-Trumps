@@ -1,4 +1,4 @@
-package org.uma.jmetal.problem.multiobjective.entidades;
+package funciones;
 
 import java.util.List;
 

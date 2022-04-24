@@ -1,5 +1,7 @@
-package org.uma.jmetal.problem.multiobjective.entidades;
+package funciones;
 
+import org.uma.jmetal.problem.multiobjective.entidades.Bot;
+import org.uma.jmetal.problem.multiobjective.entidades.Simulacion;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class FuncionMinSameBots extends FuncionObjetivo{
@@ -7,6 +9,10 @@ public class FuncionMinSameBots extends FuncionObjetivo{
 	private int RG;
 	private Bot b1;
 	private Bot b2;
+	
+	public FuncionMinSameBots(int RG) {
+		this.RG = RG;
+	}
 	
 	public double funcion(DoubleSolution solution) {
 		double res = 0.0;

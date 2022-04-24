@@ -1,5 +1,8 @@
-package org.uma.jmetal.problem.multiobjective.entidades;
+package funciones;
 
+import org.uma.jmetal.problem.multiobjective.entidades.Agente;
+import org.uma.jmetal.problem.multiobjective.entidades.DummyBot;
+import org.uma.jmetal.problem.multiobjective.entidades.Simulacion;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public class FuncionMaxNotSameBots extends FuncionObjetivo{	
@@ -8,6 +11,9 @@ public class FuncionMaxNotSameBots extends FuncionObjetivo{
 	private Agente b2;
 	
 
+	public FuncionMaxNotSameBots(int RG) {
+		this.RG = RG;
+	}
 
 	public double funcion(DoubleSolution solution) {
 		double res = 0.0;

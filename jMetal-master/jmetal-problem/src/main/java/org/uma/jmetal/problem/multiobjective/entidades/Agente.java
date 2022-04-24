@@ -15,8 +15,7 @@ public class Agente extends Bot{
 			
 			Carta c = baza.get(n);
 			
-			
-
+	
 			for(int i = 0; i<c.getValores().size(); i++) {
 				
 				valores.add(c.getValores().get(i));
