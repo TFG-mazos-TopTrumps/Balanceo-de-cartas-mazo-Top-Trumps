@@ -9,6 +9,7 @@ public class Simulacion implements Partida {
 	private Bot p0;
 	private List<Carta> mazo;
 	private List<Carta> cartasPorJugar;
+	private List<Integer> diferenciaRondas;
 	private int numeroRondasJugadas;
 	private int categoriaEnJuego;
 	
@@ -30,10 +31,10 @@ public class Simulacion implements Partida {
 	    	Double c4 = valoresCartas.get((i * 4) + 3);
 	    	
 	    	Carta c = new Carta();
-	    	c.getValores().add(c1);
-	    	c.getValores().add(c2);
-	    	c.getValores().add(c3);
-	    	c.getValores().add(c4);
+	    	c.getValores().put(1, c1);
+	    	c.getValores().put(2,c2);
+	    	c.getValores().put(3,c3);
+	    	c.getValores().put(4,c4);
 	    	
 	    	mazo.add(c);
 	    	cartasPorJugar.add(c);
@@ -105,6 +106,8 @@ public class Simulacion implements Partida {
 			
 		} 
 		
+		Integer diferenciaRonda = Math.abs(p4.getBaza().size() - p0.getBaza().size());
+		diferenciaRondas.add(diferenciaRonda);
 		numeroRondasJugadas++;
 		
 		// Duda: qué ocurre en caso de empate de los valores.
@@ -185,6 +188,14 @@ public class Simulacion implements Partida {
 
 	public void setNumeroRondasJugadas(int numeroRondasJugadas) {
 		this.numeroRondasJugadas = numeroRondasJugadas;
+	}
+
+	public List<Integer> getDiferenciaRondas() {
+		return diferenciaRondas;
+	}
+
+	public void setDiferenciaRondas(List<Integer> diferenciaRondas) {
+		this.diferenciaRondas = diferenciaRondas;
 	}
 
 

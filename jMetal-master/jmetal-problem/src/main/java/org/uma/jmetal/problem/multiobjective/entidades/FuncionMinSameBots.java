@@ -18,11 +18,13 @@ public class FuncionMinSameBots extends FuncionObjetivo{
 			partida.setP4(b2);
 			partida.partida(solution.variables());
 			
-			int cartasB1 = partida.getP0().getBaza().size();
-			int cartasB2 = partida.getP4().getBaza().size();
+			for(int diferenciaPuntuaciones : partida.getDiferenciaRondas()) {
+				
+				sum += diferenciaPuntuaciones * 1.0;
+				
+			}
 			
-			int diferenciaPuntuaciones = Math.abs(cartasB2 - cartasB1);
-			sum += diferenciaPuntuaciones * 1.0;
+			
 		}
 		res = (-1.00) * (1.00/RG) * sum;
 		return res;

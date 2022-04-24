@@ -20,7 +20,6 @@ public class DummyBot extends Bot{
 		
 		Carta c = new Carta();
 		c = baza.get(categoria); 
-		c.setJugada(true);
 		cartasJugadas.add(c);
 		return c;
 		

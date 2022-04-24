@@ -64,7 +64,7 @@ public class Agente extends Bot{
 			}
 		}
 		
-		c.setJugada(true);
+		
 		cartasJugadas.add(c);
 		return c;
 		
