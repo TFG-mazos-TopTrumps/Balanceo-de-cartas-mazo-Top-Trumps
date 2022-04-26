@@ -3,11 +3,13 @@ package org.uma.jmetal.problem.multiobjective.entidades;
 import java.util.ArrayList;
 import java.util.List;
 
+import funciones.FuncionMinSameBots;
+
 public class PruebaSimulaciones {
 	
 	public static void main(String[] args) {
 		
-		List<Double> valoresCartas = new ArrayList<>();
+	List<Double> valoresCartas = new ArrayList<>();
 		valoresCartas.add(8.0);
 		valoresCartas.add(4.0);
 		valoresCartas.add(6.0);
@@ -15,6 +17,14 @@ public class PruebaSimulaciones {
 		valoresCartas.add(9.0);
 		valoresCartas.add(3.0);
 		valoresCartas.add(5.0);
+		valoresCartas.add(8.0);
+		valoresCartas.add(4.0);
+		valoresCartas.add(7.0);
+		valoresCartas.add(3.0);
+		valoresCartas.add(9.0);
+		valoresCartas.add(5.0);
+		valoresCartas.add(1.0);
+		valoresCartas.add(9.0);
 		valoresCartas.add(8.0);
 		
 		int cartas = 2;
@@ -30,6 +40,16 @@ public class PruebaSimulaciones {
 		System.out.println("Número de rondas jugadas: " + s.getNumeroRondasJugadas());
 		System.out.println("Número de cartas por jugar: " + s.getCartasPorJugar());
 		System.out.println("Número de cartas en el mazo: + " + s.getMazo().size());
+		
+		for(int i=0; i<categorias; i++) {
+		System.out.println("Valor " + i + " de la carta " + s.getMazo().get(1).getCategorias().get(i));
+		
+		}
+		
+		System.out.println("Categoria elegida por el bot: " + b2.elegirCategoria());
+		
+//		FuncionMinSameBots f1 = new FuncionMinSameBots(3);
+//		System.out.println("Resultado fMin: " + f1.funcion(null));
 	}
 
 }

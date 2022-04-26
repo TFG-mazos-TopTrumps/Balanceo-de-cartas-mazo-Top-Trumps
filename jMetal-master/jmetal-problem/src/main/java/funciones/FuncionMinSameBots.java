@@ -10,8 +10,10 @@ public class FuncionMinSameBots extends FuncionObjetivo{
 	private Bot b1;
 	private Bot b2;
 	
-	public FuncionMinSameBots(int RG) {
+	public FuncionMinSameBots(int RG, Bot b1, Bot b2) {
 		this.RG = RG;
+		this.b1 = b1;
+		this.b2 = b2;
 	}
 	
 	public double funcion(DoubleSolution solution) {
@@ -29,8 +31,6 @@ public class FuncionMinSameBots extends FuncionObjetivo{
 				sum += diferenciaPuntuaciones * 1.0;
 				
 			}
-			
-			
 		}
 		res = (-1.00) * (1.00/RG) * sum;
 		return res;

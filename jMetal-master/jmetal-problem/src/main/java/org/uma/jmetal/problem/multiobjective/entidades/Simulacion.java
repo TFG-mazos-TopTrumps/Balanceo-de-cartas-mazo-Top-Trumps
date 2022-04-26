@@ -81,6 +81,8 @@ public class Simulacion implements Partida {
 		
 		Carta cartaP4 = p4.jugar(categoriaEnJuego);
 		Carta cartaP0 = p0.jugar(categoriaEnJuego);
+		p0.cartasJugadas.add(cartaP4);
+		p4.cartasJugadas.add(cartaP0);
 		
 		cartasPorJugar.remove(cartaP4);
 		cartasPorJugar.remove(cartaP0);
@@ -90,17 +92,17 @@ public class Simulacion implements Partida {
 		Double valorP0 = cartaP0.getCategorias().get(categoriaEnJuego);
 		List<Carta> truco = new ArrayList<>();
 		
-		
+	
 		if(valorP4 > valorP0) {
 			
 			truco.add(cartaP0);
-			p4.getCartasJugadas().add(cartaP0);
+			p0.baza.remove(cartaP0);
 			p4.setTurno(true);
 			p4.recogerCartas(truco);
 			
 		} else if(valorP0 > valorP4) {
 			truco.add(cartaP4);
-			p0.getCartasJugadas().add(cartaP4);
+			p4.baza.remove(cartaP4);
 			p0.setTurno(true);
 			p0.recogerCartas(truco);
 			
@@ -117,7 +119,7 @@ public class Simulacion implements Partida {
 	
 	public boolean finaliza() { 
 		
-		boolean res = (cartasPorJugar.isEmpty()) ? true : false;
+		boolean res = (cartasPorJugar.isEmpty() || p4.baza.isEmpty() || p0.baza.isEmpty()) ? true : false;
 		return res;
 	}
 

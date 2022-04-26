@@ -5,7 +5,7 @@ import java.util.List;
 public class DummyBot extends Bot{
 
 	public int elegirCategoria() {
-		int res = (int) Math.round(Math.random() * 4) * 1;
+		int res = (int) Math.round(Math.random() * 3) * 1;
 		 
 		return res;
 	}
@@ -17,7 +17,7 @@ public class DummyBot extends Bot{
 	}
 
 	public Carta jugar(int categoria) {
-		int i = (int) ((Math.round(Math.random()) * (baza.size() - 1)));
+		int i = (int) Math.round(Math.random() * (baza.size() - 1));
 		Carta c = baza.get(i);
 		cartasJugadas.add(c);
 		return c;

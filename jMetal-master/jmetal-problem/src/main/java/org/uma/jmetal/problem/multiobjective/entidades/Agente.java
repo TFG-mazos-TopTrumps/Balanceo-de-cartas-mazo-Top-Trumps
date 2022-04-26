@@ -52,19 +52,18 @@ public class Agente extends Bot{
 	public Carta jugar(int categoria) {
 		
 		Carta c = new Carta();
+	
 		c = baza.get(0); // Cogemos la primera para ir comparándola con el resto.
 		// Comprobamos de las cartas disponibles en la baza cual es la que tiene un valor más alto para esa categoría.
 		for(int i=1; i<baza.size(); i++) {
 			Carta nueva = baza.get(i);
 			double valorActual = c.getCategorias().get(categoria);
 			double valorNuevo = nueva.getCategorias().get(categoria);
-			if(valorNuevo > valorActual) {
+			if(valorNuevo >= valorActual) {
 				c = nueva;
 			}
 		}
-		
-		
-		cartasJugadas.add(c);
+	
 		return c;
 		
 	}
