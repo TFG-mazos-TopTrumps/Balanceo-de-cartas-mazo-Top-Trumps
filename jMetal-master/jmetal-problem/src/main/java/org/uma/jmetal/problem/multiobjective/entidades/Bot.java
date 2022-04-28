@@ -8,7 +8,12 @@ public abstract class Bot {
 	protected boolean turno;
 	protected String nombre;
 	protected List<Carta> baza = new ArrayList<>();
-	protected List<Carta> cartasJugadas = new ArrayList<>();
+	
+	/* Por lo pronto se deja comentado: dicho atributo está pensado para dotar a los bots de la capacidad de 
+	 * recordar que cartas se han jugado ya, para así considerarlas al momento de decidir que carta jugar en la
+	 * ronda en cuestión.
+	 */
+	//protected List<Carta> cartasJugadas = new ArrayList<>();
 
 	/**
 	 * Método empleado para que, si es turno, elija la categoria más conveniente para jugar con base a las cartas de la que dispone en su
@@ -57,12 +62,12 @@ public abstract class Bot {
 		this.baza = baza;
 	}
 
-	public List<Carta> getCartasJugadas() {
-		return cartasJugadas;
-	}
-
-	public void setCartasJugadas(List<Carta> cartasJugadas) {
-		this.cartasJugadas = cartasJugadas;
-	}
+//	public List<Carta> getCartasJugadas() {
+//		return cartasJugadas;
+//	}
+//
+//	public void setCartasJugadas(List<Carta> cartasJugadas) {
+//		this.cartasJugadas = cartasJugadas;
+//	}
 
 }

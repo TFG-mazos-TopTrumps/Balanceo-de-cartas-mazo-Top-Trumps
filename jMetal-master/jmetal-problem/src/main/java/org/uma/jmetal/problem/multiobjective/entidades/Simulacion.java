@@ -81,8 +81,8 @@ public class Simulacion implements Partida {
 		
 		Carta cartaP4 = p4.jugar(categoriaEnJuego);
 		Carta cartaP0 = p0.jugar(categoriaEnJuego);
-		p0.cartasJugadas.add(cartaP4);
-		p4.cartasJugadas.add(cartaP0);
+//		p0.cartasJugadas.add(cartaP0);
+//		p4.cartasJugadas.add(cartaP4);
 		
 		cartasPorJugar.remove(cartaP4);
 		cartasPorJugar.remove(cartaP0);
