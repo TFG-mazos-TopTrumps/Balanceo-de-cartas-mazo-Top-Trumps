@@ -21,7 +21,7 @@ import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.lab.visualization.StudyVisualizer;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
-import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsFB;
+import org.uma.jmetal.problem.toptrumps.MazoTopTrumpsFB;
 import org.uma.jmetal.problem.singleobjective.MazoTopTrumpsSO;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;

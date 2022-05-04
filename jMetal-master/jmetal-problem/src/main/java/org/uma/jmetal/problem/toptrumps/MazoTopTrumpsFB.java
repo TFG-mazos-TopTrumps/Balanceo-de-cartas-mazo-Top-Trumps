@@ -1,10 +1,10 @@
-package org.uma.jmetal.problem.multiobjective;
+package org.uma.jmetal.problem.toptrumps;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.uma.jmetal.problem.doubleproblem.impl.AbstractDoubleProblem;
-import org.uma.jmetal.problem.multiobjective.entidades.Simulacion;
+import org.uma.jmetal.problem.toptrumps.entities.Simulation;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 @SuppressWarnings("serial")
@@ -50,16 +50,16 @@ public class MazoTopTrumpsFB extends AbstractDoubleProblem {
 public double fB1(DoubleSolution solution) {
 	double res = 0.0;
 	double sum = 0.0;
-		for(int i=0;i<RG;i++) {
+	/*	for(int i=0;i<RG;i++) {
 		
-			Simulacion partida = new Simulacion(); 
+			Simulation partida = new Simulation(); 
 			partida.partida(solution.variables());
 			
 			if(partida.getP4().getBaza().size() > cartas/2) {
 				sum += 1;
 			}
 		}
-		
+*/		
 		res = (-1.00) * (1.00/RG) * sum;
 		return res;
 		
@@ -86,16 +86,16 @@ public double fB1(DoubleSolution solution) {
 	public double fB3(DoubleSolution solution) {
 		double res = 0.0;
 		double sum = 0.0;
-		
+	/*	
 		for(int i=0;i<RG;i++) {
 			
-			Simulacion partida = new Simulacion(); 
+			Simulation partida = new Simulation(); 
 			partida.partida(solution.variables());
 			
 			sum += Math.abs((2 * (partida.getP4().getBaza().size()) - (cartas/2)));
 			
 		}
-		
+		*/
 		res = (1.00/RG) * sum;
 		return res;
 		

@@ -21,7 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class MicroFAMEIT {
 
-  @Test
+  
   public void shouldTheAlgorithmReturnANumberOfSolutionsWhenSolvingASimpleProblem() {
     Problem<DoubleSolution> problem;
     Algorithm<List<DoubleSolution>> algorithm;
@@ -47,7 +47,7 @@ public class MicroFAMEIT {
     JMetalRandom.getInstance().setSeed(System.currentTimeMillis());
   }
 
-  @Test
+  
   public void shouldTheHypervolumeHaveAMininumValue() throws Exception {
     Problem<DoubleSolution> problem;
     Algorithm<List<DoubleSolution>> algorithm;

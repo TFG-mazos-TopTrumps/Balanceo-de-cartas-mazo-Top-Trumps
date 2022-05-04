@@ -73,6 +73,7 @@ public class ExperimentAlgorithm<S extends Solution<?>, Result extends List<S>> 
           .print();
     } catch (Exception exception) {
       JMetalLogger.logger.warning("Execution failed: " + funFile + " has not been created.");
+      exception.printStackTrace();
     }
   }
 

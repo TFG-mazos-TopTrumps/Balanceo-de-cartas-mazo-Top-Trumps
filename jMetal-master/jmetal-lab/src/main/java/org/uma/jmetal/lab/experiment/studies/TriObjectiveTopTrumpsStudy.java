@@ -21,8 +21,8 @@ import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.lab.visualization.StudyVisualizer;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
-import org.uma.jmetal.problem.multiobjective.MazoTopTrumpTriObjetivo;
-import org.uma.jmetal.problem.multiobjective.MazoTopTrumpsFB;
+import org.uma.jmetal.problem.toptrumps.TopTrumpsDeckTriObjective;
+import org.uma.jmetal.problem.toptrumps.MazoTopTrumpsFB;
 import org.uma.jmetal.problem.singleobjective.MazoTopTrumpsSO;
 import org.uma.jmetal.qualityindicator.impl.Epsilon;
 import org.uma.jmetal.qualityindicator.impl.GenerationalDistance;
@@ -34,19 +34,24 @@ import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.errorchecking.JMetalException;
 
-public class MazoTopTrumpsTriObjetivoStudy {
+public class TriObjectiveTopTrumpsStudy {
 
 	private static final int INDEPENDENT_RUNS = 3;
+	private static final String DEFAULT_BASE_DIRECTORY="./jmetal-lab/src/main/resources";
 
 	public static void main(String[] args) throws IOException {
-	    if (args.length != 1) {
-	      throw new JMetalException("Missing argument: experimentBaseDirectory");
-	    }
-	    String experimentBaseDirectory = args[0];
+	    String experimentBaseDirectory = null;
+		if (args.length != 1) {
+	      System.out.println("Missing argument: experimentBaseDirectory, using as default value:"+DEFAULT_BASE_DIRECTORY);
+		  experimentBaseDirectory=DEFAULT_BASE_DIRECTORY;
+	    }else
+			experimentBaseDirectory=args[0];
+			
+	    
 	    
 	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
 	    		
-	            new ExperimentProblem<>(new MazoTopTrumpTriObjetivo())); 
+	            new ExperimentProblem<>(new TopTrumpsDeckTriObjective())); 
 	    
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
 	            configureAlgorithmList(problemList);
@@ -64,7 +69,7 @@ public class MazoTopTrumpsTriObjetivoStudy {
 	                            new Epsilon(),
 	                            new Spread(),
 	                            new GenerationalDistance(),
-	                            new PISAHypervolume(),
+	                            //new PISAHypervolume(),
 	                            new NormalizedHypervolume(),
 	                            new InvertedGenerationalDistance(),
 	                            new InvertedGenerationalDistancePlus()))
