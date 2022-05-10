@@ -5,21 +5,24 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class Bot {
+		
 	
 	protected boolean turn;
 	protected String name;
 	protected List<Card> trump;
 	protected List<Card> playedCards;
 	protected Random random;
+	protected int nCardsToChoose;
 	
 	
 	
-	public Bot(Random random) {
+	public Bot(Random random, int nCardsToChoose) {
 		this.random=random;
 		this.turn=false;
 		this.name="";
 		this.trump=new LinkedList<Card>();
 		this.playedCards=new LinkedList<Card>();
+		this.nCardsToChoose=nCardsToChoose;
 	}
 	
 	public void reset() {

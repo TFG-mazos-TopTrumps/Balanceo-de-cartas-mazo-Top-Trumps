@@ -34,7 +34,7 @@ import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.errorchecking.JMetalException;
 
-public class TriObjectiveTopTrumpsStudy {
+public class TriObjectiveTopTrumpsStudyRQ23 {
 
 	private static final int INDEPENDENT_RUNS = 30;
 	private static final String DEFAULT_BASE_DIRECTORY="./jmetal-lab/src/main/resources";
@@ -62,13 +62,13 @@ public class TriObjectiveTopTrumpsStudy {
 	            configureAlgorithmList(problemList);
 	    
 	    Experiment<DoubleSolution, List<DoubleSolution>> experiment =
-	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("RQ1-MazoTopTrumpsTriObjetivoStudy")
+	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("RQ21-MazoTopTrumpsTriObjetivoStudy")
 	                    .setAlgorithmList(algorithmList)
 	                    .setProblemList(problemList)
 	                    .setExperimentBaseDirectory(experimentBaseDirectory)
 	                    .setOutputParetoFrontFileName("FUN")
 	                    .setOutputParetoSetFileName("VAR")
-	                    .setReferenceFrontDirectory(experimentBaseDirectory + "/RQ1-MazoTopTrumpsTriObjetivoStudy/referenceFronts")
+	                    .setReferenceFrontDirectory(experimentBaseDirectory + "/RQ21-MazoTopTrumpsTriObjetivoStudy/referenceFronts")
 	                    .setIndicatorList(List.of(
 	                    	
 	                            new Epsilon(),

@@ -139,6 +139,7 @@ public class Simulation implements Game {
 			currentPlayer=bots.get(i);
 			if(!currentPlayer.getTrump().isEmpty()) {
 				Card c=currentPlayer.play(currentCategory);
+				currentPlayer.getTrump().remove(c);
 				cardsPlayed.add(c);			
 				draw.put(c, currentPlayer);
 			}
@@ -147,6 +148,7 @@ public class Simulation implements Game {
 			currentPlayer=bots.get(i);
 			if(!currentPlayer.getTrump().isEmpty()) {
 				Card c=currentPlayer.play(currentCategory);
+				currentPlayer.getTrump().remove(c);
 				cardsPlayed.add(c);
 				draw.put(c, currentPlayer);
 			}

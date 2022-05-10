@@ -9,11 +9,11 @@ public class DummyBot extends Bot{
 
 	
 	public DummyBot(){
-		super(new Random());
+		super(new Random(),1);
 	}
 	
-	public DummyBot(Random random) {
-		super(random);
+	public DummyBot(Random random,int nCardsToChoose) {
+		super(random,nCardsToChoose);
 	}
 	
 		
@@ -36,8 +36,8 @@ public class DummyBot extends Bot{
 
 	@Override
 	public Card play(String category) {
-		Card result=trump.get(0);
-		trump.remove(0);
+		int index=random.nextInt(Math.min(nCardsToChoose,trump.size()));
+		Card result=trump.get(index);		
 		return result;
 	}
 

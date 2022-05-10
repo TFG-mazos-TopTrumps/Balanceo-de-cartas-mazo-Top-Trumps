@@ -7,7 +7,7 @@ import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 public abstract class ObjectiveFunction {
 	
-	protected int RG;
+	
 	protected Random random;
 	
 	

@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Random;
 
 public class GreedyBot extends Bot {
-
+	
+	
 	public GreedyBot() {
-		this(new Random());
+		this(new Random(),1);
 	}
 	
-	public GreedyBot(Random random) {
-		super(random);
+	public GreedyBot(Random random,int nCardsToChoose) {
+		super(random,nCardsToChoose);
 	}
 
 	public String chooseCategory() {
@@ -40,8 +41,9 @@ public class GreedyBot extends Bot {
 	public Card play(String category) {
 		Card bestCard = null;
 		Double bestValue = Double.MIN_VALUE;
-
-		for (Card card : trump) {
+		Card card;
+		for (int i=0;i< Math.min(nCardsToChoose, trump.size()) ;i++) {
+			card=this.trump.get(i);
 			if (card.getValue(category) > bestValue) {
 				bestCard = card;
 				bestValue = card.getValue(category);
