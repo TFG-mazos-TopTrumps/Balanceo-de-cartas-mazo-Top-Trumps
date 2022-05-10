@@ -75,10 +75,10 @@ public class MazoMinimoTopTrumpsSOStudy {
 	    new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
 	    new ComputeQualityIndicators<>(experiment).run();
 	    new GenerateLatexTablesWithStatistics(experiment).run();
-	    new GenerateFriedmanHolmTestTables<>(experiment).run();
+	    //new GenerateFriedmanHolmTestTables<>(experiment).run();
 	    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
 	    new GenerateBoxplotsWithR<>(experiment).setRows(2).setColumns(3).run();
-	    new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
+	    //new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
 	  }
 	
 	static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
