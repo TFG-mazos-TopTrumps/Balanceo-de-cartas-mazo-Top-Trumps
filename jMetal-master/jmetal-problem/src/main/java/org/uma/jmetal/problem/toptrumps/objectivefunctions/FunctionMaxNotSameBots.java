@@ -41,22 +41,20 @@ public class FunctionMaxNotSameBots extends ObjectiveFunction{
 		bots.addAll(smartBots);
 		
 		double res = 0.0;
-		double sum = 0.0;		
-			
+		double sumDummies = 0.0;		
+		double sumSmarties = 0.0;	
 		
 		int nCategories= (Integer) solution.attributes().get("categories");
 		for(int i=0;i<gamesToSimulate;i++) {
-			for(Bot dummyBot:dummyBots) {
-				for(Bot smartBot:smartBots) {
-					Simulation partida = new Simulation(random);			
-					partida.play(solution.variables(), nCategories, bots, maxRounds);							
-					sum += (smartBot.getTrump().size() - dummyBot.getTrump().size());
-				}
-			}
-													
+			Simulation partida = new Simulation(random);
+			partida.play(solution.variables(), nCategories, bots, maxRounds);
+			for(Bot dummyBot:dummyBots) 
+				sumDummies +=  dummyBot.getTrump().size();
+			for(Bot smartBot:smartBots) 																				
+				sumSmarties += smartBot.getTrump().size();																			
 		}
 		int nCardsInDeck=solution.variables().size()/nCategories;
-		res = (-1.00)* (1.0/nCardsInDeck) * (1.0/gamesToSimulate) * sum;
+		res = (-1.00)* (1.0/nCardsInDeck) * (1.0/gamesToSimulate) * (sumSmarties - sumDummies);
 		return res;
 	}
 	

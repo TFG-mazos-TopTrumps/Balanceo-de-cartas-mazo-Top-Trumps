@@ -23,7 +23,7 @@ for(i in 1:(nRuns-1)){
 
 names(RQ1)<- c("Closeness","Fairness","Dominated Cards")
 
-#RQ1$Closeness<- -RQ1$Closeness
+RQ1$Fairness<- -RQ1$Fairness
 
 tab<-capture.output(print(summary_table(RQ1)))
 fileConn<-file("RQ1-SummaryTable.tex")
