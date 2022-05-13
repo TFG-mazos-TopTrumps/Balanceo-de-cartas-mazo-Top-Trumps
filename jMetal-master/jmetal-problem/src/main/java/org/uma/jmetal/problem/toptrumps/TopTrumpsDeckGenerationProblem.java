@@ -29,18 +29,17 @@ public class TopTrumpsDeckGenerationProblem extends AbstractDoubleProblem {
 
 	private List<ObjectiveFunction> functions = new ArrayList<>();
 
-	public TopTrumpsDeckGenerationProblem(int cards, int categories, int games, int maxRounds, int players, int nCardsToChooseFrom) {
-		this();
+	public TopTrumpsDeckGenerationProblem(int cards, int categories, int games, int maxRounds, int players, int nCardsToChooseFrom) {		
 		this.games = games;
 		this.cards = cards;
 		this.categories = categories;
 		this.maxRounds = maxRounds;
 		this.players = players;
 		this.nCardsToChooseFrom=nCardsToChooseFrom;
+		initialize();		
 	}
-
-	public TopTrumpsDeckGenerationProblem() {
-		
+	
+	private void initialize() {
 		// Definimos aquí las funciones que queremos usar.
 		ObjectiveFunction f1 = new FunctionMinSameBots(games, maxRounds, random, players,nCardsToChooseFrom);
 		ObjectiveFunction f2 = new FunctionMaxNotSameBots(games, maxRounds, random,players,nCardsToChooseFrom);
@@ -66,6 +65,10 @@ public class TopTrumpsDeckGenerationProblem extends AbstractDoubleProblem {
 		setVariableBounds(lowerLimit, upperLimit);
 	}
 
+	public TopTrumpsDeckGenerationProblem() {
+		initialize();
+	}
+
 	public DoubleSolution evaluate(DoubleSolution solution) {
 		double[] f = new double[solution.objectives().length];
 
@@ -83,6 +86,10 @@ public class TopTrumpsDeckGenerationProblem extends AbstractDoubleProblem {
 		DoubleSolution result = super.createSolution();
 		result.attributes().put("categories", categories);
 		return result;
+	}
+	
+	public void setProblemName(String name) {
+		setName(name);
 	}
 
 }

@@ -36,33 +36,43 @@ import org.uma.jmetal.util.errorchecking.JMetalException;
 
 public class TriObjectiveTopTrumpsStudy {
 
-	private static final int INDEPENDENT_RUNS = 30;
-	private static final String DEFAULT_BASE_DIRECTORY="./jmetal-lab/src/main/resources";
-
+	public static final int DEFAULT_INDEPENDENT_RUNS = 30;
+	public static final String DEFAULT_BASE_DIRECTORY="./jmetal-lab/src/main/resources";	
+	private int independentRuns;
+	private String baseDirectory;
+	private String experimentName;
 	
+	public TriObjectiveTopTrumpsStudy() {
+		this(DEFAULT_INDEPENDENT_RUNS,DEFAULT_BASE_DIRECTORY, "RQ1-MazoTopTrumpsTriObjetivoStudy");
+	}
 	
-	
-	
+	public TriObjectiveTopTrumpsStudy(int independentRuns, String baseDirectory,String experimentName) {
+		this.independentRuns=independentRuns;
+		this.baseDirectory=baseDirectory;
+		this.experimentName=experimentName;
+	}	
 	
 	public static void main(String[] args) throws IOException {
+		TriObjectiveTopTrumpsStudy study=new TriObjectiveTopTrumpsStudy();
+		study.run(args);
+	}
+	
+	public void run(String[] args) throws IOException {
 	    String experimentBaseDirectory = null;
 		if (args.length != 1) {
-	      System.out.println("Missing argument: experimentBaseDirectory, using as default value:"+DEFAULT_BASE_DIRECTORY);
-		  experimentBaseDirectory=DEFAULT_BASE_DIRECTORY;
+	      System.out.println("Missing argument: experimentBaseDirectory, using as default value:"+baseDirectory);
+		  experimentBaseDirectory=baseDirectory;
 	    }else
 			experimentBaseDirectory=args[0];
 			
 	    
 	    
-	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
-	    		
-	            new ExperimentProblem<>(new TopTrumpsDeckGenerationProblem())); 
-	    
+	    List<ExperimentProblem<DoubleSolution>> problemList = generateProblemList();
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
 	            configureAlgorithmList(problemList);
 	    
 	    Experiment<DoubleSolution, List<DoubleSolution>> experiment =
-	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("RQ1-MazoTopTrumpsTriObjetivoStudy")
+	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>(experimentName)
 	                    .setAlgorithmList(algorithmList)
 	                    .setProblemList(problemList)
 	                    .setExperimentBaseDirectory(experimentBaseDirectory)
@@ -78,25 +88,34 @@ public class TriObjectiveTopTrumpsStudy {
 	                            new NormalizedHypervolume(),
 	                            //new InvertedGenerationalDistance(),
 	                            new InvertedGenerationalDistancePlus()))
-	                    .setIndependentRuns(INDEPENDENT_RUNS)
+	                    .setIndependentRuns(DEFAULT_INDEPENDENT_RUNS)
 	                    .setNumberOfCores(4)
 	                    .build();
 
 	    ExecuteAlgorithms executeAlgorithms=new ExecuteAlgorithms<>(experiment);
 	    executeAlgorithms.run();
 	    new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
-	    new ComputeQualityIndicators<>(experiment).run();
-	    new GenerateLatexTablesWithStatistics(experiment).run();
+	    //new ComputeQualityIndicators<>(experiment).run();
+	    //new GenerateLatexTablesWithStatistics(experiment).run();
 //	    new GenerateFriedmanHolmTestTables<>(experiment).run();
 //	    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-	    new GenerateBoxplotsWithR<>(experiment).setRows(1).setColumns(1).run();
+	    //new GenerateBoxplotsWithR<>(experiment).setRows(1).setColumns(1).run();
 //	    new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
 	  }
 	
-	static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
+	protected List<ExperimentProblem<DoubleSolution>> generateProblemList() {
+		return List.of(
+				new ExperimentProblem<>(
+						new TopTrumpsDeckGenerationProblem()
+					)
+				); 
+	    
+	}
+
+	protected List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
 	          List<ExperimentProblem<DoubleSolution>> problemList) {
 	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
-	    for (int run = 0; run < INDEPENDENT_RUNS; run++) {
+	    for (int run = 0; run < independentRuns; run++) {
 	      for (var experimentProblem : problemList) {
 	        
 	    	  
