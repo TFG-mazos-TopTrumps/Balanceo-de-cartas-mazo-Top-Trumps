@@ -34,88 +34,43 @@ import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.errorchecking.JMetalException;
 
-public class TriObjectiveTopTrumpsStudyRQ21 {
-
-	private static final int INDEPENDENT_RUNS = 30;
-	private static final String DEFAULT_BASE_DIRECTORY="./jmetal-lab/src/main/resources";
+public class TriObjectiveTopTrumpsStudyRQ21 extends TriObjectiveTopTrumpsStudy {
 
 	
+	private int categories = 6;	
+	private int players = 2;
+	private int games = 30; // Número de simulaciones que se efectúan.
+	private int nCardsToChooseFrom = 3; // Número de cartas de entre las que se escoge
 	
+	public TriObjectiveTopTrumpsStudyRQ21(){
+		super(10,TriObjectiveTopTrumpsStudy.DEFAULT_BASE_DIRECTORY,"RQ21-ImpactOfTheNumberOfCardsPerDeck");
+	}
 	
-	
+	@Override
+	protected List<ExperimentProblem<DoubleSolution>> generateProblemList() {
+		List<ExperimentProblem<DoubleSolution>> problems=new ArrayList<ExperimentProblem<DoubleSolution>>(6);
+		ExperimentProblem expProblem=null;
+		TopTrumpsDeckGenerationProblem problem=null;
+		int ncards=0;
+		int nrounds=0;
+		for(int i=2;i<8;i++) {
+			ncards=(int) Math.pow(players, i);
+			nrounds=ncards/players;
+			problem=new TopTrumpsDeckGenerationProblem(ncards,categories,games,nrounds,players,nCardsToChooseFrom);
+			problem.setProblemName(problem.getName()+"-"+String.valueOf(ncards));
+			expProblem=new ExperimentProblem<>(
+						problem,
+						String.valueOf(ncards)
+					);
+			
+			problems.add(expProblem);			
+		}
+		return problems;	    
+	}
 	
 	public static void main(String[] args) throws IOException {
-	    String experimentBaseDirectory = null;
-		if (args.length != 1) {
-	      System.out.println("Missing argument: experimentBaseDirectory, using as default value:"+DEFAULT_BASE_DIRECTORY);
-		  experimentBaseDirectory=DEFAULT_BASE_DIRECTORY;
-	    }else
-			experimentBaseDirectory=args[0];
-			
-	    
-	    
-	    List<ExperimentProblem<DoubleSolution>> problemList = List.of(
-	    		
-	            new ExperimentProblem<>(new TopTrumpsDeckGenerationProblem())); 
-	    
-	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithmList =
-	            configureAlgorithmList(problemList);
-	    
-	    Experiment<DoubleSolution, List<DoubleSolution>> experiment =
-	            new ExperimentBuilder<DoubleSolution, List<DoubleSolution>>("RQ21-MazoTopTrumpsTriObjetivoStudy")
-	                    .setAlgorithmList(algorithmList)
-	                    .setProblemList(problemList)
-	                    .setExperimentBaseDirectory(experimentBaseDirectory)
-	                    .setOutputParetoFrontFileName("FUN")
-	                    .setOutputParetoSetFileName("VAR")
-	                    .setReferenceFrontDirectory(experimentBaseDirectory + "/RQ21-MazoTopTrumpsTriObjetivoStudy/referenceFronts")
-	                    .setIndicatorList(List.of(
-	                    	
-	                            new Epsilon(),
-	                            new Spread(),
-	                            new GenerationalDistance(),
-	                            //new PISAHypervolume(),
-	                            new NormalizedHypervolume(),
-	                            //new InvertedGenerationalDistance(),
-	                            new InvertedGenerationalDistancePlus()))
-	                    .setIndependentRuns(INDEPENDENT_RUNS)
-	                    .setNumberOfCores(4)
-	                    .build();
-
-	    ExecuteAlgorithms executeAlgorithms=new ExecuteAlgorithms<>(experiment);
-	    executeAlgorithms.run();
-	    new GenerateReferenceParetoSetAndFrontFromDoubleSolutions(experiment).run();
-	    new ComputeQualityIndicators<>(experiment).run();
-	    new GenerateLatexTablesWithStatistics(experiment).run();
-//	    new GenerateFriedmanHolmTestTables<>(experiment).run();
-//	    new GenerateWilcoxonTestTablesWithR<>(experiment).run();
-	    new GenerateBoxplotsWithR<>(experiment).setRows(1).setColumns(1).run();
-//	    new GenerateHtmlPages<>(experiment, StudyVisualizer.TYPE_OF_FRONT_TO_SHOW.MEDIAN).run() ;
-	  }
-	
-	static List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> configureAlgorithmList(
-	          List<ExperimentProblem<DoubleSolution>> problemList) {
-	    List<ExperimentAlgorithm<DoubleSolution, List<DoubleSolution>>> algorithms = new ArrayList<>();
-	    for (int run = 0; run < INDEPENDENT_RUNS; run++) {
-	      for (var experimentProblem : problemList) {
-	        
-	    	  
-	    	  Algorithm<List<DoubleSolution>> algorithm = new NSGAIIBuilder<DoubleSolution>(
-	                  experimentProblem.getProblem(),
-	                  new SBXCrossover(1.0, 20.0),
-	                  new PolynomialMutation(1.0 / experimentProblem.getProblem().getNumberOfVariables(),
-	                          20.0),
-	                  100)
-	                  .build();
-	       algorithms.add(new ExperimentAlgorithm<>(algorithm, experimentProblem, run));
-	        
-	      }
-	      
-	      
-	      }
-	    return algorithms;
-	  }
-
-
-	    
+		TriObjectiveTopTrumpsStudy study=new TriObjectiveTopTrumpsStudyRQ21();
+		study.run(args);
 	}
+							
+}

@@ -80,7 +80,7 @@ public class ComputeQualityIndicators<S extends Solution<?>, Result extends List
           //indicator.setReferenceParetoFront(normalizedReferenceFront);
 
           double[] indicatorValues = new double[experiment.getIndependentRuns()];
-          IntStream.range(0, experiment.getIndependentRuns()).forEach(run -> {
+          IntStream.range(0, experiment.getIndependentRuns()-1).forEach(run -> {
             String frontFileName = problemDirectory + "/" +
                     experiment.getOutputParetoFrontFileName() + run + ".csv";
             double[][] front = new double[0][];
