@@ -23,6 +23,8 @@ public class Card {
 		this(buildMap(names,values));
 	}
 	
+	
+	// Método empleado para completar el los pares categoria-valor.
 	private static Map<String, Double> buildMap(List<String> names, List<Double> values2) {
 		Map<String,Double> result=new HashMap<String,Double>();
 		for(int i=0;i<names.size();i++) {

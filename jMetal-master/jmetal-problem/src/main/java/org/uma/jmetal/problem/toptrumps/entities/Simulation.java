@@ -49,7 +49,12 @@ public class Simulation implements Game {
 		this(buildCards(cardValues, generateCategories(categories)),bots,maxRounds,random);
 	}				
 	
+	/**
+	 * Método que comprueba si una partida ha finalizado.
+	 */
 	public boolean isFinalizada() { 
+		
+		// Si todas las cartas han sido jugadas al menos una vez, la partida termina.
 		boolean res = (cardsToBePlayed.isEmpty()) ? true : false;
 		return res;
 	}

@@ -37,16 +37,14 @@ public abstract class Bot {
 	/**
 	 * Método empleado para que, si es turno, elija la categoria más conveniente para jugar con base a las cartas de la que dispone en su
 	 * baza actual.
-	 * @return indice de la categoria con valor más alto.
+	 * @return categoria con valor más alto.
 	 */
-	
 	public abstract String chooseCategory();
 
 	/**
 	 * Método usado para que el bot, si gana la ronda, sume a su mazo las cartas jugadas.
 	 * @param cartasObtenidas representa las cartas que obtiene cuando gana una ronda.
 	 */
-	
 	public abstract void collectCards(List<Card> cards);
 	
 	/**
