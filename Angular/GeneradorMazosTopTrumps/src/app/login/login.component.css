@@ -1,0 +1,54 @@
+div.login {
+
+    background-color: mediumspringgreen;
+    border-radius: 10px;
+    position: absolute;
+    top: 20%;
+    left: 3%;
+    padding: 1%;
+    width: 92%
+
+
+}
+
+input {
+    display:block;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    
+}
+
+input:focus {
+    background-color: azure;
+}
+
+span.error {
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    margin-bottom: 1%;
+}
+
+button {
+    display: block;
+    margin-top: 1%;
+    color: black;
+    background-color: navajowhite;
+    
+}
+
+button:hover {
+   
+    border-radius: 10px;
+}
+
+h2 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    text-align: center;
+
+}
+label {
+
+    font-family: Arial, Helvetica, sans-serif;
+    display: block;
+    margin-top: 2%;
+}
