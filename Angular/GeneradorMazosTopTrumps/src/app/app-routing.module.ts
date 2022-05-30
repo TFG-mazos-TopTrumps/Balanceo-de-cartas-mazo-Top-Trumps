@@ -6,12 +6,12 @@ import { LoginComponent } from './login/login.component';
 const routes: Routes = [
   
   {
-    path : '', //En este caso decimos el componente que mostraremos por defecto
+    path : '', 
     component : LoginComponent
   },
   
   {
-    path : 'home', //En este caso decimos el componente que mostraremos por defecto
+    path : 'home', 
     component : HomeComponent
   },
   

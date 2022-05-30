@@ -18,14 +18,12 @@ export class LoginComponent implements OnInit {
   confirmPassword: string = "";
   name: string = "";
 
-  condicionRegistro: boolean = false;
+  condicionRegistro: boolean = true;
 
   constructor(private service: LoginService, private route:Router) {
     this.service = service;
    }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+ 
 
   public login() {
     if(this.service.login(this.usuario, this.password)) {
@@ -38,16 +36,25 @@ export class LoginComponent implements OnInit {
   
   public register() {
 
+    let user = new User();
     if(this.password==this.confirmPassword) {
-      let user = new User();
-      user.usuario = this.usuario;
+      
+      user.username = this.usuario;
       user.password = this.password;
       user.name = this.name;
 
-      this.service.register(user);
-    }
+      this.service.register(user).subscribe({
+        next : respuesta => {
+          console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
+          
+        },
+        error: e => {
+          console.log(`insertar -> No se ha podido registrar, ${e}`)
+          alert(e)
+        }
+      })   
+    } 
   }
-
   public cambiarRegistro() {
     if(this.condicionRegistro) {
     this.condicionRegistro=false;
@@ -56,6 +63,9 @@ export class LoginComponent implements OnInit {
   }
   }
  
+  
+  ngOnInit() {
 
+  }
   
 }

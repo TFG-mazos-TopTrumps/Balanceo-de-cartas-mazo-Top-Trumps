@@ -23,7 +23,7 @@ public class UserController {
 		return userService.login(username, password);
 	}
 	
-	@PostMapping(value="Register", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value="Register", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void registerUser(@RequestBody User u) {
 		userService.registerUser(u);
 	}
