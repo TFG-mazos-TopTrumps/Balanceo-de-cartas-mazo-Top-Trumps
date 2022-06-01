@@ -1,6 +1,11 @@
 package service;
 
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import dao.UsersDao;
@@ -22,11 +27,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 
-	public boolean login(String username, String password) {
+	public User login(String username, String password) {
 		
 		User u = usersDao.findUserByUsernameAndPassword(username, password);
 		
-		return (u != null) ? true:false;
+		return u;
 	}
 
 

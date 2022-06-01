@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { User } from '../model/User';
 import { LoginService } from '../service/login.service';
 
@@ -18,34 +19,53 @@ export class LoginComponent implements OnInit {
   confirmPassword: string = "";
   name: string = "";
 
-  condicionRegistro: boolean = false;
+  condicionRegistro: boolean = true;
 
-  constructor(private service: LoginService, private route:Router) {
+  constructor(private service: LoginService, private route:Router, private cookies: CookieService) {
     this.service = service;
    }
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
+ 
 
   public login() {
-    if(this.service.login(this.usuario, this.password)) {
-        this.route.navigate([`home`]);
-    } else {
-      this.falloNombre = false;
-      this.falloPassword = false;
-    }
+
+    this.service.login(this.usuario, this.password)
+                .subscribe((respuesta) => {
+                  if(respuesta) {
+                    this.cookies.set("usuario", this.usuario);
+                    this.route.navigate([`home`])
+                  } else {
+                    this.falloNombre = false;
+                    this.falloPassword = false;
+                  }
+                });
+ 
   }
+  
   
   public register() {
 
+    let user = new User();
     if(this.password==this.confirmPassword) {
-      let user = new User();
-      user.usuario = this.usuario;
+      
+      user.username = this.usuario;
       user.password = this.password;
       user.name = this.name;
 
-      this.service.register(user);
+      this.service.register(user).subscribe({
+        next : respuesta => {
+          console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
+          
+        },
+        error: e => {
+          console.log(`insertar -> No se ha podido registrar, ${e}`)
+          alert(e)
+        }
+      })   
+      
+    } else {
+      this.route.navigate(['']);
     }
+    this.condicionRegistro=false;
   }
 
   public cambiarRegistro() {
@@ -56,6 +76,9 @@ export class LoginComponent implements OnInit {
   }
   }
  
+  
+  ngOnInit() {
 
+  }
   
 }
