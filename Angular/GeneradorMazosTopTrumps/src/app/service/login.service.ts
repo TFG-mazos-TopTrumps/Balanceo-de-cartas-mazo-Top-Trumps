@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { User } from '../model/User';
+import { CookieService } from "ngx-cookie-service";
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +10,14 @@ export class LoginService {
 
   url: string="http://localhost:9000/";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private cookies: CookieService) { }
   
   login(user: string, password: string) {
 
-    return this.http.post<boolean>(this.url + "Login/" + user + "/" + password,null);
+    let headers= new HttpHeaders()
+      .set('content-type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*');
+      return this.http.post<boolean>(this.url + 'Login?username=' + user + '&password=' + password, Boolean, {headers: headers});
 
   }
 
@@ -24,7 +28,7 @@ export class LoginService {
     user.toString(),
     {headers: headers}
    )
-
   }
 
+  
 }

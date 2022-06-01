@@ -1,15 +1,40 @@
+div.encabezado {
+
+    background-color: mediumspringgreen;
+    border-radius: 10px;
+    position: absolute;
+    top: 5%;
+    left: 2%;
+    padding: 1%;
+    width: 92%
+
+}
+
 div.login {
 
     background-color: mediumspringgreen;
     border-radius: 10px;
     position: absolute;
-    top: 20%;
-    left: 3%;
+    top: 35%;
+    left: 2%;
     padding: 1%;
     width: 92%
 
+}
+
+div.registro {
+
+    background-color: mediumspringgreen;
+    border-radius: 10px;
+    position: absolute;
+    top: 35%;
+    left: 2%;
+    padding: 1%;
+    width: 92%
 
 }
+
+
 
 input {
     display:block;
