@@ -27,7 +27,7 @@ public class Card {
 	String name;
 	String description;
 	String image;
-	Map<String,Double> values;
+//	Map<String,Double> values;
 	
 	@ManyToOne
 	@JoinColumn(name="idDeck",

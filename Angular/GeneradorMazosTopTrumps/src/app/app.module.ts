@@ -7,12 +7,14 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BuscarComponent } from './buscar/buscar.component';
 
 @NgModule({
-  declarations: [		
+  declarations: [			
     AppComponent,
       LoginComponent,
-      HomeComponent
+      HomeComponent,
+      BuscarComponent
    ],
   imports: [
     BrowserModule,

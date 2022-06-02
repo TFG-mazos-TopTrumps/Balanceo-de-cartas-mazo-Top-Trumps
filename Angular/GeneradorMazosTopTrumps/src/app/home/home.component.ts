@@ -18,4 +18,8 @@ export class HomeComponent implements OnInit {
     this.cookies.delete("usuario");
     this.route.navigate([``]);
   }
+
+  public buscar() {
+    this.route.navigate([`buscar`]);
+  }
 }

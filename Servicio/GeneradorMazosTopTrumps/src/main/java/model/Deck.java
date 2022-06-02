@@ -32,8 +32,8 @@ public class Deck {
 	private String image;
 	
 	@ManyToOne
-	@JoinColumn(name="idDeck",
-	         referencedColumnName = "idDeck")
+	@JoinColumn(name="idUser",
+	         referencedColumnName = "idUser")
 	private User user;
 	
 	@OneToMany(mappedBy="deck")
