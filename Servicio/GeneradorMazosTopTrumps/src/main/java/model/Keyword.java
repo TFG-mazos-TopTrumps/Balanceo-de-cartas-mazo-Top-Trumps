@@ -7,9 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -22,24 +21,24 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="decks")
-public class Deck {
+@Table(name="keywords")
+public class Keyword {
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int idDeck;
-	private String name;
-	private String description;
-	private int nCards;
-	private int nCategories;
-	private String image;
-	@ManyToOne
-	@JoinColumn(name="idUser",
-	         referencedColumnName = "idUser")
-	private User user;
-	@OneToMany(mappedBy="deck")
-	private List<Card> cards;
-	@ManyToMany(mappedBy="decks")
-	private List<Keyword> keywords;
+	private int idKeyword;
+	
+	private String word;
+	
+	@ManyToMany()
+	@JoinTable(name="deck_keywords",
+		joinColumns=
+			@JoinColumn(name="idKeyword", 
+					referencedColumnName="idKeyword"),
+		inverseJoinColumns =
+			@JoinColumn(name="idDeck",
+						referencedColumnName="idDeck"))
+	private List<Deck> decks;
 	
 
 }

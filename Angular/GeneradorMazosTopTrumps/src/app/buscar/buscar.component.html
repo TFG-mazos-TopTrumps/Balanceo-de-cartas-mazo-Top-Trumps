@@ -1,6 +1,25 @@
-<h1>
+<!--<h1>
   ¿Qué es lo que buscas?
 </h1>
 
-<input [(ngModel)]="buscar" type="text" class="buscador" placeholder="Marvel">
-<button (click)="searchDecks" type="button"> Buscar </button> 
+<div *ngIf="buscador" class="buscador">
+  <input [formControl]="control"  
+  [appAutocomplete]="autocomplete">  
+
+<app-autocomplete #autocomplete="appAutocomplete">  
+<ng-template appAutocompleteContent>  
+<app-option *ngFor="let option of options" [value]="option.label">  
+ {{ option.label }}  
+</app-option>  
+</ng-template>  
+</app-autocomplete>  
+</div>
+
+<div *ngIf="!buscador" class="resultados">
+  <h3> Resultados de la búsqueda </h3>
+
+  <li *ngFor="let d of decks">
+   <p>{{d.name}}</p>
+  </li>
+
+</div>-->

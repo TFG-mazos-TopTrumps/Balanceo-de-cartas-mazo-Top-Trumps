@@ -3,8 +3,13 @@ import { User } from "./User";
 export class Deck {
     idDeck: number;
     name: string;
+    description: string;
     nCards: number;
     nCategories: number;
     image: string;
-    user: User;
+    idUser: number;
+
+    public toString() : string {
+        return JSON.stringify(this)
+    }
 }

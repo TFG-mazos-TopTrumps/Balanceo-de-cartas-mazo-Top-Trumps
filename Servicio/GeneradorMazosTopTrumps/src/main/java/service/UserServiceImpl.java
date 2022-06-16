@@ -33,6 +33,11 @@ public class UserServiceImpl implements UserService {
 		
 		return u;
 	}
+	
+	public User findUserById(Integer id) {
+		
+		return usersDao.findById(id).get();
+	}
 
 
 	

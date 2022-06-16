@@ -12,6 +12,10 @@ export class LoginService {
 
   constructor(private http: HttpClient, private cookies: CookieService) { }
   
+  getIdUser(username: string, password: string) {
+    return this.http.get<number>(this.url + "UserId?username=" + username + "&password=" + password);
+  }
+  
   login(user: string, password: string) {
 
     let headers= new HttpHeaders()

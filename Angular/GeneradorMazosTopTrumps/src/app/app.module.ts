@@ -8,13 +8,19 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BuscarComponent } from './buscar/buscar.component';
+import { DeckComponent } from './deck/deck.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CardComponent } from './card/card.component';
 
 @NgModule({
-  declarations: [			
+  declarations: [									
     AppComponent,
       LoginComponent,
       HomeComponent,
-      BuscarComponent
+      BuscarComponent,
+      DeckComponent,
+      CategoriesComponent,
+      CardComponent
    ],
   imports: [
     BrowserModule,

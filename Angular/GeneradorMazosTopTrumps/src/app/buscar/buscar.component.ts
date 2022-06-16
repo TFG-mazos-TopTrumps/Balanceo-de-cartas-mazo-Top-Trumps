@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Deck } from '../model/Deck';
 import { DeckService } from '../service/deck.service';
 
 @Component({
@@ -9,8 +10,9 @@ import { DeckService } from '../service/deck.service';
 })
 export class BuscarComponent implements OnInit {
 
-  
+  decks: Deck[] = [];
   buscar:string="";
+  buscador:boolean=true;
 
   constructor(private service: DeckService, private route:Router) { }
 
@@ -18,8 +20,12 @@ export class BuscarComponent implements OnInit {
   }
 
   searchDecks() {
-    this.service.getDecks(this.buscar);
-
+    this.buscador = false;  
+    this.service.getDecksByKeyword(this.buscar).subscribe({next: response => {
+      this.decks = response;
+      
+    }});
+      
   }
 
 

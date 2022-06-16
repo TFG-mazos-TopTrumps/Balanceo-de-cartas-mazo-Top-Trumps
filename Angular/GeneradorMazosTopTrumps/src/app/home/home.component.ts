@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -9,17 +9,26 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private route:Router, private cookies: CookieService) { }
+  username: string;
+  password: string;
+  constructor(private route:Router, private cookies: CookieService) {
 
-  ngOnInit() {
-  }
+   }
 
   public logout() {
     this.cookies.delete("usuario");
+    this.cookies.delete("password");
     this.route.navigate([``]);
   }
 
   public buscar() {
     this.route.navigate([`buscar`]);
+  }
+
+  public design() {
+    this.route.navigate(['deck']);
+  }
+
+  ngOnInit() {
   }
 }

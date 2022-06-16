@@ -1,0 +1,43 @@
+<h1> Selecciona las características del mazo </h1>
+
+  <main>
+    <div *ngIf="!condicionKeyword" class="deck">
+      <fieldset>
+          <form>
+            <label for="name">Nombre </label>
+            <input type="text" class="name" name="name" [(ngModel)]="name" required>
+            <label for="description"> Descripción </label>
+            <input type="textarea" class="description" name="description" [(ngModel)]="description">
+            <label for="image"> Imagen del mazo </label>
+            <input type="url" class="image" name="image" [(ngModel)]="image">
+            <label for="cards">Número de cartas </label>
+            <input type="number" class="cards" name="cards" [(ngModel)]="cards" min="1" required>
+            <label for="categories">Número de categorías </label>
+            <input type="number" class="categories" name="categories" [(ngModel)]="categories" min="1" required>
+            <label for="valueMin">Valor mínimo de las categorías </label>
+            <input type="number" class="valueMin" name="valueMin" [(ngModel)]="valueMin" min="0" required>
+            <label for="valueMax">Valor máximo de las categorías </label>
+            <input type="number" class="valueMax" name="valueMax" [(ngModel)]="valueMax" min="0" required>
+
+            <button (click)="createDeck()" type="button"> Siguiente </button>
+            <button (click)="volver()" type="button">Volver</button>
+         </form>
+      </fieldset>
+    </div>
+
+    <div *ngIf="condicionKeyword" class="keywords">
+      <fieldset>
+        <form> 
+          <label for="keyword">Indica la palabra clave que quiere asignar </label>
+          <input type="text" name="keyword" [(ngModel)]="keyword" required>
+          <button (click)="deckKeyword()">Añadir palabra clave</button>
+          <button type="button"> Crear mazo </button>
+          <button (click)="volver()" type="button">Volver</button>
+
+          
+        </form>
+      </fieldset>
+    </div>
+          
+       
+  </main>
