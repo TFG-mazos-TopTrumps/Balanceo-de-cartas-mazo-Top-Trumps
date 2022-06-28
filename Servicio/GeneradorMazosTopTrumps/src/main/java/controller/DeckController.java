@@ -39,9 +39,16 @@ public class DeckController {
 	UserService userService;
 	
 	@GetMapping(value = "Decks", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Deck> getDecks(@RequestParam("name") String name) {
+	public List<Deck> getDecks() {
 
-		return deckService.getDecks(name);
+		return deckService.getDecks();
+
+	}
+	
+	@GetMapping(value = "DeckName", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Deck getDeckByName(@RequestParam("name") String name) {
+
+		return deckService.getDeckByName(name);
 
 	}
 
@@ -59,10 +66,6 @@ public class DeckController {
 		
 	}
 	
-	@PutMapping(value="DeckKeyword")
-	public void addKeywordDeck() {
-		
-	}
 	
 	
 

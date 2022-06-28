@@ -20,12 +20,11 @@ public class DeckServiceImpl implements DeckService {
 		this.decksDao = decksDao;
 	}
 
-	public List<Deck> getDecks(String name) {
+	public List<Deck> getDecks() {
 
-		return decksDao.findDeckByName(name);
+		return decksDao.findAll();
+
 	}
-
-
 	public List<Deck> getDecksByKeywords(String k) {
 		
 		return decksDao.findDecksByKeywords(k);
@@ -47,6 +46,12 @@ public class DeckServiceImpl implements DeckService {
 			return deck;
 		}
 		return null;
+	}
+
+	@Override
+	public Deck getDeckByName(String name) {
+		
+		return decksDao.findDeckByName(name);
 	}
 
 }

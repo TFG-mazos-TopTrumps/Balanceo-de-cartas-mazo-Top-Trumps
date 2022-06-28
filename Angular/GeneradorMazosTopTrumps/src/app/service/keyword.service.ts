@@ -10,10 +10,10 @@ export class KeywordService {
   url: string="http://localhost:9000/";
   constructor(private http: HttpClient) { }
 
-  addKeyword(keyword: Keyword) {
+  addKeyword(keyword: Keyword, name: string) {
       let headers = new HttpHeaders;
       headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-      return this.http.post(this.url + "Keyword",
+      return this.http.post(this.url + "Keyword?name=" + name,
       keyword.toString(),
       {headers: headers}
      )

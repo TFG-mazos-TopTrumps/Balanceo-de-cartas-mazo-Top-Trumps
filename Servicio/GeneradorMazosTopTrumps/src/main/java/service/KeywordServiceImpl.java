@@ -22,9 +22,9 @@ public class KeywordServiceImpl implements KeywordService {
 	}
 
 	
-	public void createKeyword(Keyword word) {
+	public Keyword createKeyword(Keyword word) {
 		
-		keywordDao.save(word);
+		return keywordDao.save(word);
 		
 	}
 

@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,12 +34,18 @@ public class Deck {
 	private int nCards;
 	private int nCategories;
 	private String image;
+	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idUser",
 	         referencedColumnName = "idUser")
 	private User user;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy="deck")
 	private List<Card> cards;
+	
+	@JsonIgnore
 	@ManyToMany(mappedBy="decks")
 	private List<Keyword> keywords;
 	

@@ -4,8 +4,8 @@ export class Deck {
     idDeck: number;
     name: string;
     description: string;
-    nCards: number;
-    nCategories: number;
+    ncards: number;
+    ncategories: number;
     image: string;
     idUser: number;
 

@@ -44,8 +44,8 @@ export class DeckComponent implements OnInit {
     deck.name = this.name;
     deck.description = this.description;
     deck.image = this.image;
-    deck.nCards = this.cards;
-    deck.nCategories = this.categories;
+    deck.ncards = this.cards;
+    deck.ncategories = this.categories;
 
     
     this.username = this.cookies.get("usuario");
@@ -54,6 +54,7 @@ export class DeckComponent implements OnInit {
     this.userService.getIdUser(this.username, this.password).subscribe({
         next: respuesta => { 
         this.idUser=respuesta;
+        console.log(this.idUser)
 
       }
     });
@@ -63,8 +64,6 @@ export class DeckComponent implements OnInit {
       next: respuesta => {
         console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         this.condicionKeyword=true;
-        this.idDeck = respuesta.idDeck;
-        console.log(this.idDeck);
       },
       error: e => {
         console.log(`insertar -> No se ha podido registrar, ${e}`)
@@ -72,13 +71,15 @@ export class DeckComponent implements OnInit {
       }
     })
   }
+
+
   deckKeyword() {
     let keyword = new Keyword();
     keyword.word = this.keyword;
-    this.keywords.push(this.keyword);
+    //this.keywords.push(this.keyword);
     
     
-    this.keywordService.addKeyword(keyword).subscribe({
+    this.keywordService.addKeyword(keyword, this.name).subscribe({
       next: respuesta => {
         console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         
