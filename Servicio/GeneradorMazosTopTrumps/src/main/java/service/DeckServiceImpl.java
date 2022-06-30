@@ -31,9 +31,9 @@ public class DeckServiceImpl implements DeckService {
 	}
 
 	@Transactional
-	public void createDeck(Deck d) {
+	public Deck createDeck(Deck d) {
 		
-		this.decksDao.save(d);
+		return this.decksDao.save(d);
 		
 	}
 
@@ -52,6 +52,12 @@ public class DeckServiceImpl implements DeckService {
 	public Deck getDeckByName(String name) {
 		
 		return decksDao.findDeckByName(name);
+	}
+
+	@Override
+	public Integer findDeckId(String name) {
+		
+		return decksDao.findDeckId(name);
 	}
 
 }

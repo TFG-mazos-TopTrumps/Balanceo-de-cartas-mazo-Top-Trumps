@@ -59,11 +59,20 @@ public class DeckController {
 	}
 	
 	@PostMapping(value="Deck")
-	public void createDeck(@RequestBody Deck d, @RequestParam("idUser") Integer idUser) {
+	public void createDeck(@RequestBody Deck d, @RequestParam("idUser") Integer idUser, HttpSession session) {
 		User u = userService.findUserById(idUser);
 		d.setUser(u);
 		deckService.createDeck(d);
+		session.setAttribute("deck",d.getName());
 		
+	}
+	
+	@GetMapping(value = "DeckId")
+	public Integer getDeckId(HttpSession session) {
+	
+		String name = (String) session.getAttribute("deck");
+		return deckService.findDeckId(name);
+
 	}
 	
 	

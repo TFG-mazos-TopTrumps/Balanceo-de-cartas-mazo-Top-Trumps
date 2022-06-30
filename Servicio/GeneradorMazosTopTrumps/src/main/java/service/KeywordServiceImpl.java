@@ -3,30 +3,39 @@ package service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import dao.KeywordDao;
+import dao.DecksDao;
+
+import dao.KeywordsDao;
+import model.Deck;
 import model.Keyword;
 
 @Service
 public class KeywordServiceImpl implements KeywordService {
 
-	KeywordDao keywordDao;
+	KeywordsDao keywordsDao;
+	DecksDao decksDao;
 
-	public KeywordServiceImpl(@Autowired KeywordDao keywordDao) {
+	public KeywordServiceImpl(@Autowired KeywordsDao keywordsDao, @Autowired DecksDao decksDao) {
 		super();
-		this.keywordDao = keywordDao;
+		this.keywordsDao = keywordsDao;
+		this.decksDao = decksDao;
 	}
 	
 	public Keyword findKeyword(String word) {
 		
-		return keywordDao.findKeywordByWord(word);
+		return keywordsDao.findKeywordByWord(word);
 	}
 
 	
-	public Keyword createKeyword(Keyword word) {
+	public Keyword createKeyword(String name, Keyword word) {
 		
-		return keywordDao.save(word);
+		Deck d = decksDao.findDeckByName(name);
+		word.getDecks().add(d);
+		return keywordsDao.save(word);
 		
 	}
+
+	
 
 	
 	

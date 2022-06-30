@@ -18,13 +18,8 @@ public class CardServiceImpl implements CardService {
 		this.cardsDao = cardsDao;
 	}
 	
-	public void saveCard(Card c, List<String> categories) {
+	public void saveCard(Card c) {
 		
-		int i = 0;
-		
-		for(String categorie: categories) {
-			c.getCategories().put(categorie, null);			
-		}
 		this.cardsDao.save(c);
 		
 	}

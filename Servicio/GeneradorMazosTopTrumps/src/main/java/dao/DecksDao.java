@@ -17,4 +17,8 @@ public interface DecksDao extends JpaRepository<Deck, Integer> {
 	
 	@Query("select d from Deck d join d.keywords k where k.word=?1")
 	List<Deck> findDecksByKeywords(String k);
+	
+	@Query("select d.idDeck from Deck d where d.name=?1")
+	Integer findDeckId(String name);
+	
 }

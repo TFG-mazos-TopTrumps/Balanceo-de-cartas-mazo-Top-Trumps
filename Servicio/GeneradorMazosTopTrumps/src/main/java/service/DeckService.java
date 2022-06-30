@@ -11,5 +11,6 @@ public interface DeckService {
 	List<Deck> getDecks();
 	Deck getDeckByName(String name);
 	List<Deck> getDecksByKeywords(String k);
-	void createDeck(Deck d);
+	Deck createDeck(Deck d);
+	Integer findDeckId(String name);
 }

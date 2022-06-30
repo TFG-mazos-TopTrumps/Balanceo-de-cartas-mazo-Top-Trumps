@@ -31,7 +31,7 @@
           <label for="keyword">Indica la palabra clave que quiere asignar </label>
           <input type="text" name="keyword" [(ngModel)]="keyword" required>
           <button (click)="deckKeyword()">Añadir palabra clave</button>
-          <button type="button"> Crear mazo </button>
+          <button (click)="nextCategories()" type="button"> Crear mazo </button>
           <button (click)="volver()" type="button">Volver</button>
 
           

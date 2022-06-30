@@ -6,6 +6,6 @@ import model.Card;
 
 public interface CardService {
 	
-	void saveCard(Card c, List<String> categories);
+	void saveCard(Card c);
 
 }

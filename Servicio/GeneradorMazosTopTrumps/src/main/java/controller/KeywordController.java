@@ -34,10 +34,9 @@ public class KeywordController {
 	
 	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void createKeyword(@RequestBody Keyword word, @RequestParam("name") String name) {
-		Keyword k = keywordService.createKeyword(word);
-		Deck d = deckService.getDeckByName(name);
-		k.getDecks().add(d);
-		d.getKeywords().add(k);
+		keywordService.createKeyword(name, word);
+		
+		
 		
 		
 	}

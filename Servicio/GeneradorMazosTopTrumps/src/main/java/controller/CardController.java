@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import model.Card;
@@ -25,13 +26,13 @@ public class CardController {
 	@Autowired
 	DeckService deckService;
 	
-	@PostMapping(value="Card/{idDeck}", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createCard(@RequestBody Card c, @PathVariable("idDeck") Integer idDeck, List<String> categories) {
+	@PostMapping(value="Card", consumes=MediaType.APPLICATION_JSON_VALUE)
+	public void createCard(@RequestBody Card c, @RequestParam("idDeck") Integer idDeck, List<String> categories) {
 		
 		Deck d = deckService.getDeckById(idDeck);
 		c.setDeck(d);
 		
-		this.cardService.saveCard(c,categories);
+		this.cardService.saveCard(c);
 		
 	}
 }

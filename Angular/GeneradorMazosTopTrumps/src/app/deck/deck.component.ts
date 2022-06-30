@@ -64,6 +64,7 @@ export class DeckComponent implements OnInit {
       next: respuesta => {
         console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         this.condicionKeyword=true;
+        this.cookies.set("deckName", respuesta.name);
       },
       error: e => {
         console.log(`insertar -> No se ha podido registrar, ${e}`)
@@ -94,4 +95,9 @@ export class DeckComponent implements OnInit {
     this.route.navigate([`home`]);
   }
 
+  nextCategories() {
+
+    this.route.navigate(['/categories', this.cards, this.categories]);
+
+  }
 }

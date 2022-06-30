@@ -19,6 +19,10 @@ export class DeckService {
     return this.http.get<Deck[]>(this.url + 'Decks?keyword=' + word);
   }
 
+  getDeckId() {
+    return this.http.get<number>(this.url + 'DeckId'); 
+  }
+  
   createDeck(deck: Deck, idUser: number) {
     let headers = new HttpHeaders;
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');

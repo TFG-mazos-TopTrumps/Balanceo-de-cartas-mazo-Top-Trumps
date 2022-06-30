@@ -1,3 +1,16 @@
-<p>
-  card works!
-</p>
+<h1>
+  Customiza las cartas
+</h1>
+
+<fieldset>
+  <form>
+    <label for="name">Nombre: </label>
+    <input type="text" name="name" [(ngModel)]="name" required>
+    <label for="image">Imagen: </label>
+    <input type="text" name="image" [(ngModel)]="image" required>
+    <label for="description">Descripción: </label>
+    <input type="textarea" name="description" [(ngModel)]="description" required>
+  </form>
+</fieldset>
+
+<button (click)="generateDeck()" type="button"> Siguiente </button>
