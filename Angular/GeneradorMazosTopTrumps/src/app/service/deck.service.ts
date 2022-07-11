@@ -11,8 +11,8 @@ export class DeckService {
   url: string="http://localhost:9000/";
   constructor(private http: HttpClient, private cookies: CookieService) { }
 
-  getDecks(name: string) {
-    return this.http.get<Deck[]>(this.url + 'Decks?name=' + name); 
+  getDeckByName(name: string) {
+    return this.http.get<Deck>(this.url + 'DeckName?name=' + name); 
   }
 
   getDecksByKeyword(word: string) {
@@ -23,10 +23,10 @@ export class DeckService {
     return this.http.get<number>(this.url + 'DeckId'); 
   }
   
-  createDeck(deck: Deck, idUser: number) {
+  createDeck(deck: Deck, username: string, password: string) {
     let headers = new HttpHeaders;
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post<Deck>(this.url + "Deck?idUser=" + idUser,
+    return this.http.post<Deck>(this.url + "Deck?username=" + username + "&password=" + password,
     deck.toString(),
     {headers: headers}
    )

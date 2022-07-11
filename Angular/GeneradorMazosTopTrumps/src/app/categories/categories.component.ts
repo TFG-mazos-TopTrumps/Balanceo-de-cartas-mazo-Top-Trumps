@@ -10,10 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class CategoriesComponent implements OnInit {
 
   i:number=1;
-  formulario: FormGroup;
+  category: string;
   cards: number;
   nCategories: number;
-  constructor(private fb: FormBuilder, private route : ActivatedRoute, private router:Router) { 
+  categories: Array<string> = [];
+  constructor(private route : ActivatedRoute, private router:Router) { 
 
     this.cards = route.snapshot.params["cards"];
     this.nCategories = route.snapshot.params["categories"];
@@ -21,30 +22,25 @@ export class CategoriesComponent implements OnInit {
 
   ngOnInit() {
 
-    this.formCategories();
+    
+  }
 
-    while(this.i<=this.nCategories) {
-      this.addCategorie();
+  generateCategories() {
+    if(this.i<this.nCategories) {
+
+      this.categories.push(this.category);
+      
+      this.category="";
       this.i++;
+      console.log(this.categories);
+    }
+    else {
+      this.nextCards();
     }
   }
 
-  formCategories() {
-    this.formulario = this.fb.group({
-      categories: this.fb.array([])
-    });
-  }
 
-  get categories(): FormArray {
-    return this.formulario.get('categories') as FormArray;
-  }
-
-  addCategorie() {
-    const c = this.fb.group({
-      categorie: new FormControl('')
-    });
-    this.categories.push(c);
-  }
+  
 
   nextCards() {
     this.router.navigate(['/card', this.cards]);

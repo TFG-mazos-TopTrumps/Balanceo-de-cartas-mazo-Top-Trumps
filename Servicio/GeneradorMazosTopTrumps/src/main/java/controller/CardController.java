@@ -2,6 +2,8 @@ package controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,9 +29,10 @@ public class CardController {
 	DeckService deckService;
 	
 	@PostMapping(value="Card", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createCard(@RequestBody Card c, @RequestParam("idDeck") Integer idDeck, List<String> categories) {
+	public void createCard(@RequestBody Card c, @RequestParam("deck") String deck) {
 		
-		Deck d = deckService.getDeckById(idDeck);
+		
+		Deck d = deckService.getDeckByName(deck); 
 		c.setDeck(d);
 		
 		this.cardService.saveCard(c);

@@ -27,7 +27,7 @@ export class DeckComponent implements OnInit {
   valueMin: number;
   valueMax: number;
   idUser: number;
-  keywords: string[];
+  keywords: Array<string> = []; 
 
   condicionKeyword: boolean = false;
   constructor(private userService: LoginService, private deckService: DeckService, private keywordService: KeywordService, private route:Router, private cookies: CookieService) {
@@ -47,6 +47,7 @@ export class DeckComponent implements OnInit {
     deck.ncards = this.cards;
     deck.ncategories = this.categories;
 
+    this.cookies.set("deck", deck.name);
     
     this.username = this.cookies.get("usuario");
     this.password= this.cookies.get("password");
@@ -55,16 +56,19 @@ export class DeckComponent implements OnInit {
         next: respuesta => { 
         this.idUser=respuesta;
         console.log(this.idUser)
+        
 
       }
     });
+   
  
- 
-    this.deckService.createDeck(deck, this.idUser).subscribe({
+    this.deckService.createDeck(deck, this.username, this.password).subscribe({
       next: respuesta => {
+        
         console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         this.condicionKeyword=true;
-        this.cookies.set("deckName", respuesta.name);
+      
+        
       },
       error: e => {
         console.log(`insertar -> No se ha podido registrar, ${e}`)
@@ -79,8 +83,18 @@ export class DeckComponent implements OnInit {
     keyword.word = this.keyword;
     //this.keywords.push(this.keyword);
     
-    
-    this.keywordService.addKeyword(keyword, this.name).subscribe({
+    let name = this.cookies.get("deck");
+    this.deckService.getDeckByName(name).subscribe({
+      next: respuesta => {
+        this.idDeck = respuesta.idDeck;
+      },
+      error: e => {
+        console.log(`consulta -> No se ha podido obtener, ${e}`)
+        alert(e)
+      }
+
+    });
+    this.keywordService.addKeyword(keyword, name).subscribe({
       next: respuesta => {
         console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         

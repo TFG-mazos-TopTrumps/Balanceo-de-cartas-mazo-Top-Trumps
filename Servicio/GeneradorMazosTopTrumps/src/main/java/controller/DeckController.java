@@ -5,6 +5,7 @@ package controller;
 import java.util.List;
 
 import javax.persistence.Convert;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,21 +60,21 @@ public class DeckController {
 	}
 	
 	@PostMapping(value="Deck")
-	public void createDeck(@RequestBody Deck d, @RequestParam("idUser") Integer idUser, HttpSession session) {
-		User u = userService.findUserById(idUser);
+	public void createDeck(@RequestBody Deck d, @RequestParam("username") String username, @RequestParam("password") String password) {
+		
+		User u = userService.login(username, password);
 		d.setUser(u);
 		deckService.createDeck(d);
-		session.setAttribute("deck",d.getName());
-		
+	
 	}
 	
-	@GetMapping(value = "DeckId")
-	public Integer getDeckId(HttpSession session) {
-	
-		String name = (String) session.getAttribute("deck");
-		return deckService.findDeckId(name);
-
-	}
+//	@GetMapping(value = "DeckId")
+//	public Integer getDeckId(HttpSession session) {
+//	
+//		String name = (String) session.getAttribute("deck");
+//		return deckService.findDeckId(name);
+//
+//	}
 	
 	
 	

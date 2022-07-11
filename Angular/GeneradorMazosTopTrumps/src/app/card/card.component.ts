@@ -17,9 +17,9 @@ export class CardComponent implements OnInit {
   image: string;
   description: string;
   cards: number;
-  idDeck: number;
+  deck: string;
 
-  categories: string[];
+  categories: Array<string> = [];
 
   constructor(private route : ActivatedRoute, private cardService: CardService, private deckService: DeckService,  private cookies: CookieService) {
     this.cards = route.snapshot.params["cards"];
@@ -30,29 +30,15 @@ export class CardComponent implements OnInit {
   }
 
   generateDeck() {
-    if(this.i<=this.cards) {
+    if(this.i<this.cards) {
 
       let card = new Card();
       card.name = this.name;
       card.image = this.image;
       card.description = this.description;
-      let name = this.cookies.get("deckName");
-      console.log(name);
-      this.deckService.getDeckId().subscribe({
-        next: respuesta => {
-          this.idDeck = respuesta;
-          console.log(`Registrado, ${JSON.stringify(respuesta)}`)
-
-        },
-        error: e => {
-          console.log(`insertar -> No se ha podido registrar, ${e}`)
-          alert(e)
-        }
-      })
       
-     
-      
-      this.cardService.createCard(card,this.idDeck).subscribe({
+      this.deck = this.cookies.get("deck");
+      this.cardService.createCard(card, this.deck).subscribe({
         next: respuesta => {
           console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
         },

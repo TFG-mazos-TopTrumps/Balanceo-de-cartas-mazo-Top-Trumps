@@ -1,17 +1,15 @@
-<h1> Define el nombre de las categorias </h1>
+<h1> Define el nombre de la categoria {{i}} </h1>
 
-<form [formGroup]="formulario">
-    <div formArrayName="categories">
-      <div *ngFor="let c of categories.controls";>
-        <div>
-            <label>Categoria {{i}}:</label><br />
-            <input type="text" />
-        </div>
-      </div>
-    </div>
+<fieldset>
+  <form>
+    <label for="category">Nombre: </label>
+    <input type="text" name="category" [(ngModel)]="category" required>
   </form>
+</fieldset>
 
-  <button (click)="nextCards()" type="button"> Crear cartas </button>
+<button (click)="generateCategories()" type="button"> Siguiente </button>
+
+  
 
 
 

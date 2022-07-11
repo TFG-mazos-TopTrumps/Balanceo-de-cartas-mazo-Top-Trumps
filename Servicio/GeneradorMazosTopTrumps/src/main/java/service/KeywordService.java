@@ -6,6 +6,6 @@ public interface KeywordService {
 	
 	Keyword findKeyword(String word);
 	
-	Keyword createKeyword(String name, Keyword word);
+	boolean createKeyword(Integer idDeck, Keyword word);
 
 }

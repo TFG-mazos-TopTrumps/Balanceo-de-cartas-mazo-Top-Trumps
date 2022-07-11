@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -31,17 +32,24 @@ public class Keyword {
 	private int idKeyword;
 	
 	private String word;
-	
+
 	@JsonIgnore
 	@ManyToMany()
 	@JoinTable(name="deck_keywords",
 		joinColumns=
 			@JoinColumn(name="idKeyword", 
-					referencedColumnName="idKeyword"),
+					referencedColumnName="idKeyword", nullable=false),
 		inverseJoinColumns =
 			@JoinColumn(name="idDeck",
-						referencedColumnName="idDeck"))
+						referencedColumnName="idDeck", nullable=false))
 	private List<Deck> decks;
 	
 
+	 public void addKeyword(Deck deck){
+	        if(this.decks == null){
+	            this.decks = new ArrayList<>();
+	        }
+	        
+	        this.decks.add(deck);
+	    }
 }

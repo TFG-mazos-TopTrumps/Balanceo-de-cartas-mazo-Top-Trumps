@@ -3,6 +3,7 @@ package model;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -44,7 +45,7 @@ public class Deck {
 	@JsonIgnore
 	@OneToMany(mappedBy="deck")
 	private List<Card> cards;
-	
+
 	@JsonIgnore
 	@ManyToMany(mappedBy="decks")
 	private List<Keyword> keywords;

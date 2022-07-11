@@ -1,5 +1,7 @@
 package service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +29,18 @@ public class KeywordServiceImpl implements KeywordService {
 	}
 
 	
-	public Keyword createKeyword(String name, Keyword word) {
+	public boolean createKeyword(Integer idDeck, Keyword word) {
 		
-		Deck d = decksDao.findDeckByName(name);
-		word.getDecks().add(d);
-		return keywordsDao.save(word);
+		Optional<Deck> optionalDeck = decksDao.findById(idDeck);
 		
+		if(optionalDeck.isPresent()) {
+			Deck d = optionalDeck.get();
+			word.addKeyword(d);
+			keywordsDao.save(word);
+			return true;
+		}
+		
+		return false;
 	}
 
 	

@@ -37,7 +37,8 @@ public class UserController {
 		User u = userService.login(username, password);
 		
 		if(u != null) {
-			session.setAttribute("usuario", u);
+			session.setAttribute("usuario", username);
+			session.setAttribute("password", password);
 			return true;
 		} else {
 			session.setAttribute("mensaje", "Usuario incorrecto");

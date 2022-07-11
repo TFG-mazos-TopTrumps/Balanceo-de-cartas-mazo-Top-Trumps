@@ -1,5 +1,8 @@
 package controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,12 +36,11 @@ public class KeywordController {
 	
 	
 	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createKeyword(@RequestBody Keyword word, @RequestParam("name") String name) {
-		keywordService.createKeyword(name, word);
+	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) {
+		Deck d = deckService.getDeckByName(deck);
+		Integer idDeck = d.getIdDeck();
 		
-		
-		
-		
+		keywordService.createKeyword(idDeck, word);
 	}
 
 	

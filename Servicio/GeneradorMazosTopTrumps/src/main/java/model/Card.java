@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +43,7 @@ public class Card {
 	@Column(name="value")
 	Map<String,Double> categories;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idDeck",
     referencedColumnName = "idDeck")
