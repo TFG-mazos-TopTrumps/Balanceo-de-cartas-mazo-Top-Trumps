@@ -16,11 +16,15 @@ export class DeckService {
   }
 
   getDecksByKeyword(word: string) {
-    return this.http.get<Deck[]>(this.url + 'Decks?keyword=' + word);
+    return this.http.get<Deck[]>(this.url + 'DecksKeyword?keyword=' + word);
   }
 
   getDeckId() {
     return this.http.get<number>(this.url + 'DeckId'); 
+  }
+
+  countDecksName(name: string) {
+    return this.http.get<number>(this.url + 'CountDeckName?name=' + name); 
   }
   
   createDeck(deck: Deck, username: string, password: string) {
@@ -32,6 +36,36 @@ export class DeckService {
    )
   }
 
+  generateValues(cards: number, categories: number, valueMin: number, valueMax: number) {
+    let headers = new HttpHeaders;
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post<any>(this.url + "DeckGenerateValues?cards=" + cards + "&categories=" + categories
+        + "&lowerLimit=" + valueMin + "&upperLimit=" + valueMax,
+    {headers: headers})
+
+  }
+
+  balanceDeck(cards: number, categories: number, valueMin: number, valueMax: number, deck: string) {
+    let headers = new HttpHeaders;
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.put<any>(this.url + "DeckBalance?cards=" + cards + "&categories=" + categories
+        + "&lowerLimit=" + valueMin + "&upperLimit=" + valueMax + "&deck=" + deck,
+    {headers: headers})
+
+  }
+
+  deckPdf(deck: string) {
+
+    let headers = new HttpHeaders;
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.post<any>(this.url + "DeckPDF?deck=" + deck,
+    {headers: headers})
+
+  }
+
+  checkKeywords(deck:string) {
+    return this.http.get<boolean>(this.url + 'CheckKeywords?name=' + deck); 
+  }
  
 
 }

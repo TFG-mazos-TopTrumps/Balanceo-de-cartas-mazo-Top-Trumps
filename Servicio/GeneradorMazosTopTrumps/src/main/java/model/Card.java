@@ -1,5 +1,7 @@
 package model;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.CollectionTable;
@@ -13,6 +15,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,7 +37,11 @@ public class Card {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int idCard;
 	
+	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String name;
+	
 	private String description;
 	private String image;
 	
@@ -48,5 +57,20 @@ public class Card {
 	@JoinColumn(name="idDeck",
     referencedColumnName = "idDeck")
 	Deck deck;
+	
+	public Card(List<String> names,List<Double> values) {
+		this.categories = buildMap(names,values);
+		
+	}
+	
+	
+	// Método empleado para completar el los pares categoria-valor.
+	private static Map<String, Double> buildMap(List<String> names, List<Double> values2) {
+		Map<String,Double> result=new HashMap<String,Double>();
+		for(int i=0;i<names.size();i++) {
+			result.put(names.get(i), values2.get(i));
+		}
+		return result;
+	}
 
 }

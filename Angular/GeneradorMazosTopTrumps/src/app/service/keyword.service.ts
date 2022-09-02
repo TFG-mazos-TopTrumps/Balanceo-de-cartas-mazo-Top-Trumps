@@ -19,4 +19,12 @@ export class KeywordService {
       {headers: headers}
      )
 }
+
+  getKeywords() {
+    return this.http.get<Array<Keyword>>(this.url + "Keywords");
+  }
+
+  getWords() {
+    return this.http.get<string[]>(this.url + "KeywordsWords");
+  }
 }

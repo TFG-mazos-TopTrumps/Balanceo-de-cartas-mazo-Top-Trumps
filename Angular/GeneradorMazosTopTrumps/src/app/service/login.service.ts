@@ -12,6 +12,10 @@ export class LoginService {
 
   constructor(private http: HttpClient, private cookies: CookieService) { }
   
+  getUserByUsername(username: string) {
+    return this.http.get<User>(this.url + "UserByUsername?username=" + username);
+
+  }
   getIdUser(username: string, password: string) {
     return this.http.get<number>(this.url + "UserId?username=" + username + "&password=" + password);
   }
@@ -32,6 +36,11 @@ export class LoginService {
     user.toString(),
     {headers: headers}
    )
+  }
+
+  countUserByUsername(user: string) {
+      return this.http.get<number>(this.url + 'CountUserByUsername?username=' + user);
+
   }
 
   

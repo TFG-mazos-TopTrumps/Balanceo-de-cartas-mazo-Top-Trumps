@@ -2,12 +2,16 @@ package controller;
 
 
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.Convert;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolationException;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
+import model.Card;
 import model.Deck;
 import model.Keyword;
 import model.User;
@@ -52,6 +58,20 @@ public class DeckController {
 		return deckService.getDeckByName(name);
 
 	}
+	
+	@GetMapping(value = "CheckKeywords", produces=MediaType.APPLICATION_JSON_VALUE)
+	public boolean checkKeywords(@RequestParam("name") String name) {
+
+		return this.deckService.checkKeyword(name);
+
+	}
+	
+	@GetMapping(value = "CountDeckName")
+	public Integer countDecksByName(@RequestParam("name") String name) {
+
+		return deckService.countDecksWithName(name);
+
+	}
 
 	@GetMapping(value="DecksKeyword", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<Deck> getDecksByKeyword(@RequestParam("keyword") String keyword) {
@@ -59,8 +79,8 @@ public class DeckController {
 		return deckService.getDecksByKeywords(keyword);
 	}
 	
-	@PostMapping(value="Deck")
-	public void createDeck(@RequestBody Deck d, @RequestParam("username") String username, @RequestParam("password") String password) {
+	@PostMapping(value="Deck", consumes=MediaType.APPLICATION_JSON_VALUE)
+	public void createDeck(@RequestBody Deck d, @RequestParam("username") String username, @RequestParam("password") String password) throws ConstraintViolationException, SQLException {
 		
 		User u = userService.login(username, password);
 		d.setUser(u);
@@ -68,14 +88,33 @@ public class DeckController {
 	
 	}
 	
-//	@GetMapping(value = "DeckId")
-//	public Integer getDeckId(HttpSession session) {
-//	
-//		String name = (String) session.getAttribute("deck");
-//		return deckService.findDeckId(name);
-//
-//	}
+	@PostMapping(value="DeckGenerateValues", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Double> valuesDeck(@RequestParam("cards") Integer cards, @RequestParam("categories") Integer categories,
+			@RequestParam("lowerLimit") Double lowerLimit, @RequestParam("upperLimit") Double upperLimit) {
+		
+		return this.deckService.generateDeckValues(cards, categories, lowerLimit, upperLimit);
+
+	}
 	
+	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_PDF_VALUE)
+	public PDDocument pdfMazo(@RequestParam("deck") String deck) throws IOException {
+		
+		return this.deckService.pdfMazo(deck);
+
+	}
+	
+	@PutMapping(value="DeckBalance", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public void balanceDeck(@RequestParam("cards") Integer cards, @RequestParam("categories") Integer categories,
+			@RequestParam("lowerLimit") Double lowerLimit, @RequestParam("upperLimit") Double upperLimit,
+			@RequestParam("deck") String deck) {
+		this.deckService.balanceDeck(cards, categories, lowerLimit, upperLimit, deck);
+		
+	}
+	
+	
+	
+	
+
 	
 	
 

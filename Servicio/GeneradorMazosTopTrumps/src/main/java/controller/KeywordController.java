@@ -1,7 +1,8 @@
 package controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.List;
+
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,6 +28,20 @@ public class KeywordController {
 	@Autowired
 	KeywordService keywordService;
 	
+	@GetMapping(value="Keywords", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Keyword> getKeywords() {
+		
+		return keywordService.findAllKeyword();
+		
+	}
+	
+	@GetMapping(value="KeywordsWords", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<String> getKeywordsWords() {
+		
+		return this.keywordService.findAllWord();
+		
+	}
+	
 	@GetMapping(value="Keyword", produces=MediaType.APPLICATION_JSON_VALUE)
 	public Keyword getKeyword(@RequestParam("word") String word) {
 		
@@ -36,7 +51,7 @@ public class KeywordController {
 	
 	
 	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) {
+	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws ConstraintViolationException {
 		Deck d = deckService.getDeckByName(deck);
 		Integer idDeck = d.getIdDeck();
 		

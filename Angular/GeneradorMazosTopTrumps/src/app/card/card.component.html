@@ -1,16 +1,53 @@
-<h1>
+<h1 class="fw-lighter">
   Customiza las cartas
 </h1>
 
-<fieldset>
-  <form>
-    <label for="name">Nombre: </label>
-    <input type="text" name="name" [(ngModel)]="name" required>
-    <label for="image">Imagen: </label>
-    <input type="text" name="image" [(ngModel)]="image" required>
-    <label for="description">Descripción: </label>
-    <input type="textarea" name="description" [(ngModel)]="description" required>
-  </form>
-</fieldset>
+<div *ngIf="!cardCategories && !generateValues && !pdf" class="categories">
 
-<button (click)="generateDeck()" type="button"> Siguiente </button>
+  <h3 class="fw-lighter"> Define el nombre de la categoria {{i+1}} </h3>
+
+  
+    <form>
+      <label class="form-label" for="category">Nombre </label>
+      <input class="form-control" type="text" name="category" [(ngModel)]="category" required>
+      <div class="text-danger" [hidden]="notNullCategory">
+        La categoria no puede estar vacía.
+      </div>
+    </form>
+  
+  
+  <button class="btn btn-info" (click)="generateCategories()" type="button" [attr.disabled]="category==null ? true : null"> Siguiente </button>
+</div>
+
+<div *ngIf="cardCategories && !generateValues && !pdf" class="cards">
+
+  <form>
+    <label class="form-label" for="name">Nombre </label>
+    <input class="form-control" type="text" name="name" [(ngModel)]="name" required>
+    <div class="text-danger" [hidden]="notNullCard">
+      El nombre de la carta no puede estar vacío.
+    </div>
+    <label class="form-label" for="image">Imagen </label>
+    <input class="form-control" ype="url" name="image" [(ngModel)]="image">
+    <label class="form-label" for="description">Descripción </label>
+    <input class="form-control" type="textarea" name="description" [(ngModel)]="description">
+  </form>
+
+
+  <button class="btn btn-info" (click)="generateCard()" type="button" [attr.disabled]="name==null ? true : null"> Siguiente</button>
+</div>
+
+<div *ngIf="cardCategories && generateValues && !pdf" class="generateValues">
+  
+  <h1 class="fw-lighter"> Su mazo ya está listo. Pulse el botón para generar los valores. </h1>
+
+  
+    <button class="btn btn-info" (click)="generateDeck()" type="button" style="position: absolute; top: 20%; left: 45%;"> Generar </button>
+  </div>
+
+  <div *ngIf="cardCategories && generateValues && pdf" class="generatePDF">
+    <h1 class="fw-lighter"> Los valores se han generado con éxito. </h1>
+
+    <button class="btn btn-info" (click)="pdfMazo()" type="button"  style="position: absolute; top: 20%; left: 45%;"> Descargar </button>
+
+  </div>

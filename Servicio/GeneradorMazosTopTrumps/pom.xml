@@ -48,11 +48,52 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			  <groupId>org.uma.jmetal</groupId>
-			  <artifactId>jmetal</artifactId>
-			  <version>5.11</version>
-			  <type>pom</type>
+ <groupId>org.uma.jmetal</groupId>
+ <artifactId>jmetal-core</artifactId>
+ <version>5.11</version>  
+</dependency>
+<dependency>
+ <groupId>org.uma.jmetal</groupId>
+ <artifactId>jmetal-algorithm</artifactId>
+ <version>5.11</version>  
+</dependency>
+<dependency>
+ <groupId>org.uma.jmetal</groupId>
+ <artifactId>jmetal-lab</artifactId>
+ <version>5.11</version>  
+</dependency>
+<dependency>
+ <groupId>org.uma.jmetal</groupId>
+ <artifactId>jmetal-problem</artifactId>
+ <version>5.11</version>  
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	<dependency>
+	    <groupId>org.apache.poi</groupId>
+	    <artifactId>poi</artifactId>
+	    <version>5.2.2</version>
+	</dependency>
+	
+	<!-- https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox -->
+	<dependency>
+	    <groupId>org.apache.pdfbox</groupId>
+	    <artifactId>pdfbox</artifactId>
+	    <version>2.0.22</version>
+	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+		<dependency>
+		    <groupId>com.fasterxml.jackson.dataformat</groupId>
+		    <artifactId>jackson-dataformat-xml</artifactId>
+		    <version>2.13.3</version>
+		</dependency>
+
+		
 	</dependencies>
 
 	<build>

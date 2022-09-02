@@ -1,0 +1,16 @@
+.ng-autocomplete {
+    width:100%;
+    max-width: 600px;
+    display: table;
+    margin: 0 auto;
+  }
+
+  button {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+img {
+  height: 150px;
+  width: 150px;
+}

@@ -20,4 +20,26 @@ createCard(card: Card, deck: string) {
  )
 }
 
+addCategory(idCard: number, category: string) {
+  let headers = new HttpHeaders;
+  headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+  return this.http.post<any>(this.url + "CardCategory?card=" + idCard + "&category=" + category,
+  {headers: headers}
+ )
+
+}
+
+cardsOfDeck(deck: string) {
+  return this.http.get<Card[]>(this.url + 'CardsDeck?deck=' + deck);
+}
+
+generateValues(card: Card, values: number[]) {
+
+  let headers = new HttpHeaders;
+  headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+  return this.http.put<Card>(this.url + "CardValues",
+  card.toString(),
+  {headers: headers}
+ )
+}
 }

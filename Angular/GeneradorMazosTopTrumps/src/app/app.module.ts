@@ -9,25 +9,48 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BuscarComponent } from './buscar/buscar.component';
 import { DeckComponent } from './deck/deck.component';
-import { CategoriesComponent } from './categories/categories.component';
 import { CardComponent } from './card/card.component';
+import {AutocompleteLibModule} from 'angular-ng-autocomplete';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { LoadComponent } from './load/load.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+
+
 
 @NgModule({
-  declarations: [									
+  declarations: [												
     AppComponent,
       LoginComponent,
       HomeComponent,
       BuscarComponent,
       DeckComponent,
-      CategoriesComponent,
-      CardComponent
+      CardComponent,
+      LoadComponent
    ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AutocompleteLibModule,
+    BrowserAnimationsModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatTableModule,
+
+  ],
+
+  entryComponents: [
+    LoadComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

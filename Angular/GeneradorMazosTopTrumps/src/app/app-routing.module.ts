@@ -4,8 +4,8 @@ import { BuscarComponent } from './buscar/buscar.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component'
 import { DeckComponent } from './deck/deck.component';
-import { CategoriesComponent } from './categories/categories.component';
 import { CardComponent } from './card/card.component';
+
 
 const routes: Routes = [
   
@@ -30,24 +30,20 @@ const routes: Routes = [
   },
   
   {
-    path : 'categories/:cards/:categories', 
-    component : CategoriesComponent
-  },
-
-  {
-    path : 'card/:cards', 
+    path : 'card/:cards/:categories/:valueMin/:valueMax', 
     component : CardComponent
   }
-  
-   
+ 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
-// declarations: [
-  //  "AutocompleteContentDirective"
-  //]
+// declarations: [	
+,  //  "AutocompleteContentDirective"
+  //
+     
+   
 })
 
 export class AppRoutingModule { }

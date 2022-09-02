@@ -1,25 +1,61 @@
-<!--<h1>
-  ¿Qué es lo que buscas?
-</h1>
+<div class="buscador" *ngIf="showForm && !detalle">
 
-<div *ngIf="buscador" class="buscador">
-  <input [formControl]="control"  
-  [appAutocomplete]="autocomplete">  
+<form>
+  <mat-form-field>
+    <mat-label class="form-label">
+    Busca por palabra clave
+    </mat-label>
 
-<app-autocomplete #autocomplete="appAutocomplete">  
-<ng-template appAutocompleteContent>  
-<app-option *ngFor="let option of options" [value]="option.label">  
- {{ option.label }}  
-</app-option>  
-</ng-template>  
-</app-autocomplete>  
+    <input type="text"
+            matInput
+            [formControl]="control"
+            [matAutocomplete]="auto"
+            [(ngModel)]="keyword"
+    >
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let keyword of filKeywords | async" [value]=keyword>
+        {{keyword}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+ 
+</form>
+<button class="btn btn-info"(click)="buscarPorPalabraClave()" type="button"> Buscar</button>
+<button class="btn btn-info" (click)="volverHome()" type="button">Volver</button>
 </div>
 
-<div *ngIf="!buscador" class="resultados">
-  <h3> Resultados de la búsqueda </h3>
+<div class="resultado" *ngIf="!showForm">
+  <h1 class="fw-lighter">Resultados de la búsqueda con la palabra clave {{keyword}}</h1>
+  <table class="table table-dark table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Descripción</th>
+        <th scope="col">Imagen</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      <tr *ngFor="let deck of decks; index as i" (click)="seleccionar(deck)">
+        <th scope="row">{{i}}</th>
+        <td>{{deck.name}}</td>
+        <td>{{deck.description}}</td>
+        <td><img src="{{deck.image}}" alt="Imagen mazo {{i}}"></td>
+      </tr>
+      
+    </tbody>
+  
+  </table>
 
-  <li *ngFor="let d of decks">
-   <p>{{d.name}}</p>
-  </li>
+  <button class="btn btn-info" (click)="volver()" type="button">Volver</button>
+</div>
 
-</div>-->
+<div class="resultado" *ngIf="showForm && detalle">
+  <h1 class="fw-lighter">Mazo de {{nombre}}</h1>
+  <h3 class="fw-ligther">Creado por {{user}}</h3>
+  <h3 class="fw-ligther">Cartas: {{nCards}}</h3>
+  <h3 class="fw-ligther">Categorias: {{nCategories}}</h3>
+  <h3 class="fw-ligther">Descripción: {{description}}</h3>
+  <img src="{{image}}" alt="Imagen mazo">
+  <button class="btn btn-info" (click)="pdfMazo()" type="button"> Descargar </button>
+</div>

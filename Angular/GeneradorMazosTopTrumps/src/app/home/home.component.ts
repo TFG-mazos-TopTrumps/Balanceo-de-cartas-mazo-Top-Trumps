@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { LoginService } from '../service/login.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ export class HomeComponent implements OnInit {
 
   username: string;
   password: string;
-  constructor(private route:Router, private cookies: CookieService) {
+  constructor(private loginService: LoginService, private route:Router, private cookies: CookieService) {
 
    }
 
@@ -30,5 +31,15 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    let usuario = this.cookies.get("usuario");
+    let password = this.cookies.get("password");
+
+    if( usuario == "" && password == "") {
+      this.loginService.login(usuario, password).subscribe({
+        next: user => {
+            this.route.navigate([``]);
+        }
+      })
+  }
   }
 }

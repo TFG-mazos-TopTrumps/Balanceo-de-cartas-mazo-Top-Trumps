@@ -1,5 +1,24 @@
-<h1>¡Bienvenido!<h1>
-    <button (click)="logout()" type="button">Cerrar sesión</button>
-    <button (click)="design()" type="button">Diseñar</button>
-    <button (click)="buscar()" type="button">Buscar</button>
-  
+
+        <h1 class="fw-lighter">¡Bienvenido!<h1>
+            <a (click)="logout()" class="btn-btn-primary"><img class="logout"src="assets/img/logout.png"/></a>
+
+<div class="row">
+    <div class="col align-self-center">
+        <div class="card" style="width: 18rem;">
+            <img src="assets/img/svmarvel.png" class="card-img-top" alt="diseñar">
+            <div class="card-body">
+              <a (click)="design()"class="btn btn-primary">Diseñar</a>
+            </div>
+          </div>
+        
+    </div>
+    <div class="col align-self-center">
+        <div class="card" style="width: 18rem;">
+            <img src="assets/img/buscarHP.png" class="card-img-top" alt="buscar">
+            <div class="card-body">
+              <a (click)="buscar()" class="btn btn-primary">Buscar</a>
+            </div>
+          </div>
+       
+    </div>
+</div>

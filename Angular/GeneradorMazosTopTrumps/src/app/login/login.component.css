@@ -53,27 +53,30 @@ span.error {
     margin-bottom: 1%;
 }
 
-button {
-    display: block;
-    margin-top: 1%;
-    color: black;
-    background-color: navajowhite;
-    
+div.error {
+    font-family: Arial, Helvetica, sans-serif;
+    color: red;
+    margin-bottom: 1%;
 }
+
+
 
 button:hover {
    
     border-radius: 10px;
 }
 
-h2 {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+h2, h3 {
     text-align: center;
-
 }
 label {
 
     font-family: Arial, Helvetica, sans-serif;
     display: block;
     margin-top: 2%;
+}
+
+button {
+    margin-top: 5px;
+    margin-right: 5px;
 }

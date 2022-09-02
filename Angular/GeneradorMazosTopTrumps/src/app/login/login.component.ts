@@ -1,6 +1,5 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Router} from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '../model/User';
 import { LoginService } from '../service/login.service';
@@ -20,6 +19,11 @@ export class LoginComponent implements OnInit {
   confirmPassword: string = "";
   name: string = "";
 
+  notNullUsername: boolean = true;
+  notNullPassword: boolean = true;
+  notNullConfirmPassword: boolean = true;
+  notNullName: boolean = true;
+  duplicatedName: boolean = true;
   condicionRegistro: boolean = true;
   
 
@@ -45,30 +49,70 @@ export class LoginComponent implements OnInit {
   
   
   public register() {
-
     
-    if(this.password==this.confirmPassword) {
       let user = new User();
       user.username = this.usuario;
       user.password = this.password;
       user.name = this.name;
 
-      this.service.register(user).subscribe({
-        next : respuesta => {
-          console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
-          
-        },
-        error: e => {
-          console.log(`insertar -> No se ha podido registrar, ${e}`)
-          alert(e)
-        }
-      })   
+      this.notNullUsername=true;
+      this.notNullPassword=true;
+      this.notNullConfirmPassword=true;
+      this.errorPasswordRegister = true;
+      this.notNullName=true;
+      this.duplicatedName=true;
+      let anyError = false;
+ 
+      if(this.usuario==null || this.usuario=="") {
+        this.notNullUsername=false;
+        anyError=true;
+      }
+
+      if(this.password==null || this.password=="") {
+        this.notNullPassword=false;
+        anyError=true;
+      }
+
+      if(this.confirmPassword==null || this.confirmPassword=="") {
+        this.notNullConfirmPassword=false;
+        anyError=true;
+      }
+
+      if(this.password!=this.confirmPassword) {
+        this.errorPasswordRegister = false;
+        anyError=true;
+
+      }
+      if(this.name==null || this.name=="") {
+        this.notNullName=false;
+        anyError=true;
+      }
+
       
-    } else {
-     this.errorPasswordRegister = false;
-    }
+
+      if(!anyError) {
+          this.service.countUserByUsername(this.usuario).subscribe({next: usuario => {
+            if(usuario==0) {
+              this.service.register(user).subscribe({
+                next : respuesta => {
+                  console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
+                  this.condicionRegistro=true;
+                  
+                },
+                error: e => {
+                  console.log(`insertar -> No se ha podido registrar, ${e}`)
+                  alert(e)
+                }
+              })   
+            } else {
+                  this.duplicatedName=false;
+            }
+          }})
+           
+            
+          } 
+        }
   
-  }
 
   public cambiarRegistro() {
     if(this.condicionRegistro) {
@@ -80,7 +124,19 @@ export class LoginComponent implements OnInit {
  
   
   ngOnInit() {
+    
+    let usuario = this.cookies.get("usuario");
+    let password = this.cookies.get("password");
+    if( usuario != "" && password != "") {
+        this.service.login(usuario, password).subscribe({
+          next: user => {
+            
+              this.route.navigate([`home`]);
+          }
+        })
+    }
 
   }
   
 }
+

@@ -1,7 +1,10 @@
 package controller;
 
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
+import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,6 +25,15 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	
+	@GetMapping(value="UserByUsername")
+	public User getUserByUsername(@RequestParam("username") String username) {
+		
+		User u = userService.findUserByUsername(username);
+		
+		return u;
+		
+	}
 	@GetMapping(value="UserId")
 	public Integer getIdUser(@RequestParam("username") String username, @RequestParam("password") String password) {
 		
@@ -31,24 +43,30 @@ public class UserController {
 		
 	}
 	
+	@GetMapping(value="CountUserByUsername")
+	public Integer countUserByUsername(@RequestParam("username") String username) {
+		
+		return this.userService.countUserByUsername(username);
+		
+	}
+	
 	@PostMapping(value="Login")
-	public boolean login(@RequestParam("username") String username, @RequestParam("password") String password, HttpSession session) {
+	public boolean login(@RequestParam("username") String username, @RequestParam("password") String password) throws SQLException, ConstraintViolationException {
 		
 		User u = userService.login(username, password);
 		
 		if(u != null) {
-			session.setAttribute("usuario", username);
-			session.setAttribute("password", password);
+			
 			return true;
 		} else {
-			session.setAttribute("mensaje", "Usuario incorrecto");
+			
 			return false;
 		}
 		
 	}
 	
 	@PostMapping(value="Register", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void registerUser(@RequestBody User u) {
+	public void registerUser(@RequestBody User u) throws SQLException, ConstraintViolationException {
 		userService.registerUser(u);
 	}
 	
