@@ -11,5 +11,7 @@ public interface CardsDao extends JpaRepository<Card, Integer> {
 	
 	@Query("select c from Card c join c.deck d where d.name=?1")
 	List<Card> findCardsOfDeck(String deck);
+	
+	
 
 }

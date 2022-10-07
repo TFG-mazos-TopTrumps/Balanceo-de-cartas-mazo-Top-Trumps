@@ -15,6 +15,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.checkerframework.common.aliasing.qual.Unique;
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -37,6 +40,8 @@ public class Keyword {
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Unique
+	@Length(max=45)
 	private String word;
 
 	@JsonIgnore

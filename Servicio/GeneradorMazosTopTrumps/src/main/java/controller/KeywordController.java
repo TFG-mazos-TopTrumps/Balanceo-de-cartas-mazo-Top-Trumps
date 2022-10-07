@@ -35,6 +35,13 @@ public class KeywordController {
 		
 	}
 	
+	@GetMapping(value="KeywordsDeck", produces=MediaType.APPLICATION_JSON_VALUE)
+	public List<Keyword> getKeywordsByDeck(@RequestParam("deck") String deck) {
+		
+		return keywordService.findKeywordsByDeck(deck);
+		
+	}
+	
 	@GetMapping(value="KeywordsWords", produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<String> getKeywordsWords() {
 		
@@ -43,12 +50,18 @@ public class KeywordController {
 	}
 	
 	@GetMapping(value="Keyword", produces=MediaType.APPLICATION_JSON_VALUE)
-	public Keyword getKeyword(@RequestParam("word") String word) {
+	public Keyword getKeyword(@RequestParam("word") String word) throws Exception {
 		
 		return keywordService.findKeyword(word);
 		
 	}
 	
+	@GetMapping(value="CountKeyword", produces=MediaType.APPLICATION_JSON_VALUE)
+	public Integer getKeywordByWord(@RequestParam("word") String word) {
+		
+		return keywordService.countWords(word);
+		
+	}
 	
 	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws ConstraintViolationException {

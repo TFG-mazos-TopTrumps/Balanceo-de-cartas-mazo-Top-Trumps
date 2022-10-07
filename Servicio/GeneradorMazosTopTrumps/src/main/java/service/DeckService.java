@@ -1,17 +1,19 @@
 package service;
 
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
-import model.Card;
+
+
+import com.itextpdf.text.DocumentException;
+
 import model.Deck;
-import model.Keyword;
+
 
 
 public interface DeckService {
@@ -24,8 +26,10 @@ public interface DeckService {
 	Integer findDeckId(String name);
 	List<Double> generateDeckValues(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit);
 	Integer countDecksWithName(String name);
-	void balanceDeck(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit, String deck);
-	PDDocument pdfMazo(String mazo) throws IOException;
+	void balanceDeck(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit, String deck) throws ConstraintViolationException, SQLException;
+	void pdfMazo(String deck) throws IOException;
 	boolean checkKeyword(String deck);
+	void publishDeck(String deck);
+	void noPublishDeck(String deck);
 	 
 }

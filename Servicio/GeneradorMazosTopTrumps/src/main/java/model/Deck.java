@@ -2,9 +2,7 @@ package model;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import org.springframework.lang.NonNull;
+import org.checkerframework.common.aliasing.qual.Unique;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -42,19 +42,27 @@ public class Deck {
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Unique
+	@Length(min=1, max=45)
 	private String name;
 	
+	@Length(max=500)
 	private String description;
 	
 	@NotNull
 	@Positive
 	private int nCards;
 	
-	@NonNull
+	@NotNull
 	@Positive
 	private int nCategories;
 	
+	@URL
+	@Length(max=1000)
 	private String image;
+	
+	
+	private Boolean published = false;
 	
 	@JsonIgnore
 	@ManyToOne

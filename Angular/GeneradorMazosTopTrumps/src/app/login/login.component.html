@@ -1,4 +1,10 @@
 
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="check-circle-fill" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+  </symbol>
+</svg>
+
 <div class="card text-bg-info mb-3">
   <div class="card-header">
     <h2 class="fw-lighter">Generador Top Trumps</h2>
@@ -21,13 +27,20 @@
   <div class="text-danger" [hidden]="falloUsuario">
     Los credenciales no coinciden con los de ningún usuario registrado en el sistema.
   </div>
-    
+  
+  
     <button (click)="login()" class="btn btn-info" type="button">Iniciar sesión</button>
     <br>
     <a (click)="cambiarRegistro()" class="btn btn-link" type="button">¿Aún no tienes cuenta? Registrate aquí</a>
 
  
+    <div *ngIf="alertRegistred" class="alert alert-success d-flex align-items-center" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="20" height="20" fill="currentColor" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+      <div>
+        La cuenta se ha creado correctamente. Ya puede acceder, iniciando sesión con los credenciales indicados.
+      </div>
   </div>
+</div>
 
   <div *ngIf="!condicionRegistro" class="card-body">
   
@@ -40,12 +53,18 @@
       <div class="text-danger" [hidden]="duplicatedName">
         El nombre de usuario indicado coincide con uno ya existente.
       </div>
+      <div class="text-danger" [hidden]="errorMaxLengthUsername">
+        El nombre de usuario no puede tener 45 o más caracteres.
+      </div>
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Contraseña </label>
       <input type="password" class="form-control" name="password" [(ngModel)]="password" required>
       <div class="text-danger" [hidden]="notNullPassword">
         La contraseña no puede estar vacía.
+      </div>
+      <div class="text-danger" [hidden]="errorMaxLengthPassword">
+        La contraseña no puede tener 45 o más caracteres.
       </div>
     </div>
     <div class="mb-3">
@@ -57,12 +76,18 @@
       <div class="text-danger" [hidden]="notNullConfirmPassword">
         La confirmación de la contraseña no puede estar vacía.
       </div>
+      <div class="text-danger" [hidden]="errorMaxLengthPassword">
+        La confirmación de la contraseña no puede tener 45 o más caracteres.
+      </div>
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Nombre </label>
       <input type="text" class="form-control" name="name" [(ngModel)]="name" required>
       <div class="text-danger" [hidden]="notNullName">
-        El nombre no puede estar vacía.
+        El nombre no puede estar vacío.
+      </div>
+      <div class="text-danger" [hidden]="errorMaxLengthName">
+        El nombre no puede tener 50 o más caracteres.
       </div>
     </div>
       <button (click)="register()" class="btn btn-info" type="button">Registrar</button>

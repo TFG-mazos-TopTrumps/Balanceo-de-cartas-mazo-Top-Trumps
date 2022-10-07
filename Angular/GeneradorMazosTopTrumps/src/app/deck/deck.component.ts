@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { Deck } from '../model/Deck';
-import { Keyword } from '../model/Keyword';
 import { DeckService } from '../service/deck.service';
 import { KeywordService } from '../service/keyword.service';
 import { LoginService } from '../service/login.service';
@@ -30,9 +28,13 @@ export class DeckComponent implements OnInit {
   idUser: number;
   keywords: Array<string> = []; 
 
-  condicionKeyword: boolean = false;
+ 
   confirmKeyword: boolean = true;
   notNullName: boolean = true;
+  errorMaxLengthName: boolean = true;
+  errorMaxLengthDescription: boolean = true;
+  errorMaxLengthImage: boolean = true;
+  errorPatternURL: boolean = true;
   duplicatedName: boolean = true;
   notNullAndNegativeNCards: boolean = true;
   notNullAndNegativeNCategories: boolean = true;
@@ -41,20 +43,21 @@ export class DeckComponent implements OnInit {
   valueMinBiggerOrEqualThanValueMax: boolean = true;
   minKeywords: boolean = true;
 
-  notNullKeyword: boolean = true;
   anyError:boolean = false;
   alertaExito: boolean = false;
   
-  constructor(private userService: LoginService, private deckService: DeckService, private keywordService: KeywordService, private route:Router,  private cookies: CookieService) {
+  constructor(private userService: LoginService, private deckService: DeckService, private keywordService: KeywordService, private route:Router) {
      
    }
 
   ngOnInit() {
 
-    let usuario = this.cookies.get("usuario");
-    let password = this.cookies.get("password");
-0
-    if( usuario == "" && password == "") {
+
+    let usuario = sessionStorage.getItem("usuario");
+    let password = sessionStorage.getItem("password");
+    
+
+    if(usuario == undefined && password == undefined) {
       this.userService.login(usuario, password).subscribe({
         next: user => {
             this.route.navigate([``]);
@@ -66,43 +69,63 @@ export class DeckComponent implements OnInit {
   
   createDeck() {
 
-    this.anyError=false;
-    let deck = new Deck();
-    deck.name = this.name;
-    deck.description = this.description;
-    deck.image = this.image;
-    deck.ncards = this.cards;
-    deck.ncategories = this.categories;
-
-    this.cookies.set("deck", deck.name);
     
-    this.username = this.cookies.get("usuario");
-    this.password= this.cookies.get("password");
+    this.notNullName=true;
+    this.notNullAndNegativeNCategories=true;
+    this.notNullAndNegativeNCards=true;
+    this.notNullAndNegativeValueMin=true;
+    this.notNullAndNegativeValueMax=true;
+    this.duplicatedName=true;
+    this.errorMaxLengthName=true;
+    this.errorMaxLengthDescription=true;
+    this.errorMaxLengthImage=true;
+    this.errorPatternURL=true;
+    this.valueMinBiggerOrEqualThanValueMax=true;
+
+    
+
+    this.anyError=false;
+    
+
+    this.username = sessionStorage.getItem("usuario");
+    this.password= sessionStorage.getItem("password");
    
     this.deckService.countDecksName(this.name).subscribe({
       next: respuesta => {
         let numberOfDecks: number;
         numberOfDecks=respuesta;
-     
-
-    if(deck.name == null) {
-        this.notNullName=false;
-        this.anyError=true;
-    }
     
     if(numberOfDecks > 0) {
       this.duplicatedName=false;
       this.anyError=true;
     } 
-    if(deck.ncards == null || deck.ncards < 0) {
-      this.notNullAndNegativeNCards=false;
+    if(this.name == undefined || this.name.length < 1) {
+      this.notNullName=false;
       this.anyError=true;
-    } 
-    if(deck.ncategories == null || deck.ncategories < 0) {
-      this.notNullAndNegativeNCategories=false;
+    } else {
+    if(this.name.length >= 45) {
+      this.errorMaxLengthName=false;
       this.anyError=true;
     }
-    
+  }
+
+  
+  
+    if(this.cards == null || this.cards < 2) {
+      this.notNullAndNegativeNCards=false;
+      this.anyError=true;
+    } else {
+      this.cards = Math.round(this.cards);
+      
+    }
+  
+    if(this.categories == null || this.categories < 2) {
+      this.notNullAndNegativeNCategories=false;
+      this.anyError=true;
+    } else {
+      this.categories = Math.round(this.categories);
+    }
+
     if(this.valueMin == null || this.valueMin < 0 ) {
       this.notNullAndNegativeValueMin=false;
       this.anyError=true;
@@ -119,14 +142,42 @@ export class DeckComponent implements OnInit {
       this.valueMinBiggerOrEqualThanValueMax=false;
       this.anyError=true;
     }
+    if(this.description != undefined) {
+      if(this.description.length >= 500) {
+        this.errorMaxLengthDescription=false;
+        this.anyError=true;
+      }
+  }
+  if(this.image != undefined) {
+    
+      if(this.image.length >= 1000) {
+        this.errorMaxLengthImage=false;
+        this.anyError=true;
+      }
+      if(this.image.length >= 1) {
+        if(!(this.image.startsWith("http://") || this.image.startsWith("https://"))) {
+        this.errorPatternURL=false;
+        this.anyError=true;
+      } 
+      }
+    }
+    
 
     
   if(!this.anyError) {
+    let deck = new Deck();
+    deck.name = this.name;
+    deck.description = this.description;
+    deck.image = this.image;
+    deck.ncards = this.cards;
+    deck.ncategories = this.categories;
+    sessionStorage.setItem("deck", deck.name);
     this.deckService.createDeck(deck, this.username, this.password).subscribe({
       next: d => {
         
-        console.log(`Registrado, ${JSON.stringify(d)}`) 
-        this.condicionKeyword=true;
+        console.log(`Registrado, ${JSON.stringify(d)}`);
+        
+        this.route.navigate(['/keyword', this.cards, this.categories, this.valueMin, this.valueMax]);
       
         
       },
@@ -147,69 +198,10 @@ export class DeckComponent implements OnInit {
   }
 
 
-  deckKeyword() {
-    this.notNullKeyword=true;
-
-    this.alertaExito=false;
-    let anyError = false;
-    let keyword = new Keyword();
-    keyword.word = this.keyword;
-   
-    
-    let name = this.cookies.get("deck");
-
-    if(keyword.word==null || keyword.word=="") {
-      this.notNullKeyword=false;
-      anyError=true;
-    }
-    if(!anyError) {
-    this.deckService.getDeckByName(name).subscribe({
-      next: respuesta => {
-        this.idDeck = respuesta.idDeck;
-      },
-      error: e => {
-        console.log(`consulta -> No se ha podido obtener, ${e}`)
-        alert(e)
-      }
-
-    });
-    this.keywordService.addKeyword(keyword, name).subscribe({
-      next: respuesta => {
-        console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
-        this.confirmKeyword=true;
-        this.alertaExito=true;
-        this.minKeywords=true;
-
-      },
-      error: e => {
-        console.log(`insertar -> No se ha podido registrar, ${e}`)
-        alert(e)
-      }
-    });
-    this.keyword="";
-    
-      this.confirmKeyword=true;
-    
-  }
-  }
+ 
   volver() {
     this.route.navigate([`home`]);
   }
 
-  nextCategories() {
-
-    let deck = this.cookies.get("deck");
-    this.deckService.checkKeywords(deck).subscribe({
-      next: ck => {
-
-        if(ck) {
-          this.minKeywords=false;
-        } else {
-          this.route.navigate(['/card', this.cards, this.categories, this.valueMin, this.valueMax]);
-        }
-    }
-  });
-    
-
-  }
+ 
 }

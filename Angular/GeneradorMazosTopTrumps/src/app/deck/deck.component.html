@@ -1,54 +1,60 @@
-<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-  <symbol id="check-circle-fill" viewBox="0 0 16 16">
-    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-  </symbol>
-</svg>
-
 <div class="text-bg-dark p-3">
-<h1 class="fw-lighter"> Selecciona las características del mazo </h1>
+<h1 class="fw-lighter"> Seleccione las características del mazo </h1>
 </div>
   <main class="text-bg-dark p-3">
-    <div *ngIf="!condicionKeyword">
-      <fieldset>
-          <form> 
-            <div class="col-md-4">
-            <label for="name" class="form-label">Nombre </label>
-            <input type="text" class="form-control" name="name" [(ngModel)]="name" placeholder="Marvel" required>
-            <div class="text-danger" [hidden]="notNullName">
-              El nombre no puede quedar vacío.
-            </div>
-            <div class="text-danger" [hidden]="duplicatedName">
-              El nombre que ha indicado ya existe. Por favor, prueba con otro nombre distinto.
-            </div>
-          </div>
-            <br>
-            <div class="col-md-4">
-            <label for="description" class="form-label" placeholder="Este fantástico mazo reúne los mejores..."> Descripción </label>
-            <input type="textarea" class="form-control" name="description" [(ngModel)]="description">
+    <div>
+      
+          <form class="row g-3"> 
+            <div class="col-md-6">
+              <label for="name" class="form-label">Nombre </label>
+              <input type="text" class="form-control" name="name" [(ngModel)]="name" placeholder="Marvel" required>
+              <div class="text-danger" [hidden]="notNullName">
+                El nombre no puede quedar vacío.
+              </div>
+              <div class="text-danger" [hidden]="duplicatedName">
+                El nombre que ha indicado ya existe. Por favor, prueba con otro nombre distinto.
+              </div>
+              <div class="text-danger" [hidden]="errorMaxLengthName">
+                El nombre del mazo no puede tener 45 o más caracteres.
+              </div>
             </div>
             <br>
-            <div class="col-md-4">
-            <label for="image" class="form-label" placeholder="Url de la imagen que quiere introducir"> Imagen del mazo </label>
-            <input type="url" class="form-control" name="image" [(ngModel)]="image">
+            <div class="col-md-6">
+              <label for="description" class="form-label"> Descripción </label>
+              <input type="textarea" class="form-control" name="description" placeholder="Este fantástico mazo reúne los mejores..." [(ngModel)]="description">
+              <div class="text-danger" [hidden]="errorMaxLengthDescription">
+              La descripción del mazo no puede tener 500 o más caracteres.
+              </div>
             </div>
             <br>
-            <div class="col-md-4">
+            <div class="col-md-6">
+              <label for="image" class="form-label"> Imagen del mazo </label>
+              <input type="url" class="form-control" name="image" placeholder="Url de la imagen que quiere introducir" [(ngModel)]="image">
+              <div class="text-danger" [hidden]="errorMaxLengthImage">
+                La URL de la imagen no puede tener 1000 o más caracteres.
+              </div>
+              <div class="text-danger" [hidden]="errorPatternURL">
+                El campo imagen ha de ser una URL.
+              </div>
+            </div>
+            <br>
+            <div class="col-md-6">
             <label for="cards" class="form-label">Número de cartas </label>
             <input type="number" class="form-control" name="cards" [(ngModel)]="cards" min="1" required>
             <div class="text-danger" [hidden]="notNullAndNegativeNCards">
-              El número de cartas no puede quedar vacío y ha de ser positivo y mayor que cero.
+              El número de cartas no puede quedar vacío y ha de ser positivo y mayor que uno.
             </div>
           </div>
           <br>
-            <div class="col-md-4">
+            <div class="col-md-6">
             <label for="categories" class="form-label">Número de categorías </label>
-            <input type="number" class="form-control" name="categories" [(ngModel)]="categories" min="1" required>
+            <input type="number" class="form-control" name="categories" [(ngModel)]="categories" min="2" required>
             <div class="text-danger" [hidden]="notNullAndNegativeNCategories">
-              El número de categorías no puede quedar vacío y ha de ser positivo y mayor que cero.
+              El número de categorías no puede quedar vacío y ha de ser positivo y mayor que uno.
             </div>
           </div>
             <br>
-            <div class="col-md-4">
+            <div class="col-md-6">
             <label for="valueMin" class="form-label">Valor mínimo de las categorías </label>
             <input type="number" class="form-control" name="valueMin" [(ngModel)]="valueMin" min="1" required>
             <div class="text-danger" [hidden]="notNullAndNegativeValueMin">
@@ -56,7 +62,7 @@
             </div>
             </div>
             <br>
-            <div class="col-md-4">
+            <div class="col-md-6">
             <label for="valueMax" class="form-label">Valor máximo de las categorías </label>
             <input type="number" class="form-control" name="valueMax" [(ngModel)]="valueMax" min="1" required>
             <div class="text-danger" [hidden]="notNullAndNegativeValueMin">
@@ -72,37 +78,6 @@
           
             <button (click)="volver()" class="btn btn-info" type="button">Volver</button>
          </form>
-      </fieldset>
+     
     </div>
-
-    <div *ngIf="condicionKeyword" class="keywords">
-      <fieldset>
-        <form> 
-          <div class="col-md-4">
-          <label class="form-label" for="keyword">Indica la palabra clave que quiere asignar </label>
-          <input class="form-control" type="text" name="keyword" [(ngModel)]="keyword">
-          <div class="text-danger" [hidden]="notNullKeyword">
-            La palabra clave no puede estar vacía.
-          </div>
-          <div class="text-danger" [hidden]="minKeywords">
-            El mazo tiene que tener mínimo una palabra clave asignada.
-          </div>
-          
-          <div *ngIf="alertaExito" class="alert alert-success d-flex align-items-center" role="alert">
-            <svg class="bi flex-shrink-0 me-2" width="20" height="20" fill="currentColor" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-            <div>
-              Palabra clave incluida con éxito.
-            </div>
-            
-          </div>
-        </div>
-          <button class="btn btn-info" (click)="deckKeyword()" [attr.disabled]="keyword==null ? true : null">Añadir palabra clave</button>
-          <button class="btn btn-info" (click)="nextCategories()" type="button"> Crear mazo </button>
-          <button class="btn btn-info" (click)="volver()" type="button">Volver</button>
-          
-        </form>
-      </fieldset>
-    </div>
-          
-       
   </main>

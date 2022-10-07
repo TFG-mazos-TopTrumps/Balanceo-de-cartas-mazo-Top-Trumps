@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolationException;
 
-import org.apache.pdfbox.pdmodel.PDDocument;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
+
+import com.itextpdf.text.DocumentException;
 
 import model.Card;
 import model.Deck;
@@ -97,18 +99,32 @@ public class DeckController {
 	}
 	
 	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_PDF_VALUE)
-	public PDDocument pdfMazo(@RequestParam("deck") String deck) throws IOException {
+	public void pdfMazo(@RequestParam("deck") String deck) throws IOException {
 		
-		return this.deckService.pdfMazo(deck);
+		this.deckService.pdfMazo(deck);
 
 	}
 	
 	@PutMapping(value="DeckBalance", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
 	public void balanceDeck(@RequestParam("cards") Integer cards, @RequestParam("categories") Integer categories,
 			@RequestParam("lowerLimit") Double lowerLimit, @RequestParam("upperLimit") Double upperLimit,
-			@RequestParam("deck") String deck) {
+			@RequestParam("deck") String deck) throws ConstraintViolationException, SQLException {
 		this.deckService.balanceDeck(cards, categories, lowerLimit, upperLimit, deck);
 		
+	}
+	
+	@PutMapping(value="DeckPublish")
+	public void publishDeck(@RequestParam("deck") String deck) {
+		
+		this.deckService.publishDeck(deck);
+	
+	}
+	
+	@PutMapping(value="DeckNoPublish")
+	public void noPublishDeck(@RequestParam("deck") String deck) {
+		
+		this.deckService.noPublishDeck(deck);
+	
 	}
 	
 	

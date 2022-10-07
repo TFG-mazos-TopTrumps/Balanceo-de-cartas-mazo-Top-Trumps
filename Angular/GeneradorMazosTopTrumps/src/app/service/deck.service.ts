@@ -67,5 +67,23 @@ export class DeckService {
     return this.http.get<boolean>(this.url + 'CheckKeywords?name=' + deck); 
   }
  
+  publishDeck(deck: string) {
+
+    let headers = new HttpHeaders;
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.put<any>(this.url + "DeckPublish?deck=" + deck,
+    {headers: headers})
+
+  }
+
+  noPublishDeck(deck: string) {
+
+    let headers = new HttpHeaders;
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    return this.http.put<any>(this.url + "DeckNoPublish?deck=" + deck,
+    {headers: headers})
+
+  }
+
 
 }

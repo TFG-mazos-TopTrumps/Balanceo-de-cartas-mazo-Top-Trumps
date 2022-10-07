@@ -5,12 +5,16 @@
     margin: 0 auto;
   }
 
-  button {
+  button:hover {
+   
+    border-radius: 10px;
+}
+button {
     margin-top: 5px;
     margin-right: 5px;
 }
-
-img {
-  height: 150px;
-  width: 150px;
+div.caracteristicas {
+  position: absolute;
+  top: 10%;
 }
+

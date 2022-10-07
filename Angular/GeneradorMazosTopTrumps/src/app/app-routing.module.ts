@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component'
 import { DeckComponent } from './deck/deck.component';
 import { CardComponent } from './card/card.component';
+import { KeywordComponent } from './keyword/keyword.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,11 @@ const routes: Routes = [
   {
     path : 'deck', 
     component : DeckComponent
+  },
+
+  {
+    path : 'keyword/:cards/:categories/:valueMin/:valueMax', 
+    component : KeywordComponent
   },
 
   {

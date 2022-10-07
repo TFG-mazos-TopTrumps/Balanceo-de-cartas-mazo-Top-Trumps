@@ -19,18 +19,20 @@ import { LoadComponent } from './load/load.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { KeywordComponent } from './keyword/keyword.component';
 
 
 
 @NgModule({
-  declarations: [												
+  declarations: [													
     AppComponent,
       LoginComponent,
       HomeComponent,
       BuscarComponent,
       DeckComponent,
       CardComponent,
-      LoadComponent
+      LoadComponent,
+      KeywordComponent
    ],
   imports: [
     BrowserModule,

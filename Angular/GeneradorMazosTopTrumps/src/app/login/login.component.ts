@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { User } from '../model/User';
 import { LoginService } from '../service/login.service';
 
@@ -23,11 +22,15 @@ export class LoginComponent implements OnInit {
   notNullPassword: boolean = true;
   notNullConfirmPassword: boolean = true;
   notNullName: boolean = true;
+  errorMaxLengthUsername : boolean = true;
+  errorMaxLengthPassword : boolean = true;
+  errorMaxLengthName: boolean = true;
   duplicatedName: boolean = true;
   condicionRegistro: boolean = true;
+  alertRegistred: boolean = false;
   
 
-  constructor(private service: LoginService, private route:Router, private cookies: CookieService) {
+  constructor(private service: LoginService, private route:Router) {
     this.service = service;
    }
  
@@ -37,11 +40,14 @@ export class LoginComponent implements OnInit {
     this.service.login(this.usuario, this.password)
                 .subscribe((respuesta) => {
                   if(respuesta) {
-                    this.cookies.set("usuario", this.usuario);
-                    this.cookies.set("password", this.password);
+
+                    sessionStorage.setItem("usuario",this.usuario);
+                    sessionStorage.setItem("password",this.password);
+                    this.alertRegistred=false;
                     this.route.navigate(['home']);
                   } else {
                     this.falloUsuario = false;
+                    this.alertRegistred = false;
                   }
                 });
  
@@ -61,6 +67,9 @@ export class LoginComponent implements OnInit {
       this.errorPasswordRegister = true;
       this.notNullName=true;
       this.duplicatedName=true;
+      this.errorMaxLengthUsername=true;
+      this.errorMaxLengthPassword=true;
+      this.errorMaxLengthName=true;
       let anyError = false;
  
       if(this.usuario==null || this.usuario=="") {
@@ -87,6 +96,19 @@ export class LoginComponent implements OnInit {
         this.notNullName=false;
         anyError=true;
       }
+      if(this.usuario.length >= 45) {
+        this.errorMaxLengthUsername=false;
+        anyError=true;
+      }
+      if(this.password.length >= 45) {
+        this.errorMaxLengthPassword=false;
+        anyError=true;
+      }
+      if(this.name.length >= 50) {
+        this.errorMaxLengthName=false;
+        anyError=true;
+      }
+
 
       
 
@@ -97,7 +119,7 @@ export class LoginComponent implements OnInit {
                 next : respuesta => {
                   console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
                   this.condicionRegistro=true;
-                  
+                  this.alertRegistred=true;
                 },
                 error: e => {
                   console.log(`insertar -> No se ha podido registrar, ${e}`)
@@ -125,9 +147,10 @@ export class LoginComponent implements OnInit {
   
   ngOnInit() {
     
-    let usuario = this.cookies.get("usuario");
-    let password = this.cookies.get("password");
-    if( usuario != "" && password != "") {
+    let usuario = sessionStorage.getItem("usuario");
+    let password = sessionStorage.getItem("password");
+   
+    if(usuario != undefined && password != undefined) {
         this.service.login(usuario, password).subscribe({
           next: user => {
             

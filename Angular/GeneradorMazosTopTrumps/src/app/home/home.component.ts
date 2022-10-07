@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
+import {  Router } from '@angular/router';
 import { LoginService } from '../service/login.service';
 
 @Component({
@@ -10,15 +9,21 @@ import { LoginService } from '../service/login.service';
 })
 export class HomeComponent implements OnInit {
 
+  name: string;
   username: string;
   password: string;
-  constructor(private loginService: LoginService, private route:Router, private cookies: CookieService) {
-
+  constructor(private loginService: LoginService, private route:Router) {
+       this.loginService.getUserByUsername(sessionStorage.getItem("usuario")).subscribe({
+        next: res => {
+          this.name=res.name;
+        }
+       })
    }
 
   public logout() {
-    this.cookies.delete("usuario");
-    this.cookies.delete("password");
+    sessionStorage.removeItem("usuario");
+    sessionStorage.removeItem("password");
+   
     this.route.navigate([``]);
   }
 
@@ -31,10 +36,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    let usuario = this.cookies.get("usuario");
-    let password = this.cookies.get("password");
+    
+   
+    let usuario = sessionStorage.getItem("usuario");
+    let password = sessionStorage.getItem("password");
 
-    if( usuario == "" && password == "") {
+   
+
+    if( usuario == undefined && password == undefined) {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.route.navigate([``]);

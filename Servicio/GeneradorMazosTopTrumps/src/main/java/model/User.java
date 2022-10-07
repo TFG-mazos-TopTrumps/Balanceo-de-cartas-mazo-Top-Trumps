@@ -11,6 +11,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.checkerframework.common.aliasing.qual.Unique;
+import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,16 +37,20 @@ public class User {
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Unique
+	@Length(min=1, max=45)
 	private String username;
 	
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Length(min=1, max=45)
 	private String password;
 	
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Length(min=1, max=50)
 	private String name;
 	
 	@OneToMany(mappedBy="user")

@@ -23,6 +23,13 @@ export class KeywordService {
   getKeywords() {
     return this.http.get<Array<Keyword>>(this.url + "Keywords");
   }
+  getKeywordsByDeck(deck: string) {
+    return this.http.get<Keyword[]>(this.url + "KeywordsDeck?deck=" + deck);
+  }
+
+  countWords(word: string) {
+    return this.http.get<number>(this.url + 'CountKeyword?word=' + word); 
+  }
 
   getWords() {
     return this.http.get<string[]>(this.url + "KeywordsWords");

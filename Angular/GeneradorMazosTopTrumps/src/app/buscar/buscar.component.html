@@ -1,10 +1,12 @@
 <div class="buscador" *ngIf="showForm && !detalle">
-
+ 
 <form>
-  <mat-form-field>
+
+  <mat-form-field class="buscador">
     <mat-label class="form-label">
     Busca por palabra clave
     </mat-label>
+  
 
     <input type="text"
             matInput
@@ -12,20 +14,26 @@
             [matAutocomplete]="auto"
             [(ngModel)]="keyword"
     >
+    
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let keyword of filKeywords | async" [value]=keyword>
         {{keyword}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
- 
+  <div class="text-danger" [hidden]="notNullBusqueda">
+    Debe indicar una palabra clave para realizar la búsqueda.
+  </div>
+  <div class="text-danger" [hidden]="notExistWord">
+    Debe indicar una palabra clave que se encuentre registrada en el sistema.
+  </div>
 </form>
 <button class="btn btn-info"(click)="buscarPorPalabraClave()" type="button"> Buscar</button>
 <button class="btn btn-info" (click)="volverHome()" type="button">Volver</button>
 </div>
 
 <div class="resultado" *ngIf="!showForm">
-  <h1 class="fw-lighter">Resultados de la búsqueda con la palabra clave {{keyword}}</h1>
+  <h1 class="fw-lighter" style="margin-bottom: 10px">Resultados de la búsqueda con la palabra clave {{keyword}}</h1>
   <table class="table table-dark table-hover">
     <thead>
       <tr>
@@ -36,11 +44,12 @@
       </tr>
     </thead>
     <tbody class="table-group-divider">
-      <tr *ngFor="let deck of decks; index as i" (click)="seleccionar(deck)">
-        <th scope="row">{{i}}</th>
+      <tr *ngFor="let deck of decks; index as i" (click)="seleccionar(deck)" style="cursor: pointer">
+        <th scope="row">{{i+1}}</th>
         <td>{{deck.name}}</td>
         <td>{{deck.description}}</td>
-        <td><img src="{{deck.image}}" alt="Imagen mazo {{i}}"></td>
+        <td><img src="{{deck.image}}" alt="Imagen mazo {{i}}" style="height: 150px;
+          width: 150px;"></td>
       </tr>
       
     </tbody>
@@ -51,11 +60,22 @@
 </div>
 
 <div class="resultado" *ngIf="showForm && detalle">
+  <div class="caracteristicas">
   <h1 class="fw-lighter">Mazo de {{nombre}}</h1>
   <h3 class="fw-ligther">Creado por {{user}}</h3>
   <h3 class="fw-ligther">Cartas: {{nCards}}</h3>
   <h3 class="fw-ligther">Categorias: {{nCategories}}</h3>
-  <h3 class="fw-ligther">Descripción: {{description}}</h3>
-  <img src="{{image}}" alt="Imagen mazo">
+  <h3 class="fw-ligther">Descripción: </h3>
+  <div class="container-fluid" style="overflow: auto;"> 
+    {{description}}
+  </div>
   <button class="btn btn-info" (click)="pdfMazo()" type="button"> Descargar </button>
+  <button class="btn btn-info" (click)="volverListaResultados()" type="button">Volver</button>
+  </div>
+  <figure class="figure">
+    <img src="{{image}}" alt="Imagen mazo" class="figure-img img-fluid rounded" style="position: absolute; top: 10%; left: 60%; height: 500px; width: 500px">
+    
+  </figure>
+
+  
 </div>

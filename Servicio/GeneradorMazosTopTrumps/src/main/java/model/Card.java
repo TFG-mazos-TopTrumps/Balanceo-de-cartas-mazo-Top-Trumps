@@ -19,6 +19,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -40,9 +43,14 @@ public class Card {
 	@NotNull
 	@NotBlank
 	@NotEmpty
+	@Length(min=1, max=45)
 	private String name;
 	
+	@Length(max=500)
 	private String description;
+	
+	@URL
+	@Length(max=1000)
 	private String image;
 	
 	@ElementCollection

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute,  Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { LoadComponent } from '../load/load.component';
 import { Card } from '../model/Card';
 import { CardService } from '../service/card.service';
@@ -32,16 +31,25 @@ export class CardComponent implements OnInit {
   cardCategories: boolean = false;
   generateValues: boolean = false;
   notNullCategory: boolean = true;
+  duplicatedCategory: boolean = true;
   notNullCard: boolean = true;
+  errorMaxLengthCategories: boolean = true;
+  errorMaxLengthName: boolean = true;
+  errorMaxLengthDescription: boolean = true;
+  errorMaxLengthImage: boolean = true; 
+  errorPatternURL: boolean = true;
   pdf: boolean = false;
+  publication: boolean = true;
   values: number[];
+  alertPublish: boolean = false;
 
-  cardsOfDeck: Card[];
+ cardsOfDeck: Card[];
   
+ 
 
-  constructor(private loginService: LoginService, private route : ActivatedRoute,  private router : Router, private cardService: CardService,  private deckService: DeckService,  public dialog: MatDialog, private cookies: CookieService) {
+  constructor(private loginService: LoginService, private route : ActivatedRoute,  private router : Router, private cardService: CardService,  private deckService: DeckService,  public dialog: MatDialog) {
     
-    this.cards = route.snapshot.params["cards"];
+    
     this.nCategories = route.snapshot.params["categories"];
     this.cards = route.snapshot.params["cards"];
     this.valueMin = route.snapshot.params["valueMin"];
@@ -52,97 +60,200 @@ export class CardComponent implements OnInit {
 
   ngOnInit() {
 
-    let usuario = this.cookies.get("usuario");
-    let password = this.cookies.get("password");
+    this.deck = sessionStorage.getItem("deck");
+    let usuario = sessionStorage.getItem("usuario");
+    let password = sessionStorage.getItem("password");
+    let categoriesCompleted = sessionStorage.getItem("categoriesCompleted");
+    let cardsCompleted = sessionStorage.getItem("cardsCompleted");
+    let balanceCompleted = sessionStorage.getItem("balanceCompleted");
 
-    if( usuario == "" && password == "") {
+  
+    if( usuario == undefined && password == undefined) {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.router.navigate([``]);
         }
       })
   }
+
+    if(categoriesCompleted == "true" && cardsCompleted == undefined && balanceCompleted == undefined) {
+        this.cardCategories = true;
+        
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+          this.categories.push(c);
+          indice++;
+
+        }
+          if(c == undefined) {
+            break;
+          }
+
+        }        
+
+        this.cardService.cardsOfDeck(this.deck).subscribe({
+          next: cards => {
+            if(cards.length > 0) {
+              this.n = cards.length;
+            }
+          }
+        })
+    }
+    if(categoriesCompleted == "true" && cardsCompleted == "true" && balanceCompleted == undefined) {
+      this.cardCategories = true;
+      this.generateValues = true;
+
+      } 
+    if(categoriesCompleted == "true" && cardsCompleted == "true" && balanceCompleted == "true") {
+      this.cardCategories = true;
+      this.generateValues = true;
+      this.pdf = true;
+    } 
+
+
+
   }
 
   generateCategories() {
 
+    this.notNullCategory=true;
+    this.errorMaxLengthCategories=true;
+    this.duplicatedCategory=true;
     let anyError=false;
     if(this.category==null || this.category=="") {
       this.notNullCategory=false;
       anyError=true;
     }
-
+    if(this.category.length>= 45) {
+      this.errorMaxLengthCategories=false;
+      anyError=true;
+    }
+    if(this.categories.length != 0) {
+      for(const c of this.categories) {
+        if(c == this.category) {
+          this.duplicatedCategory=false;
+          anyError=true;
+        }
+      }
+    }
     if(!anyError) {
-    if(this.i<=this.nCategories) {
-      
-      this.categories.push(this.category);
-      
-      this.category="";
-      this.i++;
-      console.log(this.categories);
-    }
-    if(this.i==this.nCategories) {
-      
-      this.cardCategories=true;
-      
-    }
+      if(this.i<=this.nCategories) {
+        
+        sessionStorage.setItem("category " + this.i, this.category);
+        this.categories.push(this.category);
+        
+        this.category="";
+        this.i++;
+        console.log(this.categories);
+      }
+      if(this.i==this.nCategories) {
+        
+        this.cardCategories=true;
+        sessionStorage.setItem("categoriesCompleted", "true");
+        
+      }
+    
   }
   }
 
   generateCard() {
 
+    this.notNullCard=true;
+    this.errorMaxLengthName=true;
+    this.errorMaxLengthDescription=true;
+    this.errorMaxLengthImage=true;
+    this.errorPatternURL=true;
+
+    let card = new Card();
+    card.name = this.name;
+    card.image = this.image;
+    card.description = this.description;
+   
     let anyError=false;
+
     if(this.name==null || this.name=="") {
       this.notNullCard=false;
       anyError=true;
     }
-    if(!anyError) {
-    if(this.n<=this.cards) {
-     
-      let card = new Card();
-      card.name = this.name;
-      card.image = this.image;
-      card.description = this.description;
-      
-      
-      this.deck = this.cookies.get("deck");
-      this.cardService.createCard(card, this.deck).subscribe({
-        next: respuesta => {
-          console.log(`Registrado, ${JSON.stringify(respuesta)}`)
-          this.idCard=respuesta.idCard;
-          
-          for(const category of this.categories) {
-            
-            this.cardService.addCategory(this.idCard, category).subscribe({next: categoria => {
-              console.log(`Registrado, ${JSON.stringify(categoria)}`)
-            },
-            error: e => {
-              console.log(`insertar -> No se ha podido registrar, ${e}`)
-              alert(e)
-            }
-    
-            })
-    
-          }
 
-          if(this.n==this.cards) {
-            this.generateValues=true;
-
-          }
-        },
-        error: e => {
-          console.log(`insertar -> No se ha podido registrar, ${e}`)
-          alert(e)
-        }
-      });
-        
-      
-      this.name="";
-      this.image="";
-      this.description="";
-      
-      this.n++;
+    if(this.name.length >= 45) {
+      this.errorMaxLengthName=false;
+      anyError=true;
     }
+    if(this.image != undefined) {
+
+      
+      if(this.image.length >= 1000) {
+        this.errorMaxLengthImage=false;
+        anyError=true;
+      }
+      if(this.image.length >= 1) {
+       
+        if(!(this.image.startsWith("http://") || this.image.startsWith("https://"))) {
+          
+          this.errorPatternURL=false;
+          anyError=true;
+        }
+      }
+    }
+    if(this.description!=undefined) {
+      if(this.description.length >= 500) {
+          this.errorMaxLengthDescription=false;
+          anyError=true;
+      }
+    }
+    
+    
+    if(!anyError) {
+      if(this.n<=this.cards) {
+       
+        
+     
+        this.cardService.createCard(card, this.deck).subscribe({
+          next: respuesta => {
+            console.log(`Registrado, ${JSON.stringify(respuesta)}`)
+           
+            this.idCard=respuesta.idCard;
+            this.notNullCard=true;
+            
+            
+            for(const category of this.categories) {
+              
+              this.cardService.addCategory(this.idCard, category).subscribe({next: categoria => {
+                console.log(`Registrado, ${JSON.stringify(categoria)}`)
+              },
+              error: e => {
+                console.log(`insertar -> No se ha podido registrar, ${e}`)
+                alert(e)
+              }
+      
+              })
+      
+            }
+  
+            if(this.n==this.cards) {
+              this.generateValues=true;
+              sessionStorage.setItem("cardsCompleted", "true");
+            
+  
+            }
+          },
+          error: e => {
+            console.log(`insertar -> No se ha podido registrar, ${e}`)
+            alert(e)
+          }
+        });
+          
+        
+        this.name="";
+        this.image="";
+        this.description="";
+        
+        this.n++;
+      }
   }
   }
 
@@ -156,6 +267,8 @@ export class CardComponent implements OnInit {
         console.log("Balanceado el mazo " + this.deck);
         this.pdf=true;
         load.close();
+        sessionStorage.setItem("balanceCompleted", "true");
+        
       }
     });
     
@@ -167,9 +280,49 @@ export class CardComponent implements OnInit {
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);
+        sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+
+        sessionStorage.removeItem("deck");
+        
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+
+        }
+          if(c == undefined) {
+            break;
+          }
+
+        }        
+
+        
+        
+      
       }
   });
         
+  }
+
+  publishDeck() {
+    this.deckService.publishDeck(this.deck).subscribe({ next: publish => {
+      console.log(`El mazo se ha publicado con éxito.`)
+      this.alertPublish = true;
+      this.publication=false;
+    }});
+  }
+
+  noPublishDeck() {
+    this.deckService.publishDeck(this.deck).subscribe({ next: publish => {
+      console.log(`El mazo se ha publicado con éxito.`)
+      this.alertPublish = false;
+      this.publication=false;
+    }});
   }
 }
 

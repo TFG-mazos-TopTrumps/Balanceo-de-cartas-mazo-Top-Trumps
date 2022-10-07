@@ -28,10 +28,14 @@ public class UserServiceImpl implements UserService {
 	}
 	public void registerUser(User u) throws SQLException, ConstraintViolationException {
 		
+		
 		boolean errorNotNullUsername = u.getUsername() == null || u.getUsername().isBlank() || u.getUsername().isEmpty() ? true:false;
 		boolean errorDuplicatedUsername = this.usersDao.countUserByUsername(u.getUsername()) == 1;
 		boolean errorNotNullPassword = u.getPassword() == null || u.getPassword().isBlank() || u.getPassword().isEmpty() ? true:false;
 		boolean errorNotNullName = u.getName() == null || u.getName().isBlank() || u.getName().isEmpty() ? true:false;
+		boolean errorMaxLengthUsername = u.getUsername().length() >= 45 ? true:false;
+		boolean errorMaxLengthPassword = u.getUsername().length() >= 45 ? true:false;
+		boolean errorMaxLengthName = u.getUsername().length() >= 50 ? true:false;
 		boolean anyError=false;
 		
 		try {
@@ -59,6 +63,26 @@ public class UserServiceImpl implements UserService {
 				throw new ConstraintViolationException("El campo nombre no puede ser nulo.",null);
 				
 			}
+			
+			if(!anyError && errorMaxLengthUsername) {
+				anyError=true;
+				throw new ConstraintViolationException("El nombre de usuario no puede estar compuesto de 45 o más caracteres.",null);
+				
+			}
+			
+			if(!anyError && errorMaxLengthPassword) {
+				anyError=true;
+				throw new ConstraintViolationException("La contraseña no puede estar compuesta de 45 o más caracteres.",null);
+				
+				
+			}
+			
+			if(!anyError && errorMaxLengthName) {
+				anyError=true;
+				throw new ConstraintViolationException("El nombre no puede estar compuesto de o más 50 caracteres.",null);
+				
+				
+			}
 			if(!anyError) {
 				usersDao.save(u);
 			}
@@ -80,6 +104,21 @@ public class UserServiceImpl implements UserService {
 			if(errorNotNullName) {
 				System.out.println("El campo nombre no puede ser nulo.");
 				
+			}
+			
+			if(errorMaxLengthUsername) {
+				System.out.println("El nombre de usuario no puede estar compuesto de 45 o más caracteres.");
+	
+			}
+			
+			if(errorMaxLengthPassword) {
+				System.out.println("La contraseña no puede estar compuesta de 45 o más caracteres.");
+	
+			}
+			
+			if(errorMaxLengthName) {
+				System.out.println("El nombre no puede estar compuesto de 50 o más caracteres.");
+	
 			}
 				
 			}

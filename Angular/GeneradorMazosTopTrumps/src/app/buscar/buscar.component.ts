@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { Keyword } from '../model/Keyword';
 import { KeywordService } from '../service/keyword.service';
 import { LoginService } from '../service/login.service';
-import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-buscar',
@@ -23,6 +23,8 @@ export class BuscarComponent implements OnInit {
   keywords: string[] = [];
   keyword: string;
 
+  notExistWord: boolean = true;
+  notNullBusqueda: boolean = true;
   detalle: boolean = false;
   nombre: string = "";
   nCards: number = 0;
@@ -31,9 +33,10 @@ export class BuscarComponent implements OnInit {
   image: string = "";
   user: string = "";
   showForm: boolean = true;
+  anyError: boolean = false;
   control = new FormControl;
   filKeywords: Observable<string[]>;
-  constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router, private cookies: CookieService) {
+  constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router) {
     this.service.getWords().subscribe({next: response => {
       this.keywords = response;
     }});
@@ -41,10 +44,11 @@ export class BuscarComponent implements OnInit {
 
   ngOnInit() {
 
-    let usuario = this.cookies.get("usuario");
-    let password = this.cookies.get("password");
+    let usuario = sessionStorage.getItem("usuario");
+    let password = sessionStorage.getItem("password");
+   
 
-    if( usuario == "" && password == "") {
+    if( usuario == undefined && password == undefined) {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.route.navigate([``]);
@@ -64,16 +68,35 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarPorPalabraClave() {
-    this.showForm=false;
+   
+    this.service.countWords(this.keyword).subscribe({
+      next: conteo => {
+         
+    if(this.keyword == null || this.keyword=="") {
+      this.notNullBusqueda=false;
+      this.anyError=true;
+  }
+
+  if(conteo==0) {
+    this.notExistWord=false;
+    this.anyError=true;
+  }
+  if(!this.anyError) {
     this.deckService.getDecksByKeyword(this.keyword).subscribe({next: response => {
       this.decks=response;
+      this.showForm=false;
     }});
+  }
+
+      }
+    })
+   
   }
 
   seleccionar(deck: Deck): void {
     this.showForm=true;
     this.detalle=true;
-    this.loginService.getUserByUsername(this.cookies.get("usuario")).subscribe({
+    this.loginService.getUserByUsername(sessionStorage.getItem("usuario")).subscribe({
       next: u => {
         this.user=u.name;
         this.nombre=deck.name;

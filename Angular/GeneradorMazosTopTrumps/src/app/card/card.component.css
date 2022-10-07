@@ -9,3 +9,12 @@ h1{
 button {
     margin-top: 10px;
 }
+
+button:hover {
+   
+    border-radius: 10px;
+}
+button {
+    margin-top: 5px;
+    margin-right: 5px;
+}
