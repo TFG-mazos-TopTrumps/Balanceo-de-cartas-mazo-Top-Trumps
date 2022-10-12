@@ -6,6 +6,7 @@ import { LoginComponent } from './login/login.component'
 import { DeckComponent } from './deck/deck.component';
 import { CardComponent } from './card/card.component';
 import { KeywordComponent } from './keyword/keyword.component';
+import { SuccessComponent } from './success/success.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,11 @@ const routes: Routes = [
   {
     path : 'card/:cards/:categories/:valueMin/:valueMax', 
     component : CardComponent
+  },
+
+  {
+    path : 'success', 
+    component : SuccessComponent
   }
  
 ];

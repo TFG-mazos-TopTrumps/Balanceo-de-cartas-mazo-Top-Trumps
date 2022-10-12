@@ -42,12 +42,13 @@ export class CardComponent implements OnInit {
   publication: boolean = true;
   values: number[];
   alertPublish: boolean = false;
+  pantallaExito: boolean = false;
 
  cardsOfDeck: Card[];
   
  
 
-  constructor(private loginService: LoginService, private route : ActivatedRoute,  private router : Router, private cardService: CardService,  private deckService: DeckService,  public dialog: MatDialog) {
+  constructor(private loginService: LoginService, private route : ActivatedRoute, private router : Router, private cardService: CardService,  private deckService: DeckService,  public dialog: MatDialog) {
     
     
     this.nCategories = route.snapshot.params["categories"];
@@ -280,28 +281,9 @@ export class CardComponent implements OnInit {
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);
-        sessionStorage.removeItem("categoriesCompleted");
-        sessionStorage.removeItem("cardsCompleted");
-        sessionStorage.removeItem("balanceCompleted");
-
-        sessionStorage.removeItem("deck");
-        
-        let indice = 0;
-        while(true) {
-          let c = sessionStorage.getItem("category " + indice);
-          if(c != undefined) {
-          
-         sessionStorage.removeItem("category " + indice)
-          indice++;
-
-        }
-          if(c == undefined) {
-            break;
-          }
-
-        }        
-
-        
+       
+        this.pantallaExito=true;
+        this.router.navigate([`success`]);
         
       
       }
@@ -324,5 +306,6 @@ export class CardComponent implements OnInit {
       this.publication=false;
     }});
   }
-}
+
+  }
 

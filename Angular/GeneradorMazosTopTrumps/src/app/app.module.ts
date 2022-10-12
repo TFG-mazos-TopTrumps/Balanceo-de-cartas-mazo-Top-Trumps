@@ -20,11 +20,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { KeywordComponent } from './keyword/keyword.component';
+import { SuccessComponent } from './success/success.component';
 
 
 
 @NgModule({
-  declarations: [													
+  declarations: [																
     AppComponent,
       LoginComponent,
       HomeComponent,
@@ -32,7 +33,8 @@ import { KeywordComponent } from './keyword/keyword.component';
       DeckComponent,
       CardComponent,
       LoadComponent,
-      KeywordComponent
+      KeywordComponent,
+      SuccessComponent
    ],
   imports: [
     BrowserModule,

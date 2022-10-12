@@ -37,9 +37,9 @@ public abstract class Bot {
 	}
 	
 	/**
-	 * Método empleado para que, si es turno, elija la categoria más conveniente para jugar con base a las cartas de la que dispone en su
+	 * Método empleado para que, si es turno, elija la categoría más conveniente para jugar con base a las cartas de la que dispone en su
 	 * baza actual.
-	 * @return categoria con valor más alto.
+	 * @return categoría elegida.
 	 */
 	public abstract String chooseCategory();
 
@@ -52,7 +52,7 @@ public abstract class Bot {
 	/**
 	 * Método empleado para que el agente elija una carta con la que jugar la ronda 
 	 * según la categoría seleccionada.
-	 * @return el valor de la carta para la categoría que se juega en la ronda.
+	 * @return card carta elegida.
 	 */
 	public abstract Card play(String category);
 	

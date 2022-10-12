@@ -73,13 +73,13 @@
   <div *ngIf="cardCategories && generateValues && pdf" class="generatePDF">
     <h1 class="fw-lighter"> ¡Los valores se han generado con éxito! </h1>
     <br/>
-    <div *ngIf="publication">
+    <div *ngIf="publication && !pantallaExito">
       <h3 class="fw-lighter" style="text-align: center;"> Si desea publicar el mazo, pulse el botón. De lo contrario, cancele la operación. </h3>
       <button class="btn btn-info" (click)="publishDeck()" type="button"  style="position: absolute; top: 33%; left: 35%;"> Publicar mazo </button>
       <button class="btn btn-info" (click)="noPublishDeck()" type="button"  style="position: absolute; top: 33%; left: 50%;"> Cancelar</button>
     </div>
 
-    <div *ngIf="!publication">
+    <div *ngIf="!publication && !pantallaExito">
       <div *ngIf="alertPublish" class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="20" height="20" fill="currentColor" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
         <div>
@@ -89,5 +89,6 @@
       </div>
       <button class="btn btn-info" (click)="pdfMazo()" type="button"  style="position: absolute; top: 32%; left: 45%;"> Descargar </button>
     
-
+      
   </div>
+</div>
