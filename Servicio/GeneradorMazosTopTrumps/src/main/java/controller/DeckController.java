@@ -99,7 +99,7 @@ public class DeckController {
 	}
 	
 	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_PDF_VALUE)
-	public void pdfMazo(@RequestParam("deck") String deck) throws IOException {
+	public void pdfMazo(@RequestParam("deck") String deck) throws  IOException, Exception {
 		
 		this.deckService.pdfMazo(deck);
 

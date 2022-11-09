@@ -67,7 +67,7 @@ public class Deck {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idUser",
-	         referencedColumnName = "idUser")
+	         referencedColumnName = "idUser", nullable=false)
 	private User user;
 	
 	@JsonIgnore

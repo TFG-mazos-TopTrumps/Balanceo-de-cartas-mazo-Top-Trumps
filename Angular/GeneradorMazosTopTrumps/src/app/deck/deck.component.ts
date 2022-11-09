@@ -35,9 +35,10 @@ export class DeckComponent implements OnInit {
   errorMaxLengthDescription: boolean = true;
   errorMaxLengthImage: boolean = true;
   errorPatternURL: boolean = true;
+  errorIncorrectFormatImage: boolean = true;
   duplicatedName: boolean = true;
-  notNullAndNegativeNCards: boolean = true;
-  notNullAndNegativeNCategories: boolean = true;
+  notNullAndIncorrectNCards: boolean = true;
+  notNullAndIncorrectNCategories: boolean = true;
   notNullAndNegativeValueMin: boolean = true;
   notNullAndNegativeValueMax: boolean = true;
   valueMinBiggerOrEqualThanValueMax: boolean = true;
@@ -71,8 +72,8 @@ export class DeckComponent implements OnInit {
 
     
     this.notNullName=true;
-    this.notNullAndNegativeNCategories=true;
-    this.notNullAndNegativeNCards=true;
+    this.notNullAndIncorrectNCategories=true;
+    this.notNullAndIncorrectNCards=true;
     this.notNullAndNegativeValueMin=true;
     this.notNullAndNegativeValueMax=true;
     this.duplicatedName=true;
@@ -80,6 +81,7 @@ export class DeckComponent implements OnInit {
     this.errorMaxLengthDescription=true;
     this.errorMaxLengthImage=true;
     this.errorPatternURL=true;
+    this.errorIncorrectFormatImage=true;
     this.valueMinBiggerOrEqualThanValueMax=true;
 
     
@@ -108,22 +110,28 @@ export class DeckComponent implements OnInit {
       this.anyError=true;
     }
   }
-
   
-  
-    if(this.cards == null || this.cards < 2) {
-      this.notNullAndNegativeNCards=false;
+    if(this.cards == null || this.cards < 2 || this.cards > 30) {
+      this.notNullAndIncorrectNCards=false;
       this.anyError=true;
     } else {
       this.cards = Math.round(this.cards);
+      if(this.cards > 30) {
+        this.notNullAndIncorrectNCards=false;
+        this.anyError=true;
+      }
       
     }
   
     if(this.categories == null || this.categories < 2) {
-      this.notNullAndNegativeNCategories=false;
+      this.notNullAndIncorrectNCategories=false;
       this.anyError=true;
     } else {
       this.categories = Math.round(this.categories);
+      if(this.categories > 6) {
+        this.notNullAndIncorrectNCategories=false;
+        this.anyError=true;
+      }
     }
 
     if(this.valueMin == null || this.valueMin < 0 ) {
@@ -159,6 +167,10 @@ export class DeckComponent implements OnInit {
         this.errorPatternURL=false;
         this.anyError=true;
       } 
+      if(!(this.image.match(".jpg") || this.image.match(".png") || this.image.match(".jpeg"))) {
+        this.errorIncorrectFormatImage=false;
+        this.anyError=true;
+      }
       }
     }
     

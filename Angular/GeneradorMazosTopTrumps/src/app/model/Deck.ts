@@ -1,5 +1,3 @@
-import { User } from "./User";
-
 export class Deck {
     idDeck: number;
     name: string;

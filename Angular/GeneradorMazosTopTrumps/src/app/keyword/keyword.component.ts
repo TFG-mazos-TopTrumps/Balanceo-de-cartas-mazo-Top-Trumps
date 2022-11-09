@@ -14,6 +14,7 @@ export class KeywordComponent implements OnInit {
 
   notNullKeyword: boolean = true;
   errorMaxLengthKeyword: boolean = true;
+  errorDuplicateKeyword: boolean = true;
   anyError:boolean = false;
   alertaExito: boolean = false;
   keyword: string;
@@ -62,6 +63,7 @@ export class KeywordComponent implements OnInit {
 
     this.notNullKeyword=true;
     this.errorMaxLengthKeyword=true;
+    this.errorDuplicateKeyword=true;
     this.alertaExito=false;
     let anyError = false;
     let keyword = new Keyword();
@@ -79,6 +81,13 @@ export class KeywordComponent implements OnInit {
       this.errorMaxLengthKeyword=false;
       anyError=true;
     }
+    for(const k of this.keywordsDeck) {
+      if(this.keyword == k.word) {
+          this.errorDuplicateKeyword=false;
+          anyError=true;
+  
+      }
+    }
 
     if(!anyError) {
     this.deckService.getDeckByName(name).subscribe({
@@ -91,26 +100,28 @@ export class KeywordComponent implements OnInit {
       }
 
     });
-    this.keywordService.addKeyword(keyword, name).subscribe({
-      next: respuesta => {
-        console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
-        this.confirmKeyword=true;
-        this.alertaExito=true;
-        this.minKeywords=true;
-        
-        this.keywordService.getKeywordsByDeck(sessionStorage.getItem("deck")).subscribe({
-          next: kws => {
-            this.keywordsDeck=kws;
+    
+        this.keywordService.addKeyword(keyword, name).subscribe({
+          next: respuesta => {
+            console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
+            this.confirmKeyword=true;
+            this.alertaExito=true;
+            this.minKeywords=true;
+            
+            
+            this.keywordService.getKeywordsByDeck(sessionStorage.getItem("deck")).subscribe({
+              next: kws => {
+                this.keywordsDeck=kws;
+              }
+            });
+            
+    
+          },
+          error: e => {
+            console.log(`insertar -> No se ha podido registrar, ${e}`)
+            alert(e)
           }
         });
-        
-
-      },
-      error: e => {
-        console.log(`insertar -> No se ha podido registrar, ${e}`)
-        alert(e)
-      }
-    });
     this.keyword="";
     
       this.confirmKeyword=true;

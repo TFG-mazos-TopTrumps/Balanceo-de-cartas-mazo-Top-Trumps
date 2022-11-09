@@ -55,7 +55,7 @@ public class Card {
 	
 	@ElementCollection
 	@CollectionTable(name = "card_categories",
-		joinColumns = {@JoinColumn(name="idCard", referencedColumnName = "idCard")})
+		joinColumns = {@JoinColumn(name="idCard", referencedColumnName = "idCard", nullable=false)})
 	@MapKeyColumn(name = "category")
 	@Column(name="value")
 	Map<String,Double> categories;
@@ -63,7 +63,7 @@ public class Card {
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idDeck",
-    referencedColumnName = "idDeck")
+    referencedColumnName = "idDeck", nullable=false)
 	Deck deck;
 	
 	public Card(List<String> names,List<Double> values) {

@@ -19,9 +19,9 @@ export class DeckService {
     return this.http.get<Deck[]>(this.url + 'DecksKeyword?keyword=' + word);
   }
 
-  getDeckId() {
-    return this.http.get<number>(this.url + 'DeckId'); 
-  }
+  //getDeckId() {
+    //return this.http.get<number>(this.url + 'DeckId'); 
+  //}
 
   countDecksName(name: string) {
     return this.http.get<number>(this.url + 'CountDeckName?name=' + name); 

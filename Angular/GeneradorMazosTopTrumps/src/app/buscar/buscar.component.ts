@@ -5,9 +5,10 @@ import { Router } from '@angular/router';
 import { Deck } from '../model/Deck';
 import { DeckService } from '../service/deck.service';
 import { Observable } from 'rxjs';
-import { Keyword } from '../model/Keyword';
 import { KeywordService } from '../service/keyword.service';
 import { LoginService } from '../service/login.service';
+import { LoadComponent } from '../load/load.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class BuscarComponent implements OnInit {
   anyError: boolean = false;
   control = new FormControl;
   filKeywords: Observable<string[]>;
-  constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router) {
+  constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router, public dialog: MatDialog) {
     this.service.getWords().subscribe({next: response => {
       this.keywords = response;
     }});
@@ -68,6 +69,10 @@ export class BuscarComponent implements OnInit {
   }
 
   buscarPorPalabraClave() {
+
+    this.notNullBusqueda=true;
+    this.notExistWord=true;
+    this.anyError=false;
    
     this.service.countWords(this.keyword).subscribe({
       next: conteo => {
@@ -109,9 +114,14 @@ export class BuscarComponent implements OnInit {
    }
 
    pdfMazo() { 
+    const load = this.dialog.open((LoadComponent), {
+      data: `Puede tardar unos segundos`
+    });
     this.deckService.deckPdf(this.nombre).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);
+        load.close();
+        this.route.navigate([`success`]);
       }
   });
         

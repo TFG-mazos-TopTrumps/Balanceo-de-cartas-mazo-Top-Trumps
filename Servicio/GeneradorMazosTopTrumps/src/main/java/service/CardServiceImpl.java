@@ -35,6 +35,7 @@ public class CardServiceImpl implements CardService {
 		boolean errorMaxLengthDescription = (c.getDescription() != null && c.getDescription().length() >= 500) ? true:false;
 		boolean errorMaxLengthImage = (c.getImage() != null && c.getImage().length() >= 1000) ? true:false;
 		boolean errorPatternURL = (c.getImage() != null && c.getImage().length() >= 1 && !(c.getImage().startsWith("http://") || c.getImage().startsWith("https://"))) ? true:false;
+		boolean errorIncorrectFormatImage = c.getImage() != null  && !(c.getImage().contains(".jpg") || c.getImage().contains(".png") || c.getImage().contains(".jpeg")) ? true:false;
 
 		boolean anyError = false;
 		
@@ -90,6 +91,14 @@ public class CardServiceImpl implements CardService {
 			if(errorPatternURL) {
 				System.out.println("El campo imagen ha de ser una URL.");
 				
+			}
+			if(!anyError && errorIncorrectFormatImage) {
+				anyError=true;
+				throw new ConstraintViolationException("La imagen ha tener formato .jpg, .png o .jpeg .",null);
+				
+			}
+			if(errorIncorrectFormatImage) {
+				System.out.println("La imagen ha tener formato .jpg, .png o .jpeg .");
 			}
 			return null;
 		}

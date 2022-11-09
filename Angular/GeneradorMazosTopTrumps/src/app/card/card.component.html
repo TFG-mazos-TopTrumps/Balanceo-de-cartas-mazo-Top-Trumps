@@ -51,6 +51,10 @@
     <div class="text-danger" [hidden]="errorPatternURL">
       El campo imagen ha de ser una URL.
     </div>
+    <div class="text-danger" [hidden]="errorIncorrectFormatImage">
+      La imagen ha tener formato .jpg, .png o .jpeg .
+    </div>
+
     <label class="form-label" for="description">Descripción </label>
     <input class="form-control" type="textarea" name="description" [(ngModel)]="description">
     <div class="text-danger" [hidden]="errorMaxLengthDescription">
@@ -75,8 +79,8 @@
     <br/>
     <div *ngIf="publication && !pantallaExito">
       <h3 class="fw-lighter" style="text-align: center;"> Si desea publicar el mazo, pulse el botón. De lo contrario, cancele la operación. </h3>
-      <button class="btn btn-info" (click)="publishDeck()" type="button"  style="position: absolute; top: 33%; left: 35%;"> Publicar mazo </button>
-      <button class="btn btn-info" (click)="noPublishDeck()" type="button"  style="position: absolute; top: 33%; left: 50%;"> Cancelar</button>
+      <button class="btn btn-info" (click)="publishDeck()" type="button"  style="position: absolute; top: 33%; left: 40%;"> Publicar mazo </button>
+      <button class="btn btn-info" (click)="noPublishDeck()" type="button"  style="position: absolute; top: 33%; left: 52%;"> Cancelar</button>
     </div>
 
     <div *ngIf="!publication && !pantallaExito">

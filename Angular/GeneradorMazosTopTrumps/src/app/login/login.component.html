@@ -12,7 +12,7 @@
   </div>
 </div>
 
-  <div *ngIf="condicionRegistro" class="card-body">
+  <div *ngIf="condicionRegistro" name="inicioSesion" class="card-body">
     
     <div class="mb-3">
     <label for="usuario" class="col-auto">Usuario </label>
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-  <div *ngIf="!condicionRegistro" class="card-body">
+  <div *ngIf="!condicionRegistro" name="registro" class="card-body">
   
       <div class="mb-3">
       <label for="usuario" class="form-label">Usuario </label>
@@ -71,7 +71,7 @@
       <label for="confirmPassword" class="form-label">Confirmar contraseña </label>
       <input type="password" class="form-control" name="confirmPassword" [(ngModel)]="confirmPassword" required>
       <div class="text-danger" [hidden]="errorPasswordRegister">
-        Las contraseñas no coinciden.
+        La contraseña y su respectiva confirmación no coinciden.
       </div>
       <div class="text-danger" [hidden]="notNullConfirmPassword">
         La confirmación de la contraseña no puede estar vacía.

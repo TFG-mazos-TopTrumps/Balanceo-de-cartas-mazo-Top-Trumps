@@ -1,5 +1,6 @@
 package controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
@@ -64,7 +65,7 @@ public class KeywordController {
 	}
 	
 	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws ConstraintViolationException {
+	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws ConstraintViolationException, SQLException {
 		Deck d = deckService.getDeckByName(deck);
 		Integer idDeck = d.getIdDeck();
 		

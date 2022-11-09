@@ -38,6 +38,7 @@ export class CardComponent implements OnInit {
   errorMaxLengthDescription: boolean = true;
   errorMaxLengthImage: boolean = true; 
   errorPatternURL: boolean = true;
+  errorIncorrectFormatImage: boolean = true;
   pdf: boolean = false;
   publication: boolean = true;
   values: number[];
@@ -167,6 +168,7 @@ export class CardComponent implements OnInit {
     this.errorMaxLengthDescription=true;
     this.errorMaxLengthImage=true;
     this.errorPatternURL=true;
+    this.errorIncorrectFormatImage=true;
 
     let card = new Card();
     card.name = this.name;
@@ -196,6 +198,11 @@ export class CardComponent implements OnInit {
         if(!(this.image.startsWith("http://") || this.image.startsWith("https://"))) {
           
           this.errorPatternURL=false;
+          anyError=true;
+        }
+        
+        if(!(this.image.match(".jpg") || this.image.match(".png") || this.image.match(".jpeg"))) {
+          this.errorIncorrectFormatImage=false;
           anyError=true;
         }
       }
@@ -278,10 +285,13 @@ export class CardComponent implements OnInit {
 }
 
   pdfMazo() { 
+    const load = this.dialog.open((LoadComponent), {
+      data: `Puede tardar unos segundos`
+    });
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);
-       
+        load.close()
         this.pantallaExito=true;
         this.router.navigate([`success`]);
         
@@ -300,8 +310,8 @@ export class CardComponent implements OnInit {
   }
 
   noPublishDeck() {
-    this.deckService.publishDeck(this.deck).subscribe({ next: publish => {
-      console.log(`El mazo se ha publicado con éxito.`)
+    this.deckService.noPublishDeck(this.deck).subscribe({ next: publish => {
+      console.log(`El mazo no se ha publicado`)
       this.alertPublish = false;
       this.publication=false;
     }});

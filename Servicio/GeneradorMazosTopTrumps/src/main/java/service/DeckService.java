@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 
 
 
-import com.itextpdf.text.DocumentException;
+
 
 import model.Deck;
 
@@ -27,7 +27,7 @@ public interface DeckService {
 	List<Double> generateDeckValues(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit);
 	Integer countDecksWithName(String name);
 	void balanceDeck(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit, String deck) throws ConstraintViolationException, SQLException;
-	void pdfMazo(String deck) throws IOException;
+	void pdfMazo(String deck) throws IOException, Exception;
 	boolean checkKeyword(String deck);
 	void publishDeck(String deck);
 	void noPublishDeck(String deck);

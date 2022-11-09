@@ -19,7 +19,7 @@ public abstract class ObjectiveFunction {
 	/**
 	 * Método abstracto que define que hace una función objetivo.
 	 * @param solution que se evalúa.
-	 * @return el valor resultante del cáculo de la función.
+	 * @return el valor resultante del cálculo de la función.
 	 */
 	public abstract double evaluate(DoubleSolution solution);
 

@@ -34,8 +34,8 @@ public class UserServiceImpl implements UserService {
 		boolean errorNotNullPassword = u.getPassword() == null || u.getPassword().isBlank() || u.getPassword().isEmpty() ? true:false;
 		boolean errorNotNullName = u.getName() == null || u.getName().isBlank() || u.getName().isEmpty() ? true:false;
 		boolean errorMaxLengthUsername = u.getUsername().length() >= 45 ? true:false;
-		boolean errorMaxLengthPassword = u.getUsername().length() >= 45 ? true:false;
-		boolean errorMaxLengthName = u.getUsername().length() >= 50 ? true:false;
+		boolean errorMaxLengthPassword = u.getPassword().length() >= 45 ? true:false;
+		boolean errorMaxLengthName = u.getName().length() >= 50 ? true:false;
 		boolean anyError=false;
 		
 		try {

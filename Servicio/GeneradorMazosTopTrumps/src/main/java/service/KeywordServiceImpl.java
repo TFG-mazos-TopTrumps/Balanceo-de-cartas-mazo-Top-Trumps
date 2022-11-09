@@ -54,13 +54,20 @@ public class KeywordServiceImpl implements KeywordService {
 	}
 
 	
-	public boolean createKeyword(Integer idDeck, Keyword word) throws ConstraintViolationException {
+	public boolean createKeyword(Integer idDeck, Keyword word) throws ConstraintViolationException, SQLException {
 		
+		Deck deck = this.decksDao.findById(idDeck).get();
 		// Condiciones de validación
 		boolean errorNotNullWord = word.getWord() == null || word.getWord().isBlank() || word.getWord().isEmpty() ? true:false;
 		boolean errorMaxLengthWord = word.getWord().length() >= 45 ? true:false;
+		boolean errorDuplicateWord = false;
 		boolean anyError=false;
 		
+		for(Keyword k : deck.getKeywords()) {
+			if(k.getWord().equals(word.getWord())) {
+				errorDuplicateWord=true;
+			}
+		}
 		try {
 			
 			if(errorNotNullWord) {
@@ -68,7 +75,13 @@ public class KeywordServiceImpl implements KeywordService {
 				throw new ConstraintViolationException("La palabra clave no puede ser nula.",null);
 			}
 
+			if(!anyError && errorDuplicateWord) {
+				anyError=true;
+				throw new SQLException("La palabra clave indicada ya se ha añadido al mazo.");
+			}
+			
 			if(!anyError && errorMaxLengthWord) {
+				anyError=true;
 				throw new ConstraintViolationException("La palabra clave no puede estar formada por 45 o más caracteres.",null);
 			}
 		
@@ -85,6 +98,7 @@ public class KeywordServiceImpl implements KeywordService {
 					Keyword kw = this.keywordsDao.findKeywordByWord(word.getWord()).get();
 					kw.addKeyword(d);
 					keywordsDao.save(kw);
+					
 				}
 				
 				
@@ -104,7 +118,14 @@ public class KeywordServiceImpl implements KeywordService {
 				System.out.println("La palabra clave no puede estar formada por 45 o más caracteres.");
 
 			}
-			return false;
+			
+		}
+		catch(SQLException e) {
+			if(errorDuplicateWord) {
+				System.out.println("La palabra clave indicada ya se ha añadido al mazo.");
+
+			}
+			
 		}
 		return false;
 		

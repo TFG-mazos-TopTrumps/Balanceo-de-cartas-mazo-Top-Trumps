@@ -1,7 +1,15 @@
 package service;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,8 +32,6 @@ import org.uma.jmetal.lab.experiment.util.ExperimentProblem;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
-
-
 
 import dao.DecksDao;
 import model.Card;
@@ -63,9 +69,10 @@ public class DeckServiceImpl implements DeckService {
 		boolean errorMaxLengthName = d.getName().length() >= 45 ? true:false;
 		boolean errorMaxLengthDescription = (d.getDescription() != null && d.getDescription().length() >= 500) ? true:false;
 		boolean errorMaxLengthImage = (d.getImage() != null  && d.getImage().length() >= 1000) ? true:false;
+		boolean errorIncorrectFormatImage = d.getImage() != null  && !(d.getImage().contains(".jpg") || d.getImage().contains(".png") || d.getImage().contains(".jpeg")) ? true:false;
 		boolean errorPatternURL = (d.getImage() != null && d.getImage().length() >= 1 && !(d.getImage().startsWith("http://") || d.getImage().startsWith("https://"))) ? true:false;
-		boolean errorNotNullAndNegativeNCards = d.getNCards() < 2 ? true:false;
-		boolean errorNotNullAndNegativeNCategories = d.getNCategories() < 2 ? true:false;
+		boolean errorNotNullAndIncorrectNCards = d.getNCards() < 2 ? true:false;
+		boolean errorNotNullAndIncorrectNCategories = d.getNCategories() < 2 ? true:false;
 		boolean anyError = false;
 		
 		try {
@@ -105,15 +112,22 @@ public class DeckServiceImpl implements DeckService {
 				
 			}
 			
-			
-			if(!anyError && errorNotNullAndNegativeNCards) {
+			if(!anyError && errorIncorrectFormatImage) {
 				anyError=true;
-				throw new ConstraintViolationException("El número de cartas no puede ser menor que uno.",null);
+				throw new ConstraintViolationException("La imagen ha tener formato .jpg, .png o .jpeg .",null);
 				
 			}
-			if(!anyError && errorNotNullAndNegativeNCategories) {
+			
+			
+			
+			if(!anyError && errorNotNullAndIncorrectNCards) {
 				anyError=true;
-				throw new ConstraintViolationException("El número de categorías no puede ser menor que uno.",null);
+				throw new ConstraintViolationException("El número de cartas no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que treinta.", null);
+				
+			}
+			if(!anyError && errorNotNullAndIncorrectNCategories) {
+				anyError=true;
+				throw new ConstraintViolationException("El número de categorias no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que seis.",null);
 			
 			}
 			
@@ -134,12 +148,12 @@ public class DeckServiceImpl implements DeckService {
 				
 			}
 			
-			if(errorNotNullAndNegativeNCards) {
-				System.out.println("El número de cartas no puede ser menor que cero.");
+			if(errorNotNullAndIncorrectNCards) {
+				System.out.println("El número de cartas no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que treinta.");
 			
 			}
-			if(errorNotNullAndNegativeNCategories) {
-				System.out.println("El número de categorías no puede ser menor que cero.");
+			if(errorNotNullAndIncorrectNCategories) {
+				System.out.println("El número de cartas no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que seis.");
 				
 			}
 			if(errorMaxLengthName) {
@@ -153,6 +167,9 @@ public class DeckServiceImpl implements DeckService {
 			}
 			if(errorPatternURL) {
 				System.out.println("El campo imagen ha de ser una URL.");
+			}
+			if(errorIncorrectFormatImage) {
+				System.out.println("La imagen ha tener formato .jpg, .png o .jpeg .");
 			}
 		}
 		
@@ -243,67 +260,253 @@ public class DeckServiceImpl implements DeckService {
 		
 		
 	}
+	
+	
+	    public static void download(String urlString, String filename,String savePath) throws Exception {  
+	        // Construir URL  
+	        URL url = new URL(urlString);  
+	                 // conexión abierta  
+	        URLConnection con = url.openConnection();  
+	                 // Establece el tiempo de espera de la solicitud en 5 s  
+	        con.setConnectTimeout(5*1000);  
+	                 // flujo de entrada 
+	       
+	        InputStream is = con.getInputStream();  
+	      
+	                 // Búfer de datos de 1K  
+	        byte[] bs = new byte[2048];  
+	                 // La longitud de los datos leídos  
+	        int len;  
+	                 // flujo de archivo de salida  
+	       File sf=new File(savePath);  
+	       if(!sf.exists()){  
+	           sf.mkdirs();  
+	       }  
+	       OutputStream os = new FileOutputStream(sf.getPath()+"/"+filename);  
+	                 // empieza a leer  
+	        while ((len = is.read(bs)) != -1) {  
+	          os.write(bs, 0, len);  
+	        }  
+	                 // Finalizar, cerrar todos los enlaces  
+	        os.close();  
+	        is.close();  
+	    }   
+	  
 
-//@RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
-            //produces = MediaType.APPLICATION_PDF_VALUE)
-	public void pdfMazo(String deck) throws IOException {
+
+	public void pdfMazo(String deck) throws IOException, Exception {
 		
 		Deck d = this.decksDao.findDeckByName(deck).get();
 		List<Card> cards = this.cardService.findCardsOfDeck(deck);
 		
+		// Atributos:
+		String name = d.getName();
+		String description = d.getDescription();
+		
+		
 		try (PDDocument document = new PDDocument()) {
-            PDPage page = new PDPage(PDRectangle.A6);
-            document.addPage(page);
+            PDPage firstPage = new PDPage(PDRectangle.A4);
+           
+            
+            document.addPage(firstPage);
 
-            PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
+            PDPageContentStream contentStream = new PDPageContentStream(document, firstPage);
+          
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_BOLD, 32);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52);
-            contentStream.showText(d.getName());
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25);
+            contentStream.showText(name);
             contentStream.endText();
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_BOLD, 20);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52*2);
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*2);          
             contentStream.showText("Creador: ");
             contentStream.showText(d.getUser().getName());
             contentStream.endText();
 
+           if(description != null) {
+        	   
+        	   contentStream.beginText();
+               contentStream.setFont(PDType1Font.TIMES_BOLD, 20);
+               contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*3);           
+               contentStream.showText("Descripción: ");
+               contentStream.endText();
+               
+               List<String> lines = new ArrayList<String>();
+               
+               int begin = 0;
+               
+               String line;
+               for(int end = 80; end <= description.length() + 80; end += 80) {
+            	   
+            	   if(end==100) {
+	            	   if(description.length() < 80) {
+	            		   line = description.substring(begin);
+	            		   lines.add(line);
+	            		   
+	            	   } else {
+	            		   line = description.substring(begin, end);
+	            		   lines.add(line);
+	            	   }
+            	   } else {
+            	   begin += 80;
+            	   if(end > 80) {
+            		  
+            		   if(end < description.length()-1) {
+            			   line = description.substring(begin, end);
+            			   lines.add(line);
+            			   
+            		   if(end > description.length()-1) {
+            			   line = description.substring(begin);
+            			   lines.add(line);
+            		
 
-//           if(d.getImage() != null) {
-//            PDImageXObject image = PDImageXObject.createFromByteArray(document, Main.class.getResourceAsStream(d.getImage()).readAllBytes(), "Imagen del mazo");
-//            contentStream.drawImage(image, 20, 20, image.getWidth() / 3, image.getHeight() / 3);
-//           }
+            			   
+            	   }   
+            	   
+            	   
+            	 }
+            	   }
+               } 
+               int c = 4;
+              
+               for(String l : lines) {
+            	   contentStream.beginText();
+                   contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                   contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*c);        
+                   contentStream.showText(l);
+                   contentStream.endText();
+                   c++;
+               }
+               
+        	            
+           }
            
-           if(d.getDescription() != null) {
-            contentStream.beginText();
-            contentStream.setFont(PDType1Font.COURIER, 14);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52*3);
-            contentStream.showText(d.getDescription());
-            contentStream.endText();
+           if(d.getImage() != null) {
+        	  download(d.getImage(), "imagen" + d.getName() + ".jpg", "C:/PDFMazo");
+          	  File img = new File("C:\\PDFMazo\\" + "imagen" + d.getName() + ".jpg");
+          	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
+           	  contentStream.drawImage(image, 20, 20, 500, 500);
+        	   
            }
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.COURIER, 14);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52*4);
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*10);
             contentStream.showText("Número de cartas: ");
             contentStream.showText(String.valueOf(d.getNCards()));
             contentStream.endText();
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.COURIER, 14);
-            contentStream.newLineAtOffset( 20, page.getMediaBox().getHeight() - 52*5);
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*11);
             contentStream.showText("Número de categorias: ");
             contentStream.showText(String.valueOf(d.getNCategories()));
             contentStream.endText();
             
             
             contentStream.close();
+            
+            for(Card c : cards) {
+            
+                PDPage pageCard = new PDPage(PDRectangle.A6);
+                document.addPage(pageCard);
+                
+                PDPageContentStream contentStreamCards = new PDPageContentStream(document, pageCard);
+                
+//                contentStreamCards.setNonStrokingColor(245, 245, 220);
+//                contentStreamCards.addRect(0, 0, pageCard.getTrimBox().getWidth(), pageCard.getTrimBox().getHeight());
+//                contentStreamCards.fill();
+                
+                if(c.getImage() != null) {
+                	download(c.getImage(), "imagen" + c.getName() + ".jpg", "C:/PDFMazo");
+               	  File img = new File("C:\\PDFMazo\\" + "imagen" + c.getName() + ".jpg");
+               	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
+               	  contentStreamCards.drawImage(image, 25, pageCard.getTrimBox().getHeight()-25*9, 50, 50);
+             	   
+                }
+                
+                contentStreamCards.beginText();
+                contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 20);
+                contentStreamCards.newLineAtOffset(175, pageCard.getTrimBox().getHeight()-25*10);
+                contentStreamCards.showText(c.getName());
+                contentStreamCards.endText();
+                
+                if(c.getDescription() != null) {
+             	   
+                	
+                    List<String> linesCard = new ArrayList<String>();
+                    
+                    int beginCard = 0;
+                    String lineCard;
+                    for(int end = 15; end <= c.getDescription().length() + 15; end += 15) {
+                 	   
+                 	   if(end==15) {
+     	            	   if(c.getDescription().length() < 15) {
+     	            		   lineCard = c.getDescription().substring(beginCard);
+     	            		   linesCard.add(lineCard);
+     	            	   } else {
+     	            		  lineCard = c.getDescription().substring(beginCard,end);
+     	            		  linesCard.add(lineCard);
+     	            	   }
+     	            	   
+                 	   } else {
+                 		  beginCard += 15;
+                 	   if(end > 15) {
+                 		  
+	                 		   if(end < c.getDescription().length()-1) {
+	                 			   lineCard = description.substring(beginCard, end);
+	                 			   linesCard.add(lineCard);
+	                 		   }
+	                 		   if(end > c.getDescription().length()-1) {
+	                 			   lineCard = description.substring(beginCard);
+	                 			   linesCard.add(lineCard);
+	                 			   
+	                 	   }   
+                 	   
+                 	   
+                 	 }
+                 	   }
+                    } 
+                    int contador = 10;
+                    
+                    for(String l : linesCard) {
+                    	contentStreamCards.beginText();
+                    	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 8);
+                    	contentStreamCards.newLineAtOffset(25, pageCard.getTrimBox().getHeight()-25*contador);        
+                    	contentStreamCards.showText(l);
+                    	 contentStreamCards.endText();
+                        contador++;
+                    }
+                   
+                    
+                    
+                    
+             	            
+                }
+                
+                int n = 12;
+                for(var cv : c.getCategories().entrySet()) {
+                	
+                	contentStreamCards.beginText();
+                	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 10);
+                	contentStreamCards.newLineAtOffset(175, pageCard.getTrimBox().getHeight()-25*n);        
+                	contentStreamCards.showText(cv.getKey() + "  " + cv.getValue());
+                	contentStreamCards.endText();
+                	n++;
+                }
 
-            document.save(d.getName() + ".pdf");
-        }
+
+              contentStreamCards.close();
+            	
+            }
+
+            document.save("C:\\PDFMazo\\" + d.getName() + ".pdf");
+        
+		}
+		}
 	}
     
 		 

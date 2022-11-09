@@ -36,21 +36,24 @@
               <div class="text-danger" [hidden]="errorPatternURL">
                 El campo imagen ha de ser una URL.
               </div>
+              <div class="text-danger" [hidden]="errorIncorrectFormatImage">
+                La imagen ha tener formato .jpg, .png o .jpeg .
+              </div>
             </div>
             <br>
             <div class="col-md-6">
             <label for="cards" class="form-label">Número de cartas </label>
-            <input type="number" class="form-control" name="cards" [(ngModel)]="cards" min="1" required>
-            <div class="text-danger" [hidden]="notNullAndNegativeNCards">
-              El número de cartas no puede quedar vacío y ha de ser positivo y mayor que uno.
+            <input type="number" class="form-control" name="cards" [(ngModel)]="cards" min="2" required>
+            <div class="text-danger" [hidden]="notNullAndIncorrectNCards">
+              El número de cartas no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que treinta.
             </div>
           </div>
           <br>
             <div class="col-md-6">
             <label for="categories" class="form-label">Número de categorías </label>
             <input type="number" class="form-control" name="categories" [(ngModel)]="categories" min="2" required>
-            <div class="text-danger" [hidden]="notNullAndNegativeNCategories">
-              El número de categorías no puede quedar vacío y ha de ser positivo y mayor que uno.
+            <div class="text-danger" [hidden]="notNullAndIncorrectNCategories">
+              El número de categorías no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que seis.
             </div>
           </div>
             <br>
@@ -65,7 +68,7 @@
             <div class="col-md-6">
             <label for="valueMax" class="form-label">Valor máximo de las categorías </label>
             <input type="number" class="form-control" name="valueMax" [(ngModel)]="valueMax" min="1" required>
-            <div class="text-danger" [hidden]="notNullAndNegativeValueMin">
+            <div class="text-danger" [hidden]="notNullAndNegativeValueMax">
               El valor máximo de las categorías de las cartas ha de ser positivo y mayor que cero.
             </div>
             <div class="text-danger" [hidden]="valueMinBiggerOrEqualThanValueMax">

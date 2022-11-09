@@ -66,13 +66,17 @@
   <h3 class="fw-ligther">Cartas: {{nCards}}</h3>
   <h3 class="fw-ligther">Categorias: {{nCategories}}</h3>
   <h3 class="fw-ligther">Descripción: </h3>
-  <div class="container-fluid" style="overflow: auto;"> 
-    {{description}}
+ 
+  <div class="container-fluid" style="overflow: auto; width: 80ex"> 
+     
+    <p style="text-align: justify">
+      {{description}}
+    </p>
   </div>
   <button class="btn btn-info" (click)="pdfMazo()" type="button"> Descargar </button>
   <button class="btn btn-info" (click)="volverListaResultados()" type="button">Volver</button>
   </div>
-  <figure class="figure">
+  <figure class="figure" style="margin-left: 3px">
     <img src="{{image}}" alt="Imagen mazo" class="figure-img img-fluid rounded" style="position: absolute; top: 10%; left: 60%; height: 500px; width: 500px">
     
   </figure>
