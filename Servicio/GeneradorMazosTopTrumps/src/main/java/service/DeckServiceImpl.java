@@ -416,28 +416,58 @@ public class DeckServiceImpl implements DeckService {
                 
                 PDPageContentStream contentStreamCards = new PDPageContentStream(document, pageCard);
                 
-               // Tamaño de la carta
+               // Tamaño de la carta.
                 
-                contentStreamCards.setNonStrokingColor(new Color(255,181,51));
-                contentStreamCards.addRect(125, 200, 190, 310);
+                contentStreamCards.setNonStrokingColor(new Color(250,220,80));
+                contentStreamCards.addRect(125, 225, 190, 310);
                 contentStreamCards.fill();
                 
+               // Nombre de las cartas.
+                
+                contentStreamCards.setNonStrokingColor(new Color(255,239,0));
+                contentStreamCards.addRect(225, 343, 80, 20);
+                contentStreamCards.fill();
+                
+	           // Panel celeste descripción.
+	            contentStreamCards.setNonStrokingColor(new Color(51,165,255));
+	            contentStreamCards.addRect(125, 225, 90, 120);
+	            contentStreamCards.fill();
+                
+             
+                
+                for(int i=1; i<=d.getNCategories(); i++) {
+                
+                // Paneles nombres de las categorías.
+                    
+	            contentStreamCards.setNonStrokingColor(new Color(255,239,0));
+	            contentStreamCards.addRect(217, 200+(25*i), 50, 10);
+	            contentStreamCards.fill();
+                
+	            // Paneles de valores de las categorías.
+	            
+                contentStreamCards.setNonStrokingColor(new Color(255,239,0));
+                contentStreamCards.addRect(267, 200+(25*i), 30, 10);
+                contentStreamCards.fill();
+                
+            }
                 if(c.getImage() != null) {
-                	download(c.getImage(), "imagen" + c.getName() + ".jpg", "C:/PDFMazo");
+                	
+                  download(c.getImage(), "imagen" + c.getName() + ".jpg", "C:/PDFMazo");
                	  File img = new File("C:\\PDFMazo\\" + "imagen" + c.getName() + ".jpg");
                	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-               	  contentStreamCards.drawImage(image, 137, 325, 165, 175);
+               	  contentStreamCards.drawImage(image, 137, 360, 165, 175);
              	   
                 }
                 
+                // Color de la fuente.
+                
                 contentStreamCards.setNonStrokingColor(new Color(0,0,0));
-                contentStreamCards.addRect(125, 275, 90, 155);
                 contentStreamCards.fill();
                 
                 
                 contentStreamCards.beginText();
-                contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 16);
-                contentStreamCards.newLineAtOffset(175, 170);
+                contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 8);
+                contentStreamCards.newLineAtOffset(230, 350);
                 contentStreamCards.showText(c.getName());
                 contentStreamCards.endText();
                 
@@ -478,41 +508,32 @@ public class DeckServiceImpl implements DeckService {
                  	 }
                  	   }
                     } 
-                    int contador = 10;
+                    int contador = 0;
                     
-                    // Panel celeste descripción
-                    contentStreamCards.setNonStrokingColor(new Color(51,165,255));
-                    contentStreamCards.addRect(125, 200, 90, 120);
-                    contentStreamCards.fill();
-                    
-                    contentStreamCards.setNonStrokingColor(new Color(0,0,0));
-                    contentStreamCards.fill();
                     for(String l : linesCard) {
                     	
                     	contentStreamCards.beginText();
                     	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 6);
-                    	contentStreamCards.newLineAtOffset(25, pageCard.getTrimBox().getHeight()-25*contador);        
+                    	contentStreamCards.newLineAtOffset(125, 225 + 25*contador);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;
                     }
                    
-                    
-                    
-                    
+                
              	            
                 }
                 
-//                contentStreamCards.setNonStrokingColor(new Color(249,252,3));
-//                contentStreamCards.addRect(125, 275, 90, 155);
-//                contentStreamCards.fill();
-                int n = 12;
+               
+                int n = 0;
                 for(var cv : c.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
                 	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 10);
-                	contentStreamCards.newLineAtOffset(175, pageCard.getTrimBox().getHeight()-25*n);        
-                	contentStreamCards.showText(cv.getKey() + "  " + cv.getValue());
+                	contentStreamCards.newLineAtOffset(125, 300 + 25*n);        
+                	contentStreamCards.showText(cv.getKey());
+                	contentStreamCards.newLineAtOffset(200, 375 + 25*n);        
+                	contentStreamCards.showText(String.valueOf(cv.getValue()));
                 	contentStreamCards.endText();
                 	n++;
                 }
