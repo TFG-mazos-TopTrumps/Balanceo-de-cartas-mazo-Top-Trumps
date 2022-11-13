@@ -410,6 +410,8 @@ public class DeckServiceImpl implements DeckService {
             
             contentStream.close();
             
+            //======================================Cartas===========================================
+            
             for(Card c : cards) {
                 PDPage pageCard = new PDPage(PDRectangle.A4);
                 document.addPage(pageCard);
@@ -418,19 +420,25 @@ public class DeckServiceImpl implements DeckService {
                 
                // Tamaño de la carta.
                 
-                contentStreamCards.setNonStrokingColor(new Color(250,220,80));
+                contentStreamCards.setNonStrokingColor(new Color(0,0,0));
                 contentStreamCards.addRect(125, 225, 190, 310);
+                contentStreamCards.fill();
+                
+               // Fondo de la carta
+                
+                contentStreamCards.setNonStrokingColor(new Color(220,20,60));
+                contentStreamCards.addRect(130, 230, 180, 300);
                 contentStreamCards.fill();
                 
                // Nombre de las cartas.
                 
-                contentStreamCards.setNonStrokingColor(new Color(255,239,0));
-                contentStreamCards.addRect(225, 343, 80, 20);
+                contentStreamCards.setNonStrokingColor(new Color(192, 192, 192));
+                contentStreamCards.addRect(130, 510, 180, 20);
                 contentStreamCards.fill();
                 
 	           // Panel celeste descripción.
-	            contentStreamCards.setNonStrokingColor(new Color(51,165,255));
-	            contentStreamCards.addRect(125, 225, 90, 120);
+	            contentStreamCards.setNonStrokingColor(new Color(192, 192, 192));
+	            contentStreamCards.addRect(130, 230, 90, 130);
 	            contentStreamCards.fill();
                 
              
@@ -439,15 +447,11 @@ public class DeckServiceImpl implements DeckService {
                 
                 // Paneles nombres de las categorías.
                     
-	            contentStreamCards.setNonStrokingColor(new Color(255,239,0));
-	            contentStreamCards.addRect(217, 200+(25*i), 50, 10);
+	            contentStreamCards.setNonStrokingColor(new Color(192,192,192));
+	            contentStreamCards.addRect(226, 208 +(23*i), 80, 15);
 	            contentStreamCards.fill();
                 
-	            // Paneles de valores de las categorías.
 	            
-                contentStreamCards.setNonStrokingColor(new Color(255,239,0));
-                contentStreamCards.addRect(267, 200+(25*i), 30, 10);
-                contentStreamCards.fill();
                 
             }
                 if(c.getImage() != null) {
@@ -455,7 +459,7 @@ public class DeckServiceImpl implements DeckService {
                   download(c.getImage(), "imagen" + c.getName() + ".jpg", "C:/PDFMazo");
                	  File img = new File("C:\\PDFMazo\\" + "imagen" + c.getName() + ".jpg");
                	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-               	  contentStreamCards.drawImage(image, 137, 360, 165, 175);
+               	  contentStreamCards.drawImage(image, 117, 340, 145, 155);
              	   
                 }
                 
@@ -466,8 +470,8 @@ public class DeckServiceImpl implements DeckService {
                 
                 
                 contentStreamCards.beginText();
-                contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 8);
-                contentStreamCards.newLineAtOffset(230, 350);
+                contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 12);
+                contentStreamCards.newLineAtOffset(132, 513);
                 contentStreamCards.showText(c.getName());
                 contentStreamCards.endText();
                 
@@ -513,8 +517,8 @@ public class DeckServiceImpl implements DeckService {
                     for(String l : linesCard) {
                     	
                     	contentStreamCards.beginText();
-                    	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 6);
-                    	contentStreamCards.newLineAtOffset(125, 225 + 25*contador);        
+                    	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
+                    	contentStreamCards.newLineAtOffset(125, 225 + 10*contador);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;
@@ -529,11 +533,9 @@ public class DeckServiceImpl implements DeckService {
                 for(var cv : c.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
-                	contentStreamCards.setFont(PDType1Font.TIMES_ROMAN, 10);
-                	contentStreamCards.newLineAtOffset(125, 300 + 25*n);        
-                	contentStreamCards.showText(cv.getKey());
-                	contentStreamCards.newLineAtOffset(200, 375 + 25*n);        
-                	contentStreamCards.showText(String.valueOf(cv.getValue()));
+                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
+                	contentStreamCards.newLineAtOffset(225, 200 + 20*n);        
+                	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()));
                 	contentStreamCards.endText();
                 	n++;
                 }
