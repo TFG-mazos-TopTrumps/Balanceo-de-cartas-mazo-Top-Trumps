@@ -358,7 +358,7 @@ public class DeckServiceImpl implements DeckService {
             		   if(end < description.length()-1) {
             			   line = description.substring(begin, end);
             			   lines.add(line);
-            			   
+            		   }
             		   if(end > description.length()-1) {
             			   line = description.substring(begin);
             			   lines.add(line);
@@ -383,7 +383,7 @@ public class DeckServiceImpl implements DeckService {
                }
                
         	            
-           }
+           
            
            if(d.getImage() != null) {
         	  download(d.getImage(), "imagen" + d.getName() + ".jpg", "C:/PDFMazo");
@@ -412,7 +412,7 @@ public class DeckServiceImpl implements DeckService {
             
             //======================================Cartas===========================================
             
-            for(Card c : cards) {
+            for(Card card : cards) {
                 PDPage pageCard = new PDPage(PDRectangle.A4);
                 document.addPage(pageCard);
                 
@@ -448,18 +448,18 @@ public class DeckServiceImpl implements DeckService {
                 // Paneles nombres de las categorías.
                     
 	            contentStreamCards.setNonStrokingColor(new Color(192,192,192));
-	            contentStreamCards.addRect(226, 208 +(23*i), 80, 15);
+	            contentStreamCards.addRect(226, 368 -(23*i), 80, 15);
 	            contentStreamCards.fill();
                 
 	            
                 
             }
-                if(c.getImage() != null) {
+                if(card.getImage() != null) {
                 	
-                  download(c.getImage(), "imagen" + c.getName() + ".jpg", "C:/PDFMazo");
-               	  File img = new File("C:\\PDFMazo\\" + "imagen" + c.getName() + ".jpg");
+                  download(card.getImage(), "imagen" + card.getName() + ".jpg", "C:/PDFMazo");
+               	  File img = new File("C:\\PDFMazo\\" + "imagen" + card.getName() + ".jpg");
                	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-               	  contentStreamCards.drawImage(image, 117, 340, 145, 155);
+               	  contentStreamCards.drawImage(image, 131, 362, 176, 144);
              	   
                 }
                 
@@ -472,25 +472,25 @@ public class DeckServiceImpl implements DeckService {
                 contentStreamCards.beginText();
                 contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 12);
                 contentStreamCards.newLineAtOffset(132, 513);
-                contentStreamCards.showText(c.getName());
+                contentStreamCards.showText(card.getName());
                 contentStreamCards.endText();
                 
                 
-                if(c.getDescription() != null) {
+                if(card.getDescription() != null) {
              	   
                 	
                     List<String> linesCard = new ArrayList<String>();
                     
                     int beginCard = 0;
                     String lineCard;
-                    for(int end = 15; end <= c.getDescription().length() + 15; end += 15) {
+                    for(int end = 15; end <= card.getDescription().length() + 15; end += 15) {
                  	   
                  	   if(end==15) {
-     	            	   if(c.getDescription().length() < 15) {
-     	            		   lineCard = c.getDescription().substring(beginCard);
+     	            	   if(card.getDescription().length() < 15) {
+     	            		   lineCard = card.getDescription().substring(beginCard);
      	            		   linesCard.add(lineCard);
      	            	   } else {
-     	            		  lineCard = c.getDescription().substring(beginCard,end);
+     	            		  lineCard = card.getDescription().substring(beginCard,end);
      	            		  linesCard.add(lineCard);
      	            	   }
      	            	   
@@ -498,11 +498,11 @@ public class DeckServiceImpl implements DeckService {
                  		  beginCard += 15;
                  	   if(end > 15) {
                  		  
-	                 		   if(end < c.getDescription().length()-1) {
+	                 		   if(end < card.getDescription().length()-1) {
 	                 			   lineCard = description.substring(beginCard, end);
 	                 			   linesCard.add(lineCard);
 	                 		   }
-	                 		   if(end > c.getDescription().length()-1) {
+	                 		   if(end > card.getDescription().length()-1) {
 	                 			   lineCard = description.substring(beginCard);
 	                 			   linesCard.add(lineCard);
 	                 			   
@@ -518,7 +518,7 @@ public class DeckServiceImpl implements DeckService {
                     	
                     	contentStreamCards.beginText();
                     	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
-                    	contentStreamCards.newLineAtOffset(125, 225 + 10*contador);        
+                    	contentStreamCards.newLineAtOffset(125, 225 - 10*contador);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;
@@ -529,12 +529,12 @@ public class DeckServiceImpl implements DeckService {
                 }
                 
                
-                int n = 0;
-                for(var cv : c.getCategories().entrySet()) {
+                int n = 1;
+                for(var cv : card.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
-                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
-                	contentStreamCards.newLineAtOffset(225, 200 + 20*n);        
+                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 8);
+                	contentStreamCards.newLineAtOffset(226, 371 - 23*n);        
                 	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()));
                 	contentStreamCards.endText();
                 	n++;
