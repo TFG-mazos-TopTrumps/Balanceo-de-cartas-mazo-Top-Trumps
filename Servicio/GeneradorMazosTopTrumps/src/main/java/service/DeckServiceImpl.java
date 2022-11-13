@@ -266,6 +266,7 @@ public class DeckServiceImpl implements DeckService {
 	    public static void download(String urlString, String filename,String savePath) throws Exception {  
 	        // Construir URL  
 	        URL url = new URL(urlString);  
+	       
 	                 // conexión abierta  
 	        URLConnection con = url.openConnection();  
 	                 // Establece el tiempo de espera de la solicitud en 5 s  
@@ -291,7 +292,8 @@ public class DeckServiceImpl implements DeckService {
 	                 // Finalizar, cerrar todos los enlaces  
 	        os.close();  
 	        is.close();  
-	    }   
+	    } 
+	    
 	  
 
 
@@ -386,11 +388,16 @@ public class DeckServiceImpl implements DeckService {
            
            
            if(d.getImage() != null) {
+        	  File testImg = new File(d.getImage());
+        	  if(testImg.exists()) {
+        	  
         	  download(d.getImage(), "imagen" + d.getName() + ".jpg", "C:/PDFMazo");
           	  File img = new File("C:\\PDFMazo\\" + "imagen" + d.getName() + ".jpg");
-          	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-           	  contentStream.drawImage(image, 20, 20, 500, 500);
-        	   
+          	  if(img.exists()) {
+          		PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
+             	contentStream.drawImage(image, 20, 20, 500, 500);
+          	  } 
+        	  }
            }
             
             contentStream.beginText();
@@ -436,9 +443,9 @@ public class DeckServiceImpl implements DeckService {
                 contentStreamCards.addRect(130, 510, 180, 20);
                 contentStreamCards.fill();
                 
-	           // Panel celeste descripción.
+	           // Panel descripción.
 	            contentStreamCards.setNonStrokingColor(new Color(192, 192, 192));
-	            contentStreamCards.addRect(130, 230, 90, 130);
+	            contentStreamCards.addRect(130, 230, 75, 130);
 	            contentStreamCards.fill();
                 
              
@@ -448,19 +455,23 @@ public class DeckServiceImpl implements DeckService {
                 // Paneles nombres de las categorías.
                     
 	            contentStreamCards.setNonStrokingColor(new Color(192,192,192));
-	            contentStreamCards.addRect(226, 368 -(23*i), 80, 15);
+	            contentStreamCards.addRect(211, 368 -(23*i), 95, 15);
 	            contentStreamCards.fill();
                 
 	            
                 
             }
                 if(card.getImage() != null) {
-                	
+               
+                File testImg = new File(d.getImage());
+               	  if(testImg.exists()) {
                   download(card.getImage(), "imagen" + card.getName() + ".jpg", "C:/PDFMazo");
                	  File img = new File("C:\\PDFMazo\\" + "imagen" + card.getName() + ".jpg");
+               	  if(img.exists()) {
                	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
                	  contentStreamCards.drawImage(image, 131, 362, 176, 144);
-             	   
+               	  }
+               	  }
                 }
                 
                 // Color de la fuente.
@@ -483,10 +494,10 @@ public class DeckServiceImpl implements DeckService {
                     
                     int beginCard = 0;
                     String lineCard;
-                    for(int end = 15; end <= card.getDescription().length() + 15; end += 15) {
+                    for(int end = 20; end <= card.getDescription().length() + 20; end += 20) {
                  	   
-                 	   if(end==15) {
-     	            	   if(card.getDescription().length() < 15) {
+                 	   if(end==20) {
+     	            	   if(card.getDescription().length() < 20) {
      	            		   lineCard = card.getDescription().substring(beginCard);
      	            		   linesCard.add(lineCard);
      	            	   } else {
@@ -495,15 +506,15 @@ public class DeckServiceImpl implements DeckService {
      	            	   }
      	            	   
                  	   } else {
-                 		  beginCard += 15;
-                 	   if(end > 15) {
+                 		  beginCard += 20;
+                 	   if(end > 20) {
                  		  
 	                 		   if(end < card.getDescription().length()-1) {
-	                 			   lineCard = description.substring(beginCard, end);
+	                 			   lineCard = card.getDescription().substring(beginCard, end);
 	                 			   linesCard.add(lineCard);
 	                 		   }
 	                 		   if(end > card.getDescription().length()-1) {
-	                 			   lineCard = description.substring(beginCard);
+	                 			   lineCard = card.getDescription().substring(beginCard);
 	                 			   linesCard.add(lineCard);
 	                 			   
 	                 	   }   
@@ -518,7 +529,7 @@ public class DeckServiceImpl implements DeckService {
                     	
                     	contentStreamCards.beginText();
                     	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
-                    	contentStreamCards.newLineAtOffset(125, 225 - 10*contador);        
+                    	contentStreamCards.newLineAtOffset(130, 350 - 5*contador);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;
@@ -533,8 +544,8 @@ public class DeckServiceImpl implements DeckService {
                 for(var cv : card.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
-                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 8);
-                	contentStreamCards.newLineAtOffset(226, 371 - 23*n);        
+                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 7);
+                	contentStreamCards.newLineAtOffset(214, 371 - 23*n);        
                 	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()));
                 	contentStreamCards.endText();
                 	n++;
