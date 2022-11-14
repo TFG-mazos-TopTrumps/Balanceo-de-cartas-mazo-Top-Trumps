@@ -43,14 +43,14 @@ public class Card {
 	@NotNull
 	@NotBlank
 	@NotEmpty
-	@Length(min=1, max=45)
+	@Length(min=1, max=25)
 	private String name;
 	
 	@Length(max=500)
 	private String description;
 	
 	@URL
-	@Length(max=1000)
+	@Length(max=4000)
 	private String image;
 	
 	@ElementCollection

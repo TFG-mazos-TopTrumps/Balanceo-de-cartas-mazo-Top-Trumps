@@ -67,9 +67,9 @@ public class DeckServiceImpl implements DeckService {
 		// Condiciones de validación
 		boolean errorDuplicatedName = this.decksDao.findDeckByName(d.getName()).isPresent() ? true : false;
 		boolean errorNotNullName = d.getName() == null || d.getName().isBlank() || d.getName().isEmpty() ? true:false;
-		boolean errorMaxLengthName = d.getName().length() >= 45 ? true:false;
-		boolean errorMaxLengthDescription = (d.getDescription() != null && d.getDescription().length() >= 500) ? true:false;
-		boolean errorMaxLengthImage = (d.getImage() != null  && d.getImage().length() >= 1000) ? true:false;
+		boolean errorMaxLengthName = d.getName().length() > 30 ? true:false;
+		boolean errorMaxLengthDescription = (d.getDescription() != null && d.getDescription().length() > 500) ? true:false;
+		boolean errorMaxLengthImage = (d.getImage() != null  && d.getImage().length() > 4000) ? true:false;
 		boolean errorIncorrectFormatImage = d.getImage() != null  && !(d.getImage().contains(".jpg") || d.getImage().contains(".png") || d.getImage().contains(".jpeg")) ? true:false;
 		boolean errorPatternURL = (d.getImage() != null && d.getImage().length() >= 1 && !(d.getImage().startsWith("http://") || d.getImage().startsWith("https://"))) ? true:false;
 		boolean errorNotNullAndIncorrectNCards = d.getNCards() < 2 ? true:false;
@@ -91,19 +91,19 @@ public class DeckServiceImpl implements DeckService {
 			
 			if(!anyError && errorMaxLengthName) {
 				anyError=true;
-				throw new ConstraintViolationException("El nombre del mazo no puede tener 45 o más caracteres.",null);
+				throw new ConstraintViolationException("El nombre del mazo no puede tener más de 30 caracteres.",null);
 				
 			}
 			
 			if(!anyError && errorMaxLengthDescription) {
 				anyError=true;
-				throw new ConstraintViolationException("La descripción no puede tener 500 o más caracteres.",null);
+				throw new ConstraintViolationException("La descripción no puede tener más de 500 caracteres",null);
 				
 			}
 			
 			if(!anyError && errorMaxLengthImage) {
 				anyError=true;
-				throw new ConstraintViolationException("La URL de la imagen no puede tener 1000 o más caracteres.",null);
+				throw new ConstraintViolationException("La URL de la imagen no puede tener más de 4000 caracteres.",null);
 				
 			}
 			
@@ -158,13 +158,13 @@ public class DeckServiceImpl implements DeckService {
 				
 			}
 			if(errorMaxLengthName) {
-				System.out.println("El nombre del mazo no puede tener 45 o más caracteres.");
+				System.out.println("El nombre del mazo no puede tener más de 30 caracteres.");
 			}
 			if(errorMaxLengthDescription) {
-				System.out.println("La descripción no puede tener 500 o más caracteres.");
+				System.out.println("La descripción no puede tener más de 500 caracteres.");
 			}
 			if(errorMaxLengthImage) {
-				System.out.println("La URL de la imagen no puede tener 1000 o más caracteres.");
+				System.out.println("La URL de la imagen no puede tener más de 4000 caracteres.");
 			}
 			if(errorPatternURL) {
 				System.out.println("El campo imagen ha de ser una URL.");
@@ -402,14 +402,14 @@ public class DeckServiceImpl implements DeckService {
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.COURIER, 14);
-            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*10);
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*11);
             contentStream.showText("Número de cartas: ");
             contentStream.showText(String.valueOf(d.getNCards()));
             contentStream.endText();
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.COURIER, 14);
-            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*11);
+            contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*12);
             contentStream.showText("Número de categorias: ");
             contentStream.showText(String.valueOf(d.getNCategories()));
             contentStream.endText();
@@ -529,7 +529,7 @@ public class DeckServiceImpl implements DeckService {
                     	
                     	contentStreamCards.beginText();
                     	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
-                    	contentStreamCards.newLineAtOffset(130, 350 - 5*contador);        
+                    	contentStreamCards.newLineAtOffset(130, 352 - 5*contador);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;

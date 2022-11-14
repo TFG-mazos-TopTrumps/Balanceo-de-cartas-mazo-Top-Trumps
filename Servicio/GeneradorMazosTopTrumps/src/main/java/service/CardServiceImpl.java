@@ -31,9 +31,9 @@ public class CardServiceImpl implements CardService {
 	@Transactional
 	public Card saveCard(Card c) throws SQLException, ConstraintViolationException {
 		boolean errorNotNullName = c.getName() == null || c.getName().isBlank() || c.getName().isEmpty() ? true:false;
-		boolean errorMaxLengthName = c.getName().length() >= 45 ? true:false;
-		boolean errorMaxLengthDescription = (c.getDescription() != null && c.getDescription().length() >= 500) ? true:false;
-		boolean errorMaxLengthImage = (c.getImage() != null && c.getImage().length() >= 1000) ? true:false;
+		boolean errorMaxLengthName = c.getName().length() > 25 ? true:false;
+		boolean errorMaxLengthDescription = (c.getDescription() != null && c.getDescription().length() > 500) ? true:false;
+		boolean errorMaxLengthImage = (c.getImage() != null && c.getImage().length() > 4000) ? true:false;
 		boolean errorPatternURL = (c.getImage() != null && c.getImage().length() >= 1 && !(c.getImage().startsWith("http://") || c.getImage().startsWith("https://"))) ? true:false;
 		boolean errorIncorrectFormatImage = c.getImage() != null  && !(c.getImage().contains(".jpg") || c.getImage().contains(".png") || c.getImage().contains(".jpeg")) ? true:false;
 
@@ -47,17 +47,17 @@ public class CardServiceImpl implements CardService {
 			}
 			if(!anyError && errorMaxLengthName) {
 				anyError=true;
-				throw new ConstraintViolationException("El nombre de la carta no puede tener 45 o más caracteres.",null);
+				throw new ConstraintViolationException("El nombre de la carta no puede tener más de 25 caracteres.",null);
 				
 			}
 			if(!anyError && errorMaxLengthDescription) {
 				anyError=true;
-				throw new ConstraintViolationException("La descripción no puede tener 500 o más caracteres.",null);
+				throw new ConstraintViolationException("La descripción no puede tener más de 500 caracteres.",null);
 				
 			}
 			if(!anyError && errorMaxLengthImage) {
 				anyError=true;
-				throw new ConstraintViolationException("La URL de la imagen no puede tener 1000 o más caracteres.",null);
+				throw new ConstraintViolationException("La URL de la imagen no puede tener más de 4000 caracteres.",null);
 				
 			}
 			if(!anyError && errorPatternURL) {
@@ -77,15 +77,15 @@ public class CardServiceImpl implements CardService {
 				
 			}
 			if(errorMaxLengthName) {
-				System.out.println("El nombre de la carta no puede tener 45 o más caracteres.");
+				System.out.println("El nombre de la carta no puede tener más de 25 caracteres.");
 				
 			}
 			if(errorMaxLengthDescription) {
-				System.out.println("La descripción de la carta no puede tener 500 o más caracteres.");
+				System.out.println("La descripción de la carta no puede tener más de 500 caracrteres.");
 				
 			}
 			if(errorMaxLengthImage) {
-				System.out.println("La URL de la imagen no puede tener 1000 o más caracteres.");
+				System.out.println("La URL de la imagen no puede tener más de 4000 caracteres .");
 				
 			}
 			if(errorPatternURL) {

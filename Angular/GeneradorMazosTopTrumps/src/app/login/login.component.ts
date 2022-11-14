@@ -96,15 +96,15 @@ export class LoginComponent implements OnInit {
         this.notNullName=false;
         anyError=true;
       }
-      if(this.usuario.length >= 45) {
+      if(this.usuario.length > 25) {
         this.errorMaxLengthUsername=false;
         anyError=true;
       }
-      if(this.password.length >= 45) {
+      if(this.password.length < 8 || this.password.length > 14) {
         this.errorMaxLengthPassword=false;
         anyError=true;
       }
-      if(this.name.length >= 50) {
+      if(this.name.length > 25) {
         this.errorMaxLengthName=false;
         anyError=true;
       }

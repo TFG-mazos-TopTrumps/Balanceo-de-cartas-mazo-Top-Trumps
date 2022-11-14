@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
 		boolean errorDuplicatedUsername = this.usersDao.countUserByUsername(u.getUsername()) == 1;
 		boolean errorNotNullPassword = u.getPassword() == null || u.getPassword().isBlank() || u.getPassword().isEmpty() ? true:false;
 		boolean errorNotNullName = u.getName() == null || u.getName().isBlank() || u.getName().isEmpty() ? true:false;
-		boolean errorMaxLengthUsername = u.getUsername().length() >= 45 ? true:false;
-		boolean errorMaxLengthPassword = u.getPassword().length() >= 45 ? true:false;
-		boolean errorMaxLengthName = u.getName().length() >= 50 ? true:false;
+		boolean errorMaxLengthUsername =  u.getUsername().length() > 25 ? true:false;
+		boolean errorMaxLengthPassword = (u.getPassword().length() < 8) && (u.getPassword().length() > 14) ? true:false;
+		boolean errorMaxLengthName = u.getName().length() > 25 ? true:false;
 		boolean anyError=false;
 		
 		try {
@@ -66,20 +66,20 @@ public class UserServiceImpl implements UserService {
 			
 			if(!anyError && errorMaxLengthUsername) {
 				anyError=true;
-				throw new ConstraintViolationException("El nombre de usuario no puede estar compuesto de 45 o más caracteres.",null);
+				throw new ConstraintViolationException("El nombre de usuario no puede estar compuesto por más de 25 caracteres.",null);
 				
 			}
 			
 			if(!anyError && errorMaxLengthPassword) {
 				anyError=true;
-				throw new ConstraintViolationException("La contraseña no puede estar compuesta de 45 o más caracteres.",null);
+				throw new ConstraintViolationException("La contraseña debe tener mínimo 8 caracteres y como máximo 14",null);
 				
 				
 			}
 			
 			if(!anyError && errorMaxLengthName) {
 				anyError=true;
-				throw new ConstraintViolationException("El nombre no puede estar compuesto de o más 50 caracteres.",null);
+				throw new ConstraintViolationException("El nombre no puede estar compuesto por más de 25 caracteres.",null);
 				
 				
 			}
@@ -107,17 +107,17 @@ public class UserServiceImpl implements UserService {
 			}
 			
 			if(errorMaxLengthUsername) {
-				System.out.println("El nombre de usuario no puede estar compuesto de 45 o más caracteres.");
+				System.out.println("El nombre de usuario no puede estar compuesto por más de 25 caracteres.");
 	
 			}
 			
 			if(errorMaxLengthPassword) {
-				System.out.println("La contraseña no puede estar compuesta de 45 o más caracteres.");
+				System.out.println("La contraseña debe tener mínimo 8 caracteres y como máximo 14");
 	
 			}
 			
 			if(errorMaxLengthName) {
-				System.out.println("El nombre no puede estar compuesto de 50 o más caracteres.");
+				System.out.println("El nombre no puede estar compuesto por más de 25 caracteres");
 	
 			}
 				

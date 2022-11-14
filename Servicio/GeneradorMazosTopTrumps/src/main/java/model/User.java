@@ -38,19 +38,19 @@ public class User {
 	@NotBlank
 	@NotEmpty
 	@Unique
-	@Length(min=1, max=45)
+	@Length(min=1, max=25)
 	private String username;
 	
 	@NotNull
 	@NotBlank
 	@NotEmpty
-	@Length(min=1, max=45)
+	@Length(min=8, max=14)
 	private String password;
 	
 	@NotNull
 	@NotBlank
 	@NotEmpty
-	@Length(min=1, max=50)
+	@Length(min=1, max=25)
 	private String name;
 	
 	@OneToMany(mappedBy="user")

@@ -129,7 +129,7 @@ export class CardComponent implements OnInit {
       this.notNullCategory=false;
       anyError=true;
     }
-    if(this.category.length>= 45) {
+    if(this.category.length > 15) {
       this.errorMaxLengthCategories=false;
       anyError=true;
     }
@@ -182,14 +182,14 @@ export class CardComponent implements OnInit {
       anyError=true;
     }
 
-    if(this.name.length >= 45) {
+    if(this.name.length > 25) {
       this.errorMaxLengthName=false;
       anyError=true;
     }
     if(this.image != undefined) {
 
       
-      if(this.image.length >= 1000) {
+      if(this.image.length > 4000) {
         this.errorMaxLengthImage=false;
         anyError=true;
       }
@@ -208,7 +208,7 @@ export class CardComponent implements OnInit {
       }
     }
     if(this.description!=undefined) {
-      if(this.description.length >= 500) {
+      if(this.description.length > 500) {
           this.errorMaxLengthDescription=false;
           anyError=true;
       }
@@ -291,6 +291,26 @@ export class CardComponent implements OnInit {
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);
+        sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+
+        sessionStorage.removeItem("deck");
+        
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+
+        }
+          if(c == undefined) {
+            break;
+          }
+
+        }    
         load.close()
         this.pantallaExito=true;
         this.router.navigate([`success`]);

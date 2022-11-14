@@ -41,7 +41,7 @@ public class Keyword {
 	@NotBlank
 	@NotEmpty
 	@Unique
-	@Length(max=45)
+	@Length(min=1,max=45)
 	private String word;
 
 	@JsonIgnore

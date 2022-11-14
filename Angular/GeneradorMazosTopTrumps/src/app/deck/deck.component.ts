@@ -105,7 +105,7 @@ export class DeckComponent implements OnInit {
       this.notNullName=false;
       this.anyError=true;
     } else {
-    if(this.name.length >= 45) {
+    if(this.name.length > 30) {
       this.errorMaxLengthName=false;
       this.anyError=true;
     }
@@ -151,14 +151,14 @@ export class DeckComponent implements OnInit {
       this.anyError=true;
     }
     if(this.description != undefined) {
-      if(this.description.length >= 500) {
+      if(this.description.length > 500) {
         this.errorMaxLengthDescription=false;
         this.anyError=true;
       }
   }
   if(this.image != undefined) {
     
-      if(this.image.length >= 1000) {
+      if(this.image.length > 4000) {
         this.errorMaxLengthImage=false;
         this.anyError=true;
       }

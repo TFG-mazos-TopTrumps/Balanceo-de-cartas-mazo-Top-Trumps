@@ -27,26 +27,7 @@ export class SuccessComponent implements OnInit {
   }
 
   volver() {
-    sessionStorage.removeItem("categoriesCompleted");
-        sessionStorage.removeItem("cardsCompleted");
-        sessionStorage.removeItem("balanceCompleted");
-
-        sessionStorage.removeItem("deck");
         
-        let indice = 0;
-        while(true) {
-          let c = sessionStorage.getItem("category " + indice);
-          if(c != undefined) {
-          
-         sessionStorage.removeItem("category " + indice)
-          indice++;
-
-        }
-          if(c == undefined) {
-            break;
-          }
-
-        }        
 
     this.router.navigate([`home`]);
   }

@@ -15,7 +15,7 @@
                 El nombre que ha indicado ya existe. Por favor, prueba con otro nombre distinto.
               </div>
               <div class="text-danger" [hidden]="errorMaxLengthName">
-                El nombre del mazo no puede tener 45 o más caracteres.
+                El nombre del mazo no puede tener más de 30 caracteres.
               </div>
             </div>
             <br>
@@ -23,7 +23,7 @@
               <label for="description" class="form-label"> Descripción </label>
               <input type="textarea" class="form-control" name="description" placeholder="Este fantástico mazo reúne los mejores..." [(ngModel)]="description">
               <div class="text-danger" [hidden]="errorMaxLengthDescription">
-              La descripción del mazo no puede tener 500 o más caracteres.
+              La descripción del mazo no puede tener más de 500 caracteres.
               </div>
             </div>
             <br>
@@ -31,7 +31,7 @@
               <label for="image" class="form-label"> Imagen del mazo </label>
               <input type="url" class="form-control" name="image" placeholder="Url de la imagen que quiere introducir" [(ngModel)]="image">
               <div class="text-danger" [hidden]="errorMaxLengthImage">
-                La URL de la imagen no puede tener 1000 o más caracteres.
+                La URL de la imagen no puede tener más de 4000 caracteres.
               </div>
               <div class="text-danger" [hidden]="errorPatternURL">
                 El campo imagen ha de ser una URL.
