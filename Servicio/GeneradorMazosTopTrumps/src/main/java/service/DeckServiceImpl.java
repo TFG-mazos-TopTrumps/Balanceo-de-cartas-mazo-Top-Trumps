@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-
+import java.net.UnknownHostException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -118,8 +118,6 @@ public class DeckServiceImpl implements DeckService {
 				throw new ConstraintViolationException("La imagen ha tener formato .jpg, .png o .jpeg .",null);
 				
 			}
-			
-			
 			
 			if(!anyError && errorNotNullAndIncorrectNCards) {
 				anyError=true;
@@ -263,12 +261,15 @@ public class DeckServiceImpl implements DeckService {
 	}
 	
 	
-	    public static void download(String urlString, String filename,String savePath) throws Exception {  
+	    public static void download(String urlString, String filename,String savePath) throws Exception, UnknownHostException {  
 	        // Construir URL  
+	    	
+	    	try {
 	        URL url = new URL(urlString);  
-	       
+	        
 	                 // conexión abierta  
-	        URLConnection con = url.openConnection();  
+	        URLConnection con = url.openConnection();
+	       
 	                 // Establece el tiempo de espera de la solicitud en 5 s  
 	        con.setConnectTimeout(5*1000);  
 	                 // flujo de entrada 
@@ -292,6 +293,10 @@ public class DeckServiceImpl implements DeckService {
 	                 // Finalizar, cerrar todos los enlaces  
 	        os.close();  
 	        is.close();  
+	        
+	    	} catch(UnknownHostException u) {
+	    		System.out.println("La URL indicada no corresponde con ninguna imagen existente.");
+	    	}
 	    } 
 	    
 	  
@@ -377,7 +382,7 @@ public class DeckServiceImpl implements DeckService {
               
                for(String l : lines) {
             	   contentStream.beginText();
-                   contentStream.setFont(PDType1Font.TIMES_ROMAN, 12);
+                   contentStream.setFont(PDType1Font.TIMES_BOLD, 12);
                    contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*c);        
                    contentStream.showText(l);
                    contentStream.endText();
@@ -388,27 +393,32 @@ public class DeckServiceImpl implements DeckService {
            
            
            if(d.getImage() != null) {
-        	  File testImg = new File(d.getImage());
-        	  if(testImg.exists()) {
-        	  
+        	
         	  download(d.getImage(), "imagen" + d.getName() + ".jpg", "C:/PDFMazo");
           	  File img = new File("C:\\PDFMazo\\" + "imagen" + d.getName() + ".jpg");
           	  if(img.exists()) {
-          		PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-             	contentStream.drawImage(image, 20, 20, 500, 500);
-          	  } 
-        	  }
+	          	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
+	             contentStream.drawImage(image, 20, 20, 500, 500);
+          	  } else {
+          		  contentStream.beginText();
+          		  contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
+	          	  contentStream.newLineAtOffset(20,20);
+	          	  contentStream.showText("No tiene imagen.");
+	          	  contentStream.endText();
+          		  
+          	  }
+        	  
            }
             
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.COURIER, 14);
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
             contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*11);
             contentStream.showText("Número de cartas: ");
             contentStream.showText(String.valueOf(d.getNCards()));
             contentStream.endText();
             
             contentStream.beginText();
-            contentStream.setFont(PDType1Font.COURIER, 14);
+            contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
             contentStream.newLineAtOffset(25, firstPage.getTrimBox().getHeight()-25*12);
             contentStream.showText("Número de categorias: ");
             contentStream.showText(String.valueOf(d.getNCategories()));
@@ -419,33 +429,32 @@ public class DeckServiceImpl implements DeckService {
             
             //======================================Cartas===========================================
             
+            
             for(Card card : cards) {
-                PDPage pageCard = new PDPage(PDRectangle.A4);
-                document.addPage(pageCard);
-                
-                PDPageContentStream contentStreamCards = new PDPageContentStream(document, pageCard);
-                
+            	 PDPage pageCard = new PDPage(PDRectangle.A4);
+            	 document.addPage(pageCard);
+	            	 
                // Tamaño de la carta.
-                
+	            PDPageContentStream contentStreamCards = new PDPageContentStream(document, pageCard);
                 contentStreamCards.setNonStrokingColor(new Color(0,0,0));
-                contentStreamCards.addRect(125, 225, 190, 310);
+                contentStreamCards.addRect(125+75, 225+25, 190, 310);
                 contentStreamCards.fill();
                 
                // Fondo de la carta
                 
-                contentStreamCards.setNonStrokingColor(new Color(220,20,60));
-                contentStreamCards.addRect(130, 230, 180, 300);
+                contentStreamCards.setNonStrokingColor(new Color(245,245,245));
+				contentStreamCards.addRect(130 + 75, 230+25, 180, 300);
                 contentStreamCards.fill();
                 
-               // Nombre de las cartas.
+               // Nombre de las cartas.	
                 
-                contentStreamCards.setNonStrokingColor(new Color(192, 192, 192));
-                contentStreamCards.addRect(130, 510, 180, 20);
+                contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+                contentStreamCards.addRect(130 + 75, 510+25, 180, 20);
                 contentStreamCards.fill();
                 
 	           // Panel descripción.
-	            contentStreamCards.setNonStrokingColor(new Color(192, 192, 192));
-	            contentStreamCards.addRect(130, 230, 75, 130);
+	            contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+	            contentStreamCards.addRect(130 + 75, 230+25, 75, 130);
 	            contentStreamCards.fill();
                 
              
@@ -454,35 +463,40 @@ public class DeckServiceImpl implements DeckService {
                 
                 // Paneles nombres de las categorías.
                     
-	            contentStreamCards.setNonStrokingColor(new Color(192,192,192));
-	            contentStreamCards.addRect(211, 368 -(23*i), 95, 15);
+	            contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+	            contentStreamCards.addRect(211 + 75, 368 -(23*i) +25, 95, 15);
 	            contentStreamCards.fill();
-                
-	            
+    
                 
             }
-                if(card.getImage() != null) {
-               
-                File testImg = new File(d.getImage());
-               	  if(testImg.exists()) {
-                  download(card.getImage(), "imagen" + card.getName() + ".jpg", "C:/PDFMazo");
-               	  File img = new File("C:\\PDFMazo\\" + "imagen" + card.getName() + ".jpg");
-               	  if(img.exists()) {
-               	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
-               	  contentStreamCards.drawImage(image, 131, 362, 176, 144);
-               	  }
-               	  }
-                }
-                
                 // Color de la fuente.
                 
                 contentStreamCards.setNonStrokingColor(new Color(0,0,0));
                 contentStreamCards.fill();
+              
+                if(card.getImage() != null) {
+               
+               
+                  download(card.getImage(), "imagen" + card.getName() + ".jpg", "C:/PDFMazo");
+               	  File img = new File("C:\\PDFMazo\\" + "imagen" + card.getName() + ".jpg");
+               	  if(img.exists()) {
+               	  PDImageXObject image = PDImageXObject.createFromFileByContent(img, document);          
+               	  contentStreamCards.drawImage(image, 132 + 75, 362+25, 176, 144);
+               	  }  else {
+                 		contentStreamCards.beginText();
+                 		contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 14);
+    	          	  	contentStreamCards.newLineAtOffset(132+50, 362+25);
+    	          	  	contentStreamCards.showText("No tiene imagen.");
+    	          	  	contentStreamCards.endText();
+                 	}
+               	  }
+                
+                
                 
                 
                 contentStreamCards.beginText();
-                contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 12);
-                contentStreamCards.newLineAtOffset(132, 513);
+                contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 12);
+                contentStreamCards.newLineAtOffset(132 + 75, 513+25);
                 contentStreamCards.showText(card.getName());
                 contentStreamCards.endText();
                 
@@ -528,8 +542,8 @@ public class DeckServiceImpl implements DeckService {
                     for(String l : linesCard) {
                     	
                     	contentStreamCards.beginText();
-                    	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 6);
-                    	contentStreamCards.newLineAtOffset(130, 352 - 5*contador);        
+                    	contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 6);
+                    	contentStreamCards.newLineAtOffset(132 + 75, 352 - 5*contador +25);        
                     	contentStreamCards.showText(l);
                     	contentStreamCards.endText();
                         contador++;
@@ -544,23 +558,23 @@ public class DeckServiceImpl implements DeckService {
                 for(var cv : card.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
-                	contentStreamCards.setFont(PDType1Font.COURIER_BOLD, 7);
-                	contentStreamCards.newLineAtOffset(214, 371 - 23*n);        
+                	contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 7);
+                	contentStreamCards.newLineAtOffset(214 + 75, 371 - 23*n +25);        
                 	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()));
                 	contentStreamCards.endText();
                 	n++;
                 }
-
-
-              contentStreamCards.close();
+                contentStreamCards.close();
+	            }
+      
             	
             }
-
+	       
             document.save("C:\\PDFMazo\\" + d.getName() + ".pdf");
         
 		}
 		}
-	}
+	
     
 		 
 	    
