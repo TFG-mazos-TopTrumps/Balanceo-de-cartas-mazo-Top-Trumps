@@ -37,6 +37,10 @@ export class BuscarComponent implements OnInit {
   anyError: boolean = false;
   control = new FormControl;
   filKeywords: Observable<string[]>;
+  colorBordes: string;
+  colorFondo: string;
+  colorPaneles: string;
+  colorFuente: string;
   constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router, public dialog: MatDialog) {
     this.service.getWords().subscribe({next: response => {
       this.keywords = response;

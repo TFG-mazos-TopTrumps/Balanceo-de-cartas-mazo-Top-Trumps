@@ -5,6 +5,10 @@ export class Deck {
     ncards: number;
     ncategories: number;
     image: string;
+    borde: string;
+    fondo: string;
+    panel: string;
+    fuente: string;
     idUser: number;
 
     public toString() : string {

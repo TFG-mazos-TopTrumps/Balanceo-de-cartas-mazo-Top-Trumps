@@ -306,6 +306,27 @@ public class DeckServiceImpl implements DeckService {
 		
 		Deck d = this.decksDao.findDeckByName(deck).get();
 		List<Card> cards = this.cardService.findCardsOfDeck(deck);
+		Integer rojoBorde = Integer.parseInt(d.getBorde().substring(1, 3),16);
+		Integer azulBorde = Integer.parseInt(d.getBorde().substring(3, 5),16);
+		Integer verdeBorde = Integer.parseInt(d.getBorde().substring(5, 7),16);
+		
+		Integer rojoFondo = Integer.parseInt(d.getFondo().substring(1, 3),16);
+		Integer azulFondo = Integer.parseInt(d.getFondo().substring(3, 5),16);
+		Integer verdeFondo = Integer.parseInt(d.getFondo().substring(5, 7),16);
+		
+		
+		Integer rojoPanel = Integer.parseInt(d.getPanel().substring(1, 3),16);
+		Integer azulPanel = Integer.parseInt(d.getPanel().substring(3, 5),16);
+		Integer verdePanel = Integer.parseInt(d.getPanel().substring(5, 7),16);
+		
+		Integer rojoFuente = Integer.parseInt(d.getFuente().substring(1, 3),16);
+		Integer azulFuente = Integer.parseInt(d.getFuente().substring(3, 5),16);
+		Integer verdeFuente = Integer.parseInt(d.getFuente().substring(5, 7),16);
+		
+		Color borde = new Color(rojoBorde, azulBorde, verdeBorde);
+		Color fondo = new Color(rojoFondo, azulFondo, verdeFondo);
+		Color panel = new Color(rojoPanel, azulPanel, verdePanel);
+		Color fuente = new Color(rojoFuente, azulFuente, verdeFuente);
 		
 		// Atributos:
 		String name = d.getName();
@@ -320,6 +341,7 @@ public class DeckServiceImpl implements DeckService {
 
             PDPageContentStream contentStream = new PDPageContentStream(document, firstPage);
           
+            
             
             contentStream.beginText();
             contentStream.setFont(PDType1Font.TIMES_BOLD, 32);
@@ -436,24 +458,25 @@ public class DeckServiceImpl implements DeckService {
 	            	 
                // Tamaño de la carta.
 	            PDPageContentStream contentStreamCards = new PDPageContentStream(document, pageCard);
-                contentStreamCards.setNonStrokingColor(new Color(0,0,0));
+                contentStreamCards.setNonStrokingColor(borde);
                 contentStreamCards.addRect(125+75, 225+25, 190, 310);
                 contentStreamCards.fill();
                 
+                
                // Fondo de la carta
                 
-                contentStreamCards.setNonStrokingColor(new Color(245,245,245));
+                contentStreamCards.setNonStrokingColor(fondo);
 				contentStreamCards.addRect(130 + 75, 230+25, 180, 300);
                 contentStreamCards.fill();
                 
                // Nombre de las cartas.	
                 
-                contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+                contentStreamCards.setNonStrokingColor(panel);
                 contentStreamCards.addRect(130 + 75, 510+25, 180, 20);
                 contentStreamCards.fill();
                 
 	           // Panel descripción.
-	            contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+	            contentStreamCards.setNonStrokingColor(panel);
 	            contentStreamCards.addRect(130 + 75, 230+25, 75, 130);
 	            contentStreamCards.fill();
                 
@@ -463,7 +486,7 @@ public class DeckServiceImpl implements DeckService {
                 
                 // Paneles nombres de las categorías.
                     
-	            contentStreamCards.setNonStrokingColor(new Color(135,206,250));
+	            contentStreamCards.setNonStrokingColor(panel);
 	            contentStreamCards.addRect(211 + 75, 368 -(23*i) +25, 95, 15);
 	            contentStreamCards.fill();
     
@@ -471,7 +494,7 @@ public class DeckServiceImpl implements DeckService {
             }
                 // Color de la fuente.
                 
-                contentStreamCards.setNonStrokingColor(new Color(0,0,0));
+                contentStreamCards.setNonStrokingColor(fuente);
                 contentStreamCards.fill();
               
                 if(card.getImage() != null) {
@@ -523,11 +546,11 @@ public class DeckServiceImpl implements DeckService {
                  		  beginCard += 20;
                  	   if(end > 20) {
                  		  
-	                 		   if(end < card.getDescription().length()-1) {
+	                 		   if(end <= card.getDescription().length()) {
 	                 			   lineCard = card.getDescription().substring(beginCard, end);
 	                 			   linesCard.add(lineCard);
 	                 		   }
-	                 		   if(end > card.getDescription().length()-1) {
+	                 		   if(end >= card.getDescription().length()) {
 	                 			   lineCard = card.getDescription().substring(beginCard);
 	                 			   linesCard.add(lineCard);
 	                 			   

@@ -44,6 +44,7 @@ export class CardComponent implements OnInit {
   values: number[];
   alertPublish: boolean = false;
   pantallaExito: boolean = false;
+  
 
  cardsOfDeck: Card[];
   
@@ -285,9 +286,11 @@ export class CardComponent implements OnInit {
 }
 
   pdfMazo() { 
+   
     const load = this.dialog.open((LoadComponent), {
       data: `Puede tardar unos segundos`
     });
+    
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
         console.log("Generado PDF del mazo " + pdf);

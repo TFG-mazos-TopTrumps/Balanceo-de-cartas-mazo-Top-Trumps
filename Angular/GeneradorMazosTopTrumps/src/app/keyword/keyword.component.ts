@@ -72,7 +72,7 @@ export class KeywordComponent implements OnInit {
     let name = sessionStorage.getItem("deck");
 
 
-    if(keyword.word==null || keyword.word=="") {
+    if(keyword.word==null || keyword.word=="" || keyword.word == undefined) {
       this.notNullKeyword=false;
       anyError=true;
     }

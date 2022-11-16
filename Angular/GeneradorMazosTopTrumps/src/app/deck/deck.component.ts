@@ -26,7 +26,11 @@ export class DeckComponent implements OnInit {
   valueMin: number;
   valueMax: number;
   idUser: number;
-  keywords: Array<string> = []; 
+  keywords: Array<string> = [];
+  colorBordes: string;
+  colorFondo: string;
+  colorPaneles: string;
+  colorFuente: string;
 
  
   confirmKeyword: boolean = true;
@@ -43,7 +47,10 @@ export class DeckComponent implements OnInit {
   notNullAndNegativeValueMax: boolean = true;
   valueMinBiggerOrEqualThanValueMax: boolean = true;
   minKeywords: boolean = true;
-
+  notNullColorBorde: boolean = true;
+  notNullColorFondo: boolean = true;
+  notNullColorPaneles: boolean = true;
+  notNullColorFuente: boolean = true;
   anyError:boolean = false;
   alertaExito: boolean = false;
   
@@ -83,6 +90,10 @@ export class DeckComponent implements OnInit {
     this.errorPatternURL=true;
     this.errorIncorrectFormatImage=true;
     this.valueMinBiggerOrEqualThanValueMax=true;
+    this.notNullColorBorde=true;
+    this.notNullColorFondo=true;
+    this.notNullColorPaneles=true;
+    this.notNullColorFuente=true;
 
     
 
@@ -111,6 +122,22 @@ export class DeckComponent implements OnInit {
     }
   }
   
+  if(this.colorBordes == undefined || this.colorBordes==null) {
+    this.notNullColorBorde=false;
+    this.anyError=true;
+  } 
+  if(this.colorFondo == undefined || this.colorFondo==null) {
+    this.notNullColorFondo=false;
+    this.anyError=true;
+  } 
+  if(this.colorPaneles == undefined || this.colorPaneles==null) {
+    this.notNullColorPaneles=false;
+    this.anyError=true;
+  } 
+  if(this.colorFuente == undefined || this.colorFuente==null) {
+    this.notNullColorFuente=false;
+    this.anyError=true;
+  } 
     if(this.cards == null || this.cards < 2 || this.cards > 30) {
       this.notNullAndIncorrectNCards=false;
       this.anyError=true;
@@ -183,6 +210,11 @@ export class DeckComponent implements OnInit {
     deck.image = this.image;
     deck.ncards = this.cards;
     deck.ncategories = this.categories;
+    deck.borde=this.colorBordes;
+    deck.fondo=this.colorFondo;
+    deck.panel=this.colorPaneles;
+    deck.fuente=this.colorFuente;
+    
     sessionStorage.setItem("deck", deck.name);
     this.deckService.createDeck(deck, this.username, this.password).subscribe({
       next: d => {

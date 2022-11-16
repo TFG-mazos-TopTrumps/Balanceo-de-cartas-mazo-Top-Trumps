@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -60,6 +61,18 @@ public class Deck {
 	@URL
 	@Length(max=4000)
 	private String image;
+	
+	@NotNull
+	private String borde;
+	
+	@NotNull
+	private String fondo;
+	
+	@NotNull
+	private String panel;
+	
+	@NotNull
+	private String fuente;
 	
 	
 	private Boolean published = false;
