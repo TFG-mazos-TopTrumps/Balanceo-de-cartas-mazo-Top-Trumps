@@ -68,7 +68,7 @@
 
 <div *ngIf="cardCategories && generateValues && !pdf" class="generateValues">
   
-  <h1 class="fw-lighter"> Su mazo ya está listo. Pulse el botón para generar los valores. </h1>
+  <h1 class="fw-lighter">   Tu mazo ya está listo. Pulsa el botón para generar los valores. </h1>
 
   
     <button class="btn btn-info" (click)="generateDeck()" type="button" style="position: absolute; top: 20%; left: 45%;"> Generar </button>
@@ -78,7 +78,7 @@
     <h1 class="fw-lighter"> ¡Los valores se han generado con éxito! </h1>
     <br/>
     <div *ngIf="publication && !pantallaExito">
-      <h3 class="fw-lighter" style="text-align: center;"> Si desea publicar el mazo, pulse el botón. De lo contrario, cancele la operación. </h3>
+      <h3 class="fw-lighter" style="text-align: center;"> Si desea publicar el mazo, pulsa el botón. De lo contrario, cancela la operación. </h3>
       <button class="btn btn-info" (click)="publishDeck()" type="button"  style="position: absolute; top: 33%; left: 40%;"> Publicar mazo </button>
       <button class="btn btn-info" (click)="noPublishDeck()" type="button"  style="position: absolute; top: 33%; left: 52%;"> Cancelar</button>
     </div>
@@ -87,7 +87,7 @@
       <div *ngIf="alertPublish" class="alert alert-success d-flex align-items-center" role="alert">
         <svg class="bi flex-shrink-0 me-2" width="20" height="20" fill="currentColor" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
         <div>
-          Se ha publicado su mazo con éxito.
+          Se ha publicado el mazo con éxito.
         </div>
        
       </div>

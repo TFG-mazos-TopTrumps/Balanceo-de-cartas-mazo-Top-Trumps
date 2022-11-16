@@ -63,15 +63,23 @@ public class Deck {
 	private String image;
 	
 	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String borde;
 	
 	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String fondo;
 	
 	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String panel;
 	
 	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String fuente;
 	
 	

@@ -67,6 +67,10 @@ public class DeckServiceImpl implements DeckService {
 		// Condiciones de validación
 		boolean errorDuplicatedName = this.decksDao.findDeckByName(d.getName()).isPresent() ? true : false;
 		boolean errorNotNullName = d.getName() == null || d.getName().isBlank() || d.getName().isEmpty() ? true:false;
+		boolean errorNotNullBorde = d.getBorde() == null || d.getBorde().isBlank() || d.getBorde().isEmpty() ? true:false;
+		boolean errorNotNullFondo = d.getFondo() == null || d.getFondo().isBlank() || d.getFondo().isEmpty() ? true:false;
+		boolean errorNotNullPaneles = d.getPanel() == null || d.getPanel().isBlank() || d.getPanel().isEmpty() ? true:false;
+		boolean errorNotNullFuente = d.getFuente() == null || d.getFuente().isBlank() || d.getFuente().isEmpty() ? true:false;
 		boolean errorMaxLengthName = d.getName().length() > 30 ? true:false;
 		boolean errorMaxLengthDescription = (d.getDescription() != null && d.getDescription().length() > 500) ? true:false;
 		boolean errorMaxLengthImage = (d.getImage() != null  && d.getImage().length() > 4000) ? true:false;
@@ -86,6 +90,28 @@ public class DeckServiceImpl implements DeckService {
 			if(!anyError && errorNotNullName) {
 				anyError=true;
 				throw new ConstraintViolationException("El campo nombre del mazo no puede ser nulo.",null);
+				
+			}
+			
+			if(!anyError && errorNotNullBorde) {
+				anyError=true;
+				throw new ConstraintViolationException("El campo borde no puede ser nulo.",null);
+				
+			}
+			if(!anyError && errorNotNullFondo) {
+				anyError=true;
+				throw new ConstraintViolationException("El campo fondo no puede ser nulo.",null);
+				
+			}
+			if(!anyError && errorNotNullPaneles) {
+				anyError=true;
+				throw new ConstraintViolationException("El campo paneles no puede ser nulo.",null);
+				
+			}
+			
+			if(!anyError && errorNotNullFuente) {
+				anyError=true;
+				throw new ConstraintViolationException("El campo fuente no puede ser nulo.",null);
 				
 			}
 			
@@ -144,6 +170,22 @@ public class DeckServiceImpl implements DeckService {
 		} catch(ConstraintViolationException e) {
 			if(errorNotNullName) {
 				System.out.println("El campo nombre del mazo no puede ser nulo.");
+				
+			}
+			if(errorNotNullBorde) {
+				System.out.println("El campo borde no puede ser nulo.");
+				
+			}
+			if(errorNotNullFondo) {
+				System.out.println("El campo fondo no puede ser nulo.");
+				
+			}
+			if(errorNotNullPaneles) {
+				System.out.println("El campo panel no puede ser nulo.");
+				
+			}
+			if(errorNotNullFuente) {
+				System.out.println("El campo fuente no puede ser nulo.");
 				
 			}
 			

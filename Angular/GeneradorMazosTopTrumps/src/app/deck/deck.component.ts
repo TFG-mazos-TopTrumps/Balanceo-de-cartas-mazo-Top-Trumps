@@ -27,10 +27,10 @@ export class DeckComponent implements OnInit {
   valueMax: number;
   idUser: number;
   keywords: Array<string> = [];
-  colorBordes: string;
-  colorFondo: string;
-  colorPaneles: string;
-  colorFuente: string;
+  colorBordes: string = "#FFFFFF";
+  colorFondo: string="#000000";
+  colorPaneles: string="#FFFFFF";
+  colorFuente: string="#000000";
 
  
   confirmKeyword: boolean = true;

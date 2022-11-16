@@ -1,5 +1,5 @@
 <div class="text-bg-dark p-3">
-<h1 class="fw-lighter"> Seleccione las características del mazo </h1>
+<h1 class="fw-lighter"> Selecciona las características del mazo </h1>
 </div>
   <main class="text-bg-dark p-3">
     <div>
@@ -75,7 +75,10 @@
               El valor mínimo de las categorías de las cartas debe ser menor y distinto al máximo.
             </div>
           </div>
-            <br>
+          <br>
+          <br>
+         
+          <h3 class="fw-lighter">Diseño del aspecto de las cartas: </h3>
             <div class="col-md-6">
             <label for="colorBordes" class="form-label">Color del borde </label>
             <input type="color" class="form-control" value="#000000" name="colorBordes" [(ngModel)]="colorBordes">
@@ -85,27 +88,49 @@
             </div>
             <div class="col-md-6">
             <label for="colorFondo" class="form-label">Color del fondo </label>
-            <input type="color" class="form-control" value="#000000" name="colorFondo" [(ngModel)]="colorFondo">
-            <div class="text-danger" [hidden]="notNullColorFondo">
+            <input type="color" class="form-control" name="colorFondo" [(ngModel)]="colorFondo">
+            <div class="col-md-6" [hidden]="notNullColorFondo">
                Debe definir el color del fondo de las cartas.
             </div>
             </div>
             <div class="col-md-6">
             <label for="colorPaneles" class="form-label">Color de los paneles </label>
-            <input type="color" class="form-control" value="#000000" name="colorPaneles" [(ngModel)]="colorPaneles">
+            <input type="color" class="form-control" name="colorPaneles" [(ngModel)]="colorPaneles">
             <div class="text-danger" [hidden]="notNullColorPaneles">
                 Debe definir el color de los paneles de las cartas.
             </div>
             </div>
             <div class="col-md-6">
             <label for="colorFuente" class="form-label">Color de la fuente </label>
-            <input type="color" class="form-control" value="#000000" name="colorFuente" [(ngModel)]="colorFuente">
+            <input type="color" class="form-control" name="colorFuente" [(ngModel)]="colorFuente">
             <div class="text-danger" [hidden]="notNullColorFuente">
               Debe definir el color de la fuente de las cartas.
             </div>
             </div>
+            
+   <!--        <div class="bordeCarta" style="background-color: {{colorBordes}}">
+              <p style="color: {{colorFuente}};"></p>
+              <div class="fondoCarta" style="background-color: {{colorFondo}}">
+                <p style="color: {{colorFuente}};"> </p>
+                <div class="nombreCarta" style="background-color: {{colorPaneles}}">
+                  <p style="color: {{colorFuente}};">  </p>
+                </div>
+                <div class="descripcionCarta" style="background-color: {{colorPaneles}}">
+                  <p style="color: {{colorFuente}};"> </p>
+                </div>
               
+                <div class="categoriasCarta" style="background-color: {{colorPaneles}}">
+                    
+                  <p style="color: {{colorFuente}};"> </p>
+                </div>
+    
+              </div>
+            </div>
+            --> 
+
             <button (click)="createDeck()" class="btn btn-info" type="button"> Siguiente </button>
+
+            
           
             <button (click)="volver()" class="btn btn-info" type="button">Volver</button>
          </form>
