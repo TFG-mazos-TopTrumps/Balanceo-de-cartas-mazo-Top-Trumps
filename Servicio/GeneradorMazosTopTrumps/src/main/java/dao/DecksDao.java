@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import model.Deck;
-import model.Keyword;
+
 
 public interface DecksDao extends JpaRepository<Deck, Integer> {
 	

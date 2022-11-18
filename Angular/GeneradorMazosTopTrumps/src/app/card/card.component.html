@@ -25,6 +25,9 @@
       <div class="text-danger" [hidden]="duplicatedCategory">
         Las categorias no pueden estar duplicadas.
       </div>
+      <div class="text-danger" [hidden]="unexpectedError">
+        Hay algo que falla. Por favor, revisa el valor que ha indicado en el campo.
+      </div>
     </form>
   
   
@@ -59,6 +62,9 @@
     <input class="form-control" type="textarea" name="description" [(ngModel)]="description">
     <div class="text-danger" [hidden]="errorMaxLengthDescription">
       La descripción no puede tener más de 500 caracteres.
+    </div>
+    <div class="text-danger" [hidden]="unexpectedError">
+      Hay algo que falla. Por favor, revisa los valores. que ha indicado los campos.
     </div>
   </form>
 

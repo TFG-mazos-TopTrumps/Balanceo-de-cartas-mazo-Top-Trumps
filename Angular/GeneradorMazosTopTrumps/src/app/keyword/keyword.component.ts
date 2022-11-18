@@ -28,6 +28,7 @@ export class KeywordComponent implements OnInit {
   nCategories: number;
   valueMin: number;
   valueMax: number;
+  unexpectedError: boolean = true;
   constructor(private userService: LoginService, private route : ActivatedRoute, private deckService: DeckService, private keywordService: KeywordService, private router:Router) {
     
     this.nCategories = route.snapshot.params["categories"];
@@ -64,7 +65,9 @@ export class KeywordComponent implements OnInit {
     this.notNullKeyword=true;
     this.errorMaxLengthKeyword=true;
     this.errorDuplicateKeyword=true;
+    this.unexpectedError=true;
     this.alertaExito=false;
+   
     let anyError = false;
     let keyword = new Keyword();
     keyword.word = this.keyword;
@@ -72,7 +75,7 @@ export class KeywordComponent implements OnInit {
     let name = sessionStorage.getItem("deck");
 
 
-    if(keyword.word==null || keyword.word=="" || keyword.word == undefined) {
+    if(keyword.word==null || keyword.word=="") {
       this.notNullKeyword=false;
       anyError=true;
     }
@@ -90,38 +93,34 @@ export class KeywordComponent implements OnInit {
     }
 
     if(!anyError) {
-    this.deckService.getDeckByName(name).subscribe({
-      next: respuesta => {
-        this.idDeck = respuesta.idDeck;
-      },
-      error: e => {
-        console.log(`consulta -> No se ha podido obtener, ${e}`)
-        alert(e)
-      }
-
-    });
     
         this.keywordService.addKeyword(keyword, name).subscribe({
           next: respuesta => {
-            console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
-            this.confirmKeyword=true;
-            this.alertaExito=true;
-            this.minKeywords=true;
+            if(!respuesta) {
+              this.unexpectedError=false;
+              
+            } else {
+              console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
+              this.confirmKeyword=true;
+              this.alertaExito=true;
+              this.minKeywords=true;
+  
+              this.keywordService.getKeywordsByDeck(name).subscribe({
+                next: kws => {
+                  this.keywordsDeck=kws;
+                }
+              });
+           
             
+          }
             
-            this.keywordService.getKeywordsByDeck(sessionStorage.getItem("deck")).subscribe({
-              next: kws => {
-                this.keywordsDeck=kws;
-              }
-            });
-            
-    
           },
           error: e => {
             console.log(`insertar -> No se ha podido registrar, ${e}`)
             alert(e)
           }
         });
+        
     this.keyword="";
     
       this.confirmKeyword=true;

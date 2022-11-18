@@ -23,7 +23,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,7 +61,7 @@ public class DeckServiceImpl implements DeckService {
 	}
 
 	@Transactional
-	public void createDeck(Deck d) throws SQLException, ConstraintViolationException {
+	public boolean createDeck(Deck d) throws SQLException, ConstraintViolationException {
 		
 		// Condiciones de validación
 		boolean errorDuplicatedName = this.decksDao.findDeckByName(d.getName()).isPresent() ? true : false;
@@ -78,6 +77,7 @@ public class DeckServiceImpl implements DeckService {
 		boolean errorPatternURL = (d.getImage() != null && d.getImage().length() >= 1 && !(d.getImage().startsWith("http://") || d.getImage().startsWith("https://"))) ? true:false;
 		boolean errorNotNullAndIncorrectNCards = d.getNCards() < 2 ? true:false;
 		boolean errorNotNullAndIncorrectNCategories = d.getNCategories() < 2 ? true:false;
+		boolean errorNotNullUser = d.getUser()==null ? true:false;
 		boolean anyError = false;
 		
 		try {
@@ -90,6 +90,11 @@ public class DeckServiceImpl implements DeckService {
 			if(!anyError && errorNotNullName) {
 				anyError=true;
 				throw new ConstraintViolationException("El campo nombre del mazo no puede ser nulo.",null);
+				
+			}
+			if(!anyError && errorNotNullUser) {
+				anyError=true;
+				throw new ConstraintViolationException("Debe tener un usuario asociado.",null);
 				
 			}
 			
@@ -156,10 +161,10 @@ public class DeckServiceImpl implements DeckService {
 			
 			}
 			
-			
 			if(!anyError) {
 				
 				this.decksDao.save(d);
+				return true;
 			}
 				
 		
@@ -170,6 +175,10 @@ public class DeckServiceImpl implements DeckService {
 		} catch(ConstraintViolationException e) {
 			if(errorNotNullName) {
 				System.out.println("El campo nombre del mazo no puede ser nulo.");
+				
+			}
+			if(errorNotNullUser) {
+				System.out.println("Debe tener un usuario asociado.");
 				
 			}
 			if(errorNotNullBorde) {
@@ -212,33 +221,48 @@ public class DeckServiceImpl implements DeckService {
 			if(errorIncorrectFormatImage) {
 				System.out.println("La imagen ha tener formato .jpg, .png o .jpeg .");
 			}
+			
 		}
 		
-		
+		return false;
 		
 	}
 
 	
-	public Deck getDeckById(int id) {
+	public Deck getDeckById(int id) throws Exception {
+		try {
+			
+		
 		Optional<Deck> oDeck = decksDao.findById(id);
 		Deck deck = new Deck();
 		if(oDeck.isPresent()) {
 			deck=oDeck.get();
 			return deck;
+		} else {
+			throw new Exception("El mazo con id " + id + " no se encuentra registrado en el sistema.");
 		}
-		return null;
+		} catch(Exception e) {
+			System.out.println("El mazo con id " + id + " no se encuentra registrado en el sistema.");
+			return null;
+		}
 	}
 
 	@Override
-	public Deck getDeckByName(String name) {
+	public Deck getDeckByName(String name) throws Exception {
 		
 		Optional<Deck> optionalDeck = decksDao.findDeckByName(name);
 		
+		try {
 		if(optionalDeck.isPresent()) {
 			return optionalDeck.get();
 		} else {
-			return optionalDeck.orElse(new Deck());
+			throw new Exception("El nombre indicado no corresponde con ningún mazo registrado.");
 		}
+	} catch(Exception e) {
+		System.out.println("El nombre indicado no corresponde con ningún mazo registrado.");
+		return null;
+	}
+		
 	}
 
 	@Override
@@ -644,26 +668,42 @@ public class DeckServiceImpl implements DeckService {
 		 
 	    
 		
-		public boolean checkKeyword(String deck) {
+		public boolean checkKeyword(String deck) throws Exception {
 			
 			Deck d = this.getDeckByName(deck);
+			if(d != null) {
+				return d.getKeywords().isEmpty() ? true:false;
+			} else {
+				return false;
+			}
 			
-			return d.getKeywords().isEmpty() ? true:false;
 		}
 
 		
-		public void publishDeck(String deck) {
+		public boolean publishDeck(String deck) throws Exception {
 			Deck d = this.getDeckByName(deck);
+			if(d != null) {
 			d.setPublished(true);
 			this.decksDao.save(d);
+			return true;
+			} else {
+				return false;
+			}
 			
 		}
 
 	
-		public void noPublishDeck(String deck) {
+		public boolean noPublishDeck(String deck) throws Exception {
 			Deck d = this.getDeckByName(deck);
-			d.setPublished(false);
-			this.decksDao.save(d);
+			if(d != null) {
+				d.setPublished(false);
+				this.decksDao.save(d);
+				return true;
+			} else {
+				return false;
+				
+			}
+			
 			
 			
 		}

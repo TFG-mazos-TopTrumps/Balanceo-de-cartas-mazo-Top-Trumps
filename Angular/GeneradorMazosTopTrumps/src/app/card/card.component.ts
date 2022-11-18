@@ -39,6 +39,7 @@ export class CardComponent implements OnInit {
   errorMaxLengthImage: boolean = true; 
   errorPatternURL: boolean = true;
   errorIncorrectFormatImage: boolean = true;
+  unexpectedError: boolean = true;
   pdf: boolean = false;
   publication: boolean = true;
   values: number[];
@@ -125,6 +126,7 @@ export class CardComponent implements OnInit {
     this.notNullCategory=true;
     this.errorMaxLengthCategories=true;
     this.duplicatedCategory=true;
+    this.unexpectedError=true;
     let anyError=false;
     if(this.category==null || this.category=="") {
       this.notNullCategory=false;
@@ -145,22 +147,43 @@ export class CardComponent implements OnInit {
     if(!anyError) {
       if(this.i<=this.nCategories) {
         
-        sessionStorage.setItem("category " + this.i, this.category);
-        this.categories.push(this.category);
         
-        this.category="";
-        this.i++;
-        console.log(this.categories);
+        this.cardService.validateCategory(this.category).subscribe({
+          next: respuesta => {
+            if(!respuesta) {
+            this.unexpectedError=false;
+          } else {
+            sessionStorage.setItem("category " + this.i, this.category);
+            this.categories.push(this.category);
+            
+            this.category="";
+            this.i++;
+            console.log(this.categories);
+          
+          if(this.i==this.nCategories) {
+      
+            this.cardCategories=true;
+            sessionStorage.setItem("categoriesCompleted", "true");
+            
+          }
+        }
+          
+          },
+          error: e => {
+            console.log(`insertar -> No se ha podido registrar, ${e}`)
+            alert(e)
+          }
+        });
+            
+          }
+       
+        
       }
-      if(this.i==this.nCategories) {
-        
-        this.cardCategories=true;
-        sessionStorage.setItem("categoriesCompleted", "true");
-        
-      }
+      
     
   }
-  }
+  
+
 
   generateCard() {
 
@@ -170,6 +193,7 @@ export class CardComponent implements OnInit {
     this.errorMaxLengthImage=true;
     this.errorPatternURL=true;
     this.errorIncorrectFormatImage=true;
+    this.unexpectedError=true;
 
     let card = new Card();
     card.name = this.name;
@@ -202,7 +226,7 @@ export class CardComponent implements OnInit {
           anyError=true;
         }
         
-        if(!(this.image.match(".jpg") || this.image.match(".png") || this.image.match(".jpeg"))) {
+        if(!(this.image.includes(".jpg") || this.image.includes(".png") || this.image.includes(".jpeg"))) {
           this.errorIncorrectFormatImage=false;
           anyError=true;
         }
@@ -218,11 +242,13 @@ export class CardComponent implements OnInit {
     
     if(!anyError) {
       if(this.n<=this.cards) {
-       
-        
      
         this.cardService.createCard(card, this.deck).subscribe({
           next: respuesta => {
+
+            if(!respuesta) {
+              this.unexpectedError=false;
+            } else {
             console.log(`Registrado, ${JSON.stringify(respuesta)}`)
            
             this.idCard=respuesta.idCard;
@@ -242,6 +268,7 @@ export class CardComponent implements OnInit {
               })
       
             }
+            this.n++;
   
             if(this.n==this.cards) {
               this.generateValues=true;
@@ -249,6 +276,7 @@ export class CardComponent implements OnInit {
             
   
             }
+          }
           },
           error: e => {
             console.log(`insertar -> No se ha podido registrar, ${e}`)
@@ -261,7 +289,7 @@ export class CardComponent implements OnInit {
         this.image="";
         this.description="";
         
-        this.n++;
+        
       }
   }
   }

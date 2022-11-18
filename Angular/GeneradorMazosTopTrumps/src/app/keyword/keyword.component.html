@@ -24,6 +24,9 @@
   <div class="text-danger" [hidden]="minKeywords">
     El mazo tiene que tener mínimo una palabra clave asignada.
   </div>
+  <div class="text-danger" [hidden]="unexpectedError">
+    Hay algo que falla. Por favor, revisa los valores que ha indicado en los campos.
+  </div>
   
   <div *ngIf="alertaExito" class="alert alert-success d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="20" height="20" fill="currentColor" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>

@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   errorMaxLengthUsername : boolean = true;
   errorMaxLengthPassword : boolean = true;
   errorMaxLengthName: boolean = true;
+  unexpectedError: boolean = true;
   duplicatedName: boolean = true;
   condicionRegistro: boolean = true;
   alertRegistred: boolean = false;
@@ -36,6 +37,18 @@ export class LoginComponent implements OnInit {
  
 
   public login() {
+
+    this.notNullUsername=true;
+    this.notNullPassword=true;
+    this.notNullConfirmPassword=true;
+    this.errorPasswordRegister = true;
+    this.notNullName=true;
+    this.duplicatedName=true;
+    this.errorMaxLengthUsername=true;
+    this.errorMaxLengthPassword=true;
+    this.errorMaxLengthName=true;
+    this.unexpectedError=true;
+    this.falloUsuario=true;
 
     this.service.login(this.usuario, this.password)
                 .subscribe((respuesta) => {
@@ -70,10 +83,12 @@ export class LoginComponent implements OnInit {
       this.errorMaxLengthUsername=true;
       this.errorMaxLengthPassword=true;
       this.errorMaxLengthName=true;
+      this.unexpectedError=true;
+      this.falloUsuario=true;
       let anyError = false;
  
       if(this.usuario==null || this.usuario=="") {
-        this.notNullUsername=false;
+        this.notNullUsername=false; 
         anyError=true;
       }
 
@@ -117,9 +132,15 @@ export class LoginComponent implements OnInit {
             if(usuario==0) {
               this.service.register(user).subscribe({
                 next : respuesta => {
+
+                  if(!respuesta) {
+                    this.unexpectedError=false;
+
+                  } else {
                   console.log(`Registrado, ${JSON.stringify(respuesta)}`) 
                   this.condicionRegistro=true;
                   this.alertRegistred=true;
+                }
                 },
                 error: e => {
                   console.log(`insertar -> No se ha podido registrar, ${e}`)

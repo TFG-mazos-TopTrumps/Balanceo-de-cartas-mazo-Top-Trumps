@@ -29,6 +29,15 @@ addCategory(idCard: number, category: string) {
 
 }
 
+validateCategory(category: string) {
+  let headers = new HttpHeaders;
+  headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+  return this.http.post<boolean>(this.url + "ValidateCategory?category=" + category,
+  {headers: headers}
+ )
+
+}
+
 cardsOfDeck(deck: string) {
   return this.http.get<Card[]>(this.url + 'CardsDeck?deck=' + deck);
 }

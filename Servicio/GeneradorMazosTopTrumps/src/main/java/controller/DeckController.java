@@ -55,14 +55,14 @@ public class DeckController {
 	}
 	
 	@GetMapping(value = "DeckName", produces=MediaType.APPLICATION_JSON_VALUE)
-	public Deck getDeckByName(@RequestParam("name") String name) {
+	public Deck getDeckByName(@RequestParam("name") String name) throws Exception {
 
 		return deckService.getDeckByName(name);
 
 	}
 	
 	@GetMapping(value = "CheckKeywords", produces=MediaType.APPLICATION_JSON_VALUE)
-	public boolean checkKeywords(@RequestParam("name") String name) {
+	public boolean checkKeywords(@RequestParam("name") String name) throws Exception {
 
 		return this.deckService.checkKeyword(name);
 
@@ -81,12 +81,12 @@ public class DeckController {
 		return deckService.getDecksByKeywords(keyword);
 	}
 	
-	@PostMapping(value="Deck", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createDeck(@RequestBody Deck d, @RequestParam("username") String username, @RequestParam("password") String password) throws ConstraintViolationException, SQLException {
+	@PostMapping(value="Deck", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE) 
+	public boolean createDeck(@RequestBody Deck d, @RequestParam("username") String username, @RequestParam("password") String password) throws ConstraintViolationException, SQLException, Exception {
 		
 		User u = userService.login(username, password);
 		d.setUser(u);
-		deckService.createDeck(d);
+		return deckService.createDeck(d);
 	
 	}
 	
@@ -114,14 +114,14 @@ public class DeckController {
 	}
 	
 	@PutMapping(value="DeckPublish")
-	public void publishDeck(@RequestParam("deck") String deck) {
+	public void publishDeck(@RequestParam("deck") String deck) throws Exception {
 		
 		this.deckService.publishDeck(deck);
 	
 	}
 	
 	@PutMapping(value="DeckNoPublish")
-	public void noPublishDeck(@RequestParam("deck") String deck) {
+	public void noPublishDeck(@RequestParam("deck") String deck) throws Exception {
 		
 		this.deckService.noPublishDeck(deck);
 	

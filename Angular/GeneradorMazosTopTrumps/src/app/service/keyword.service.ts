@@ -14,7 +14,7 @@ export class KeywordService {
   addKeyword(keyword: Keyword, name: string) {
       let headers = new HttpHeaders;
       headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-      return this.http.post(this.url + "Keyword?deck=" + name,
+      return this.http.post<boolean>(this.url + "Keyword?deck=" + name,
       keyword.toString(),
       {headers: headers}
      )

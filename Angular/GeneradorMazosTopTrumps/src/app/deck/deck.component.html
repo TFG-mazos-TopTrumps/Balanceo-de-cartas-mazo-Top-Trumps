@@ -106,32 +106,12 @@
             <div class="text-danger" [hidden]="notNullColorFuente">
               Debe definir el color de la fuente de las cartas.
             </div>
+            <div class="text-danger" [hidden]="unexpectedError">
+              Hay algo que falla. Por favor, revisa los valores que ha indicado en los campos.
             </div>
-            
-   <!--        <div class="bordeCarta" style="background-color: {{colorBordes}}">
-              <p style="color: {{colorFuente}};"></p>
-              <div class="fondoCarta" style="background-color: {{colorFondo}}">
-                <p style="color: {{colorFuente}};"> </p>
-                <div class="nombreCarta" style="background-color: {{colorPaneles}}">
-                  <p style="color: {{colorFuente}};">  </p>
-                </div>
-                <div class="descripcionCarta" style="background-color: {{colorPaneles}}">
-                  <p style="color: {{colorFuente}};"> </p>
-                </div>
-              
-                <div class="categoriasCarta" style="background-color: {{colorPaneles}}">
-                    
-                  <p style="color: {{colorFuente}};"> </p>
-                </div>
-    
-              </div>
             </div>
-            --> 
-
+        
             <button (click)="createDeck()" class="btn btn-info" type="button"> Siguiente </button>
-
-            
-          
             <button (click)="volver()" class="btn btn-info" type="button">Volver</button>
          </form>
      

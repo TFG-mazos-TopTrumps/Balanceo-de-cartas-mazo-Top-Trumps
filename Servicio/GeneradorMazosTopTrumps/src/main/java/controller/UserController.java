@@ -27,7 +27,7 @@ public class UserController {
 	
 	
 	@GetMapping(value="UserByUsername")
-	public User getUserByUsername(@RequestParam("username") String username) {
+	public User getUserByUsername(@RequestParam("username") String username) throws Exception {
 		
 		User u = userService.findUserByUsername(username);
 		
@@ -35,7 +35,7 @@ public class UserController {
 		
 	}
 	@GetMapping(value="UserId")
-	public Integer getIdUser(@RequestParam("username") String username, @RequestParam("password") String password) {
+	public Integer getIdUser(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception{
 		
 		User u = userService.login(username, password);
 		
@@ -51,7 +51,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value="Login")
-	public boolean login(@RequestParam("username") String username, @RequestParam("password") String password) throws SQLException, ConstraintViolationException {
+	public boolean login(@RequestParam("username") String username, @RequestParam("password") String password) throws SQLException, ConstraintViolationException, Exception {
 		
 		User u = userService.login(username, password);
 		
@@ -66,8 +66,8 @@ public class UserController {
 	}
 	
 	@PostMapping(value="Register", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void registerUser(@RequestBody User u) throws SQLException, ConstraintViolationException {
-		userService.registerUser(u);
+	public boolean registerUser(@RequestBody User u) throws SQLException, ConstraintViolationException {
+		return userService.registerUser(u);
 	}
 	
 

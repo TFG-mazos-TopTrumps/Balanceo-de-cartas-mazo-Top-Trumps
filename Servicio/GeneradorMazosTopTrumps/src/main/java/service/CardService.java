@@ -10,7 +10,9 @@ import model.Card;
 public interface CardService  {
 	
 	Card saveCard(Card c) throws SQLException, ConstraintViolationException;
-	Card findCardById(Integer id);
+	Card categorieCard(int card, String category) throws Exception, ConstraintViolationException, SQLException;
+	Card findCardById(Integer id) throws Exception;
 	List<Card> findCardsOfDeck(String deck);
 	Card balanceDeck(Card c, List<Double> value) throws ConstraintViolationException, SQLException;
+	boolean validateCategory(String category) throws Exception;
 }

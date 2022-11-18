@@ -60,6 +60,7 @@ public class Card {
 	@Column(name="value")
 	Map<String,Double> categories;
 	
+	@NotNull
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idDeck",

@@ -85,6 +85,7 @@ public class Deck {
 	
 	private Boolean published = false;
 	
+	@NotNull
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="idUser",

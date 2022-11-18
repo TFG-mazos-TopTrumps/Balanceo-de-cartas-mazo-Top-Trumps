@@ -10,10 +10,10 @@ import model.User;
 public interface UsersDao extends JpaRepository<User, Integer> {
 	
 	@Query("select u from User u where u.username=?1 and u.password=?2")
-	User findUserByUsernameAndPassword(String username, String password);
+	Optional<User> findUserByUsernameAndPassword(String username, String password);
 	
 	@Query("select u from User u where u.username=?1")
-	User findUserByUsername(String username);
+	Optional<User> findUserByUsername(String username);
 	
 	@Query("select count(*) from User u where u.username=?1")
 	Integer countUserByUsername(String username);

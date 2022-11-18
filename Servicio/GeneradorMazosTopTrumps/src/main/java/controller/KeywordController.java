@@ -1,9 +1,9 @@
 package controller;
 
-import java.sql.SQLException;
+
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.Deck;
+
 import model.Keyword;
 import service.DeckService;
 import service.KeywordService;
@@ -37,7 +37,7 @@ public class KeywordController {
 	}
 	
 	@GetMapping(value="KeywordsDeck", produces=MediaType.APPLICATION_JSON_VALUE)
-	public List<Keyword> getKeywordsByDeck(@RequestParam("deck") String deck) {
+	public List<Keyword> getKeywordsByDeck(@RequestParam("deck") String deck) throws Exception {
 		
 		return keywordService.findKeywordsByDeck(deck);
 		
@@ -64,12 +64,12 @@ public class KeywordController {
 		
 	}
 	
-	@PostMapping(value="Keyword", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public void createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws ConstraintViolationException, SQLException {
-		Deck d = deckService.getDeckByName(deck);
-		Integer idDeck = d.getIdDeck();
+	@PostMapping(value="Keyword", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+	public boolean createKeyword(@RequestBody Keyword word, @RequestParam("deck") String deck) throws Exception {
 		
-		keywordService.createKeyword(idDeck, word);
+		return keywordService.createKeyword(deck, word);
+		
+		
 	}
 
 	

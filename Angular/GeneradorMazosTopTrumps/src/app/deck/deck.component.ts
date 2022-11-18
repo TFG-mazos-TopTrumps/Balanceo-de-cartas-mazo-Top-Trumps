@@ -51,6 +51,7 @@ export class DeckComponent implements OnInit {
   notNullColorFondo: boolean = true;
   notNullColorPaneles: boolean = true;
   notNullColorFuente: boolean = true;
+  unexpectedError: boolean = true;
   anyError:boolean = false;
   alertaExito: boolean = false;
   
@@ -94,6 +95,7 @@ export class DeckComponent implements OnInit {
     this.notNullColorFondo=true;
     this.notNullColorPaneles=true;
     this.notNullColorFuente=true;
+    this.unexpectedError=true;
 
     
 
@@ -194,7 +196,7 @@ export class DeckComponent implements OnInit {
         this.errorPatternURL=false;
         this.anyError=true;
       } 
-      if(!(this.image.match(".jpg") || this.image.match(".png") || this.image.match(".jpeg"))) {
+      if(!(this.image.includes(".jpg") || this.image.includes(".png") || this.image.includes(".jpeg"))) {
         this.errorIncorrectFormatImage=false;
         this.anyError=true;
       }
@@ -219,9 +221,12 @@ export class DeckComponent implements OnInit {
     this.deckService.createDeck(deck, this.username, this.password).subscribe({
       next: d => {
         
+        if(!d) {
+          this.unexpectedError=false;
+        } else{
         console.log(`Registrado, ${JSON.stringify(d)}`);
-        
         this.route.navigate(['/keyword', this.cards, this.categories, this.valueMin, this.valueMax]);
+        }
       
         
       },

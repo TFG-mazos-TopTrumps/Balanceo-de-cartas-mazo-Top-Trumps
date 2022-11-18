@@ -10,9 +10,9 @@ import model.User;
 
 public interface UserService {
 	
-	User findUserByUsername(String username);
+	User findUserByUsername(String username) throws Exception;
 	Integer countUserByUsername(String username);
-	void registerUser(User u) throws SQLException, ConstraintViolationException;
-	User login(String username, String password);
+	boolean registerUser(User u) throws SQLException, ConstraintViolationException;
+	User login(String username, String password) throws Exception;
 
 }

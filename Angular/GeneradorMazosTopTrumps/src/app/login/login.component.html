@@ -31,7 +31,7 @@
   
     <button (click)="login()" class="btn btn-info" type="button">Iniciar sesión</button>
     <br>
-    <a (click)="cambiarRegistro()" class="btn btn-link" type="button">¿Aún no tienes cuenta? Registrate aquí</a>
+    <a (click)="cambiarRegistro()" class="btn btn-link" type="button">¿Aún no tienes cuenta? Registrate pulsando aquí.</a>
 
  
     <div *ngIf="alertRegistred" class="alert alert-success d-flex align-items-center" role="alert">
@@ -88,6 +88,9 @@
       </div>
       <div class="text-danger" [hidden]="errorMaxLengthName">
         El nombre no puede tener más de 25 caracteres.
+      </div>
+      <div class="text-danger" [hidden]="unexpectedError">
+        Hay algo que falla. Por favor, revisa los valores que ha indicado en los campos.
       </div>
     </div>
       <button (click)="register()" class="btn btn-info" type="button">Registrar</button>

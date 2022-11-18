@@ -30,7 +30,7 @@ export class DeckService {
   createDeck(deck: Deck, username: string, password: string) {
     let headers = new HttpHeaders;
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post<Deck>(this.url + "Deck?username=" + username + "&password=" + password,
+    return this.http.post<boolean>(this.url + "Deck?username=" + username + "&password=" + password,
     deck.toString(),
     {headers: headers}
    )

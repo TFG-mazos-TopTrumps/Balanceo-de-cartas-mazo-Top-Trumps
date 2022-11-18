@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 		super();
 		this.usersDao = usersDao;
 	}
-	public void registerUser(User u) throws SQLException, ConstraintViolationException {
+	public boolean registerUser(User u) throws SQLException, ConstraintViolationException {
 		
 		
 		boolean errorNotNullUsername = u.getUsername() == null || u.getUsername().isBlank() || u.getUsername().isEmpty() ? true:false;
@@ -85,10 +85,11 @@ public class UserServiceImpl implements UserService {
 			}
 			if(!anyError) {
 				usersDao.save(u);
+				return true;
 			}
 		} catch(SQLException e) {
 			System.out.println("El nombre de usuario indicado ya se encuentra registrado en el sistema.");
-			
+			return false;
 		} catch(ConstraintViolationException e) {
 			
 			if(errorNotNullUsername) {
@@ -120,22 +121,47 @@ public class UserServiceImpl implements UserService {
 				System.out.println("El nombre no puede estar compuesto por más de 25 caracteres");
 	
 			}
-				
+				return false;
 			}
-		
+		return false;
 	}
 
 
-	public User login(String username, String password) {
-
-			User u = usersDao.findUserByUsernameAndPassword(username, password);
+	public User login(String username, String password) throws Exception {
+		
+		Optional<User> optUser = usersDao.findUserByUsernameAndPassword(username, password);
+		try {
+		if(optUser.isPresent()) {
+			User u = optUser.get();
 			return u;
+		} else {
+			throw new Exception("El usuario señalado por los credenciales no existe.");
+		}
+		} catch(Exception e) {
+			System.out.println("El usuario señalado por los credenciales no existe.");
+			return null;
+		}
+			
+			
 	
 	}
 	
-	public User findUserByUsername(String username) {
+	public User findUserByUsername(String username) throws Exception {
+		Optional<User> optUser = usersDao.findUserByUsername(username);
 		
-		return usersDao.findUserByUsername(username);
+		try {
+		if(optUser.isPresent()) {
+			User u = optUser.get();
+			return u;
+		} else {
+			throw new Exception("El usuario con nombre " + username + " no existe.");
+			
+		}
+		} catch(Exception e) {
+			System.out.println("El usuario con nombre " + username + " no existe.");
+			return null;
+		}
+			
 	}
 	@Override
 	public Integer countUserByUsername(String username) {
