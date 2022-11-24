@@ -37,10 +37,9 @@ export class BuscarComponent implements OnInit {
   anyError: boolean = false;
   control = new FormControl;
   filKeywords: Observable<string[]>;
-  colorBordes: string;
-  colorFondo: string;
-  colorPaneles: string;
-  colorFuente: string;
+  emptyResults: boolean = true;
+  unexpectedError: boolean = true;
+
   constructor(private service: KeywordService, private deckService: DeckService, private loginService: LoginService, private route:Router, public dialog: MatDialog) {
     this.service.getWords().subscribe({next: response => {
       this.keywords = response;
@@ -52,19 +51,40 @@ export class BuscarComponent implements OnInit {
     let usuario = sessionStorage.getItem("usuario");
     let password = sessionStorage.getItem("password");
    
-
-    if( usuario == undefined && password == undefined) {
+    if(usuario==undefined && password==undefined) {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.route.navigate([``]);
+            sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+        sessionStorage.removeItem("deck");
+        sessionStorage.removeItem("valueMin");
+        sessionStorage.removeItem("valueMax");
+  
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+  
+        }
+          if(c == undefined) {
+            break;
+          }
+  
+        }    
         }
       })
-  }
+    } else {
     this.filKeywords = this.control.valueChanges.pipe(
       debounceTime(500),
       startWith(''),
       map(val => this._filter(val))
     );
+  }
   }
 
   private _filter(val: string): string[] {
@@ -76,6 +96,7 @@ export class BuscarComponent implements OnInit {
 
     this.notNullBusqueda=true;
     this.notExistWord=true;
+    this.emptyResults=true;
     this.anyError=false;
    
     this.service.countWords(this.keyword).subscribe({
@@ -92,8 +113,12 @@ export class BuscarComponent implements OnInit {
   }
   if(!this.anyError) {
     this.deckService.getDecksByKeyword(this.keyword).subscribe({next: response => {
+      
       this.decks=response;
       this.showForm=false;
+      if(this.decks.length==0) {
+        this.emptyResults=false;
+      }
     }});
   }
 
@@ -103,6 +128,7 @@ export class BuscarComponent implements OnInit {
   }
 
   seleccionar(deck: Deck): void {
+    this.unexpectedError=true;
     this.showForm=true;
     this.detalle=true;
     this.loginService.getUserByUsername(sessionStorage.getItem("usuario")).subscribe({
@@ -118,18 +144,26 @@ export class BuscarComponent implements OnInit {
    }
 
    pdfMazo() { 
+   this.unexpectedError=true;
     const load = this.dialog.open((LoadComponent), {
       data: `Puede tardar unos segundos`
     });
+    
     this.deckService.deckPdf(this.nombre).subscribe({
       next: pdf => {
+        if(!pdf) {
+          load.close();
+          this.unexpectedError = false;
+        } else {
         console.log("Generado PDF del mazo " + pdf);
         load.close();
-        this.route.navigate([`success`]);
+        this.route.navigate(['success']);
+      }
       }
   });
         
   }
+
   volverHome() {
     this.route.navigate([`home`]);
   }

@@ -43,7 +43,7 @@
             <br>
             <div class="col-md-6">
             <label for="cards" class="form-label">Número de cartas </label>
-            <input type="number" class="form-control" name="cards" [(ngModel)]="cards" min="2" required>
+            <input type="number" class="form-control" name="cards" [(ngModel)]="cards" min="2" max="30" required>
             <div class="text-danger" [hidden]="notNullAndIncorrectNCards">
               El número de cartas no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que treinta.
             </div>
@@ -51,7 +51,7 @@
           <br>
             <div class="col-md-6">
             <label for="categories" class="form-label">Número de categorías </label>
-            <input type="number" class="form-control" name="categories" [(ngModel)]="categories" min="2" required>
+            <input type="number" class="form-control" name="categories" [(ngModel)]="categories" min="2" max="6" required>
             <div class="text-danger" [hidden]="notNullAndIncorrectNCategories">
               El número de categorías no puede quedar vacío y ha de ser positivo: mayor que uno y menor o igual que seis.
             </div>

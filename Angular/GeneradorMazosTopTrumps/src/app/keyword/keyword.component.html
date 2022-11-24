@@ -43,6 +43,7 @@
 
 <table class="table table-dark table-hover">
   <thead>
+ 
     <tr>
       <th scope="col">Id</th>
       <th scope="col">Palabra clave</th>
@@ -54,6 +55,12 @@
       <td>{{k.word}}</td>
       
     </tr>
+    <div class="text-info" [hidden]="emptyKeywords">
+      No hay palabras clave asociadas al mazo.
+    </div>
+      
+    
+
     
   </tbody>
 

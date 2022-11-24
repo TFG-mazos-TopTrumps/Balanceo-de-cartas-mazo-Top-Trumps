@@ -27,7 +27,7 @@ const routes: Routes = [
   },
 
   {
-    path : 'keyword/:cards/:categories/:valueMin/:valueMax', 
+    path : 'keyword', 
     component : KeywordComponent
   },
 
@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   
   {
-    path : 'card/:cards/:categories/:valueMin/:valueMax', 
+    path : 'card', 
     component : CardComponent
   },
 

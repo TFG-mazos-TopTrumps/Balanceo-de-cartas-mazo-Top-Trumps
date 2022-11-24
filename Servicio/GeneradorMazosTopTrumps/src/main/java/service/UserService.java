@@ -1,7 +1,5 @@
 package service;
 
-
-
 import java.sql.SQLException;
 
 import javax.validation.ConstraintViolationException;

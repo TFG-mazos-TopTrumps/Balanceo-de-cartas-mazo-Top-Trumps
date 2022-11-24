@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.Color;
+
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -52,10 +54,14 @@ public class Deck {
 	
 	@NotNull
 	@Positive
+	@Min(2)
+	@Max(30)
 	private int nCards;
 	
 	@NotNull
 	@Positive
+	@Min(2)
+	@Max(6)
 	private int nCategories;
 	
 	@URL

@@ -3,7 +3,7 @@ package controller;
 
 import java.sql.SQLException;
 
-import javax.servlet.http.HttpSession;
+
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.beans.factory.annotation.Autowired;

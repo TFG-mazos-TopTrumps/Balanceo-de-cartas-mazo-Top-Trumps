@@ -51,7 +51,9 @@
         <td><img src="{{deck.image}}" alt="Imagen mazo {{i}}" style="height: 150px;
           width: 150px;"></td>
       </tr>
-      
+      <div class="text-info" [hidden]="emptyResults">
+        No hay mazos publicados asociados a la palabra clave usada para la búsqueda.
+      </div>
     </tbody>
   
   </table>
@@ -72,6 +74,9 @@
     <p style="text-align: justify">
       {{description}}
     </p>
+  </div>
+  <div class="text-danger" [hidden]="unexpectedError">
+    Hay algo que falla. Revisa si ya tiene descargado el mazo y lo tienes abierto con alguna aplicación.
   </div>
   <button class="btn btn-info" (click)="pdfMazo()" type="button"> Descargar </button>
   <button class="btn btn-info" (click)="volverListaResultados()" type="button">Volver</button>

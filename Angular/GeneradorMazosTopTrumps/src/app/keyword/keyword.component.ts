@@ -24,17 +24,9 @@ export class KeywordComponent implements OnInit {
   confirmKeyword: boolean = true;
   minKeywords: boolean = true;
   keywordsDeck: Keyword[]; 
-  cards: number;
-  nCategories: number;
-  valueMin: number;
-  valueMax: number;
   unexpectedError: boolean = true;
+  emptyKeywords: boolean = true;
   constructor(private userService: LoginService, private route : ActivatedRoute, private deckService: DeckService, private keywordService: KeywordService, private router:Router) {
-    
-    this.nCategories = route.snapshot.params["categories"];
-    this.cards = route.snapshot.params["cards"];
-    this.valueMin = route.snapshot.params["valueMin"];
-    this.valueMax = route.snapshot.params["valueMax"];
     
    }
 
@@ -43,19 +35,44 @@ export class KeywordComponent implements OnInit {
     let password = sessionStorage.getItem("password");
  
 
-    if( usuario == undefined && password == undefined) {
+    if(usuario==undefined && password==undefined) {
       this.userService.login(usuario, password).subscribe({
         next: user => {
             this.router.navigate([``]);
+            sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+        sessionStorage.removeItem("deck");
+        sessionStorage.removeItem("valueMin");
+        sessionStorage.removeItem("valueMax");
+  
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+  
+        }
+          if(c == undefined) {
+            break;
+          }
+  
+        }    
         }
       })
-  }
+    } else {
 
   this.keywordService.getKeywordsByDeck(sessionStorage.getItem("deck")).subscribe({
     next: kws => {
       this.keywordsDeck=kws;
+      if(this.keywordsDeck.length==0) {
+        this.emptyKeywords=false;
+      }
     }
   });
+}
   
   }
 
@@ -67,6 +84,7 @@ export class KeywordComponent implements OnInit {
     this.errorDuplicateKeyword=true;
     this.unexpectedError=true;
     this.alertaExito=false;
+    this.emptyKeywords
    
     let anyError = false;
     let keyword = new Keyword();
@@ -93,7 +111,6 @@ export class KeywordComponent implements OnInit {
     }
 
     if(!anyError) {
-    
         this.keywordService.addKeyword(keyword, name).subscribe({
           next: respuesta => {
             if(!respuesta) {
@@ -104,6 +121,7 @@ export class KeywordComponent implements OnInit {
               this.confirmKeyword=true;
               this.alertaExito=true;
               this.minKeywords=true;
+              this.emptyKeywords=true;
   
               this.keywordService.getKeywordsByDeck(name).subscribe({
                 next: kws => {
@@ -120,13 +138,13 @@ export class KeywordComponent implements OnInit {
             alert(e)
           }
         });
-        
+      }
     this.keyword="";
     
       this.confirmKeyword=true;
     
   }
-  }
+  
   nextCategories() {
     let deck = sessionStorage.getItem("deck");
 
@@ -136,7 +154,7 @@ export class KeywordComponent implements OnInit {
         if(ck) {
           this.minKeywords=false;
         } else {
-          this.router.navigate(['/card', this.cards, this.nCategories, this.valueMin, this.valueMax]);
+          this.router.navigate(['/card']);
         }
     }
   });

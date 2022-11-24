@@ -2,33 +2,24 @@ package controller;
 
 
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.persistence.Convert;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolationException;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
-import com.itextpdf.text.DocumentException;
-
-import model.Card;
 import model.Deck;
-import model.Keyword;
 import model.User;
 import service.DeckService;
 import service.KeywordService;
@@ -98,10 +89,11 @@ public class DeckController {
 
 	}
 	
-	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_PDF_VALUE)
-	public void pdfMazo(@RequestParam("deck") String deck) throws  IOException, Exception {
+	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_JSON_VALUE)
+	public boolean pdfMazo(@RequestParam("deck") String deck) throws  IOException, Exception {
 		
-		this.deckService.pdfMazo(deck);
+		return this.deckService.pdfMazo(deck);
+		
 
 	}
 	

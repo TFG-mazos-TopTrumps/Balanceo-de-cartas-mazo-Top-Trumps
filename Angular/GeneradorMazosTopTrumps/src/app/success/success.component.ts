@@ -17,13 +17,34 @@ export class SuccessComponent implements OnInit {
 
    
 
-    if( usuario == undefined && password == undefined) {
+    if(usuario==undefined && password==undefined) {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.router.navigate([``]);
+            sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+        sessionStorage.removeItem("deck");
+        sessionStorage.removeItem("valueMin");
+        sessionStorage.removeItem("valueMax");
+  
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+  
+        }
+          if(c == undefined) {
+            break;
+          }
+  
+        }    
         }
       })
-  }
+    }
   }
 
   volver() {

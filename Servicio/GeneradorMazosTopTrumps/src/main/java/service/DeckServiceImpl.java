@@ -2,9 +2,11 @@ package service;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.UnknownHostException;
@@ -73,10 +75,10 @@ public class DeckServiceImpl implements DeckService {
 		boolean errorMaxLengthName = d.getName().length() > 30 ? true:false;
 		boolean errorMaxLengthDescription = (d.getDescription() != null && d.getDescription().length() > 500) ? true:false;
 		boolean errorMaxLengthImage = (d.getImage() != null  && d.getImage().length() > 4000) ? true:false;
-		boolean errorIncorrectFormatImage = d.getImage() != null  && !(d.getImage().contains(".jpg") || d.getImage().contains(".png") || d.getImage().contains(".jpeg")) ? true:false;
+		boolean errorIncorrectFormatImage = (d.getImage() != null  && !(d.getImage().contains(".jpg") || d.getImage().contains(".png") || d.getImage().contains(".jpeg"))) ? true:false;
 		boolean errorPatternURL = (d.getImage() != null && d.getImage().length() >= 1 && !(d.getImage().startsWith("http://") || d.getImage().startsWith("https://"))) ? true:false;
-		boolean errorNotNullAndIncorrectNCards = d.getNCards() < 2 ? true:false;
-		boolean errorNotNullAndIncorrectNCategories = d.getNCategories() < 2 ? true:false;
+		boolean errorNotNullAndIncorrectNCards = d.getNCards() < 2 || d.getNCards() > 30 ? true:false;
+		boolean errorNotNullAndIncorrectNCategories = d.getNCategories() < 2 || d.getNCategories() > 6 ? true:false;
 		boolean errorNotNullUser = d.getUser()==null ? true:false;
 		boolean anyError = false;
 		
@@ -362,13 +364,16 @@ public class DeckServiceImpl implements DeckService {
 	        
 	    	} catch(UnknownHostException u) {
 	    		System.out.println("La URL indicada no corresponde con ninguna imagen existente.");
+	    	} catch(MalformedURLException e) {
+	    		System.out.println("La URL especificada no sigue un formato correcto.");
 	    	}
+	    	
 	    } 
 	    
 	  
 
 
-	public void pdfMazo(String deck) throws IOException, Exception {
+	public boolean pdfMazo(String deck) throws IOException, Exception {
 		
 		Deck d = this.decksDao.findDeckByName(deck).get();
 		List<Card> cards = this.cardService.findCardsOfDeck(deck);
@@ -489,7 +494,7 @@ public class DeckServiceImpl implements DeckService {
 	             contentStream.drawImage(image, 20, 20, 500, 500);
           	  } else {
           		  contentStream.beginText();
-          		  contentStream.setFont(PDType1Font.TIMES_BOLD, 14);
+          		  contentStream.setFont(PDType1Font.TIMES_BOLD,14);
 	          	  contentStream.newLineAtOffset(20,20);
 	          	  contentStream.showText("No tiene imagen.");
 	          	  contentStream.endText();
@@ -648,8 +653,9 @@ public class DeckServiceImpl implements DeckService {
                 	
                 	contentStreamCards.beginText();
                 	contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 7);
-                	contentStreamCards.newLineAtOffset(214 + 75, 371 - 23*n +25);        
-                	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()));
+                	contentStreamCards.newLineAtOffset(214 + 75, 371 - 23*n +25); 
+                	int indexComa = String.valueOf(cv.getValue()).indexOf(".");
+                	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()).substring(0, indexComa + 5));
                 	contentStreamCards.endText();
                 	n++;
                 }
@@ -658,10 +664,15 @@ public class DeckServiceImpl implements DeckService {
       
             	
             }
-	       
+	    
             document.save("C:\\PDFMazo\\" + d.getName() + ".pdf");
-        
+            return true;
+		} catch(FileNotFoundException e) {
+			System.out.println("No se ha podido guardar el archivo. Probablemente sea porque ya dispone de"
+					+ " otra versión del mismo y lo está abriendo con alguna aplicación.");
+			return false;
 		}
+	
 		}
 	
     

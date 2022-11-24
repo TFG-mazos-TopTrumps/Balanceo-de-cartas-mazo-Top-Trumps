@@ -47,6 +47,27 @@ export class HomeComponent implements OnInit {
       this.loginService.login(usuario, password).subscribe({
         next: user => {
             this.route.navigate([``]);
+            sessionStorage.removeItem("categoriesCompleted");
+        sessionStorage.removeItem("cardsCompleted");
+        sessionStorage.removeItem("balanceCompleted");
+        sessionStorage.removeItem("deck");
+        sessionStorage.removeItem("valueMin");
+        sessionStorage.removeItem("valueMax");
+
+        let indice = 0;
+        while(true) {
+          let c = sessionStorage.getItem("category " + indice);
+          if(c != undefined) {
+          
+         sessionStorage.removeItem("category " + indice)
+          indice++;
+
+        }
+          if(c == undefined) {
+            break;
+          }
+
+        }    
         }
       })
   }

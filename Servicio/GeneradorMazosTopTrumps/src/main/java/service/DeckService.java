@@ -27,7 +27,7 @@ public interface DeckService {
 	List<Double> generateDeckValues(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit);
 	Integer countDecksWithName(String name);
 	void balanceDeck(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit, String deck) throws ConstraintViolationException, SQLException;
-	void pdfMazo(String deck) throws IOException, Exception;
+	boolean pdfMazo(String deck) throws IOException, Exception;
 	boolean checkKeyword(String deck) throws Exception;
 	boolean publishDeck(String deck) throws Exception;
 	boolean noPublishDeck(String deck) throws Exception;

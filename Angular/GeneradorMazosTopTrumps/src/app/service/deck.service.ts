@@ -58,7 +58,7 @@ export class DeckService {
 
     let headers = new HttpHeaders;
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-    return this.http.post<any>(this.url + "DeckPDF?deck=" + deck,
+    return this.http.post<boolean>(this.url + "DeckPDF?deck=" + deck,
     {headers: headers})
 
   }

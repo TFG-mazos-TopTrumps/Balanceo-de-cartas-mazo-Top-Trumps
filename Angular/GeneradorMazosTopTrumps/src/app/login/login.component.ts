@@ -158,6 +158,17 @@ export class LoginComponent implements OnInit {
   
 
   public cambiarRegistro() {
+    this.notNullUsername=true;
+    this.notNullPassword=true;
+    this.notNullConfirmPassword=true;
+    this.errorPasswordRegister = true;
+    this.notNullName=true;
+    this.duplicatedName=true;
+    this.errorMaxLengthUsername=true;
+    this.errorMaxLengthPassword=true;
+    this.errorMaxLengthName=true;
+    this.unexpectedError=true;
+    this.falloUsuario=true;
     if(this.condicionRegistro) {
     this.condicionRegistro=false;
   } else {

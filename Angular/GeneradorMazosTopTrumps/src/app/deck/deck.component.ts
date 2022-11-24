@@ -66,14 +66,36 @@ export class DeckComponent implements OnInit {
     let password = sessionStorage.getItem("password");
     
 
-    if(usuario == undefined && password == undefined) {
-      this.userService.login(usuario, password).subscribe({
-        next: user => {
-            this.route.navigate([``]);
+    if(usuario==undefined && password==undefined) {
+    this.userService.login(usuario, password).subscribe({
+      next: user => {
+          this.route.navigate([``]);
+          sessionStorage.removeItem("categoriesCompleted");
+      sessionStorage.removeItem("cardsCompleted");
+      sessionStorage.removeItem("balanceCompleted");
+      sessionStorage.removeItem("deck");
+      sessionStorage.removeItem("valueMin");
+      sessionStorage.removeItem("valueMax");
+
+      let indice = 0;
+      while(true) {
+        let c = sessionStorage.getItem("category " + indice);
+        if(c != undefined) {
+        
+       sessionStorage.removeItem("category " + indice)
+        indice++;
+
+      }
+        if(c == undefined) {
+          break;
         }
-      })
+
+      }    
+      }
+    })
   }
-  }
+}
+  
 
   
   createDeck() {
@@ -225,7 +247,10 @@ export class DeckComponent implements OnInit {
           this.unexpectedError=false;
         } else{
         console.log(`Registrado, ${JSON.stringify(d)}`);
-        this.route.navigate(['/keyword', this.cards, this.categories, this.valueMin, this.valueMax]);
+        this.route.navigate(['/keyword']);
+        sessionStorage.setItem("valueMin", String(this.valueMin));
+        sessionStorage.setItem("valueMax", String(this.valueMax));
+
         }
       
         

@@ -53,11 +53,16 @@ export class CardComponent implements OnInit {
 
   constructor(private loginService: LoginService, private route : ActivatedRoute, private router : Router, private cardService: CardService,  private deckService: DeckService,  public dialog: MatDialog) {
     
+    this.deckService.getDeckByName(sessionStorage.getItem("deck")).subscribe({
+      next: deck => {
+        this.nCategories = deck.ncategories;
+        this.cards = deck.ncards;
+        this.valueMin = parseFloat(sessionStorage.getItem("valueMin"));
+        this.valueMax = parseFloat(sessionStorage.getItem("valueMax"));
+      }
+    });
     
-    this.nCategories = route.snapshot.params["categories"];
-    this.cards = route.snapshot.params["cards"];
-    this.valueMin = route.snapshot.params["valueMin"];
-    this.valueMax = route.snapshot.params["valueMax"];
+    
     
 
    }
@@ -72,13 +77,44 @@ export class CardComponent implements OnInit {
     let balanceCompleted = sessionStorage.getItem("balanceCompleted");
 
   
-    if( usuario == undefined && password == undefined) {
-      this.loginService.login(usuario, password).subscribe({
-        next: user => {
-            this.router.navigate([``]);
+    
+  if(usuario==undefined && password==undefined) {
+    this.loginService.login(usuario, password).subscribe({
+      next: user => {
+          this.router.navigate([``]);
+          sessionStorage.removeItem("categoriesCompleted");
+      sessionStorage.removeItem("cardsCompleted");
+      sessionStorage.removeItem("balanceCompleted");
+      sessionStorage.removeItem("deck");
+      sessionStorage.removeItem("valueMin");
+      sessionStorage.removeItem("valueMax");
+
+      let indice = 0;
+      while(true) {
+        let c = sessionStorage.getItem("category " + indice);
+        if(c != undefined) {
+        
+       sessionStorage.removeItem("category " + indice)
+        indice++;
+
+      }
+        if(c == undefined) {
+          break;
         }
-      })
+
+      }    
+      }
+    })
   }
+
+  this.deckService.getDeckByName(sessionStorage.getItem("deck")).subscribe({
+    next: deck => {
+      this.nCategories = deck.ncategories;
+      this.cards = deck.ncards;
+      this.valueMin = parseFloat(sessionStorage.getItem("valueMin"));
+      this.valueMax = parseFloat(sessionStorage.getItem("valueMax"));
+    }
+  });
 
     if(categoriesCompleted == "true" && cardsCompleted == undefined && balanceCompleted == undefined) {
         this.cardCategories = true;
@@ -314,20 +350,25 @@ export class CardComponent implements OnInit {
 }
 
   pdfMazo() { 
-   
+   this.unexpectedError=true;
     const load = this.dialog.open((LoadComponent), {
       data: `Puede tardar unos segundos`
     });
     
     this.deckService.deckPdf(this.deck).subscribe({
       next: pdf => {
+
+        if(!pdf) {
+          load.close();
+          this.unexpectedError=false;
+        }
         console.log("Generado PDF del mazo " + pdf);
         sessionStorage.removeItem("categoriesCompleted");
         sessionStorage.removeItem("cardsCompleted");
         sessionStorage.removeItem("balanceCompleted");
-
         sessionStorage.removeItem("deck");
-        
+        sessionStorage.removeItem("valueMin");
+        sessionStorage.removeItem("valueMax");
         let indice = 0;
         while(true) {
           let c = sessionStorage.getItem("category " + indice);
