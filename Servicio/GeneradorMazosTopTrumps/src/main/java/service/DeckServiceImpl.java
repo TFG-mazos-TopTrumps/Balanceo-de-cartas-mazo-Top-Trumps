@@ -269,9 +269,22 @@ public class DeckServiceImpl implements DeckService {
 
 	@Override
 	public Integer findDeckId(String name) {
+		Optional<Integer> optionalIdDeck = decksDao.findDeckId(name);
 		
-		return decksDao.findDeckId(name);
+		try {
+		if(optionalIdDeck.isPresent()) {
+			return optionalIdDeck.get();
+		} else {
+			throw new Exception("El nombre indicado no corresponde con ningún mazo registrado.");
+		}
+	} catch(Exception e) {
+		System.out.println("El nombre indicado no corresponde con ningún mazo registrado.");
+		return null;
 	}
+		
+	}
+		
+
 
 	public List<Double> generateDeckValues(Integer nCards, Integer nCategories, Double lowerLimit, Double upperLimit) {
 		ExperimentProblem<DoubleSolution> problem = 
@@ -585,9 +598,6 @@ public class DeckServiceImpl implements DeckService {
                  	}
                	  }
                 
-                
-                
-                
                 contentStreamCards.beginText();
                 contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 12);
                 contentStreamCards.newLineAtOffset(132 + 75, 513+25);
@@ -652,21 +662,20 @@ public class DeckServiceImpl implements DeckService {
                 for(var cv : card.getCategories().entrySet()) {
                 	
                 	contentStreamCards.beginText();
-                	contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 7);
+                	contentStreamCards.setFont(PDType1Font.TIMES_BOLD, 8);
                 	contentStreamCards.newLineAtOffset(214 + 75, 371 - 23*n +25); 
-                	int indexComa = String.valueOf(cv.getValue()).indexOf(".");
-                	contentStreamCards.showText(cv.getKey() + " " + String.valueOf(cv.getValue()).substring(0, indexComa + 5));
+                	double valor = Math.round(cv.getValue()*100);
+                	contentStreamCards.showText(cv.getKey() + " " + String.valueOf((int) valor));
                 	contentStreamCards.endText();
                 	n++;
                 }
                 contentStreamCards.close();
 	            }
       
-            	
+            document.save("C:\\PDFMazo\\" + d.getName() + ".pdf");
             }
 	    
-            document.save("C:\\PDFMazo\\" + d.getName() + ".pdf");
-            return true;
+           return true;
 		} catch(FileNotFoundException e) {
 			System.out.println("No se ha podido guardar el archivo. Probablemente sea porque ya dispone de"
 					+ " otra versión del mismo y lo está abriendo con alguna aplicación.");

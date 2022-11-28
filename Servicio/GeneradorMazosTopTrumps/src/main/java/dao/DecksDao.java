@@ -20,7 +20,7 @@ public interface DecksDao extends JpaRepository<Deck, Integer> {
 	List<Deck> findDecksByKeywords(String k);
 	
 	@Query("select d.idDeck from Deck d where d.name=?1")
-	Integer findDeckId(String name);
+	Optional<Integer> findDeckId(String name);
 
 	@Query("select count(*) from Deck d where d.name=?1")
 	Integer countDecksWithName(String name);

@@ -2,20 +2,24 @@ package controller;
 
 
 
-import java.io.File;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.MediaType;
+
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -91,9 +95,8 @@ public class DeckController {
 	
 	@PostMapping(value="DeckPDF", produces=MediaType.APPLICATION_JSON_VALUE)
 	public boolean pdfMazo(@RequestParam("deck") String deck) throws  IOException, Exception {
-		
-		return this.deckService.pdfMazo(deck);
-		
+	
+		    return this.deckService.pdfMazo(deck);
 
 	}
 	
@@ -118,14 +121,4 @@ public class DeckController {
 		this.deckService.noPublishDeck(deck);
 	
 	}
-	
-	
-	
-	
-
-	
-	
-
-	
-	
 }

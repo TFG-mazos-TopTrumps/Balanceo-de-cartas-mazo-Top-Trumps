@@ -151,16 +151,15 @@ export class BuscarComponent implements OnInit {
     
     this.deckService.deckPdf(this.nombre).subscribe({
       next: pdf => {
-        if(!pdf) {
-          load.close();
-          this.unexpectedError = false;
-        } else {
-        console.log("Generado PDF del mazo " + pdf);
+        if(pdf) {
         load.close();
         this.route.navigate(['success']);
+      } else {
+        load.close();
+        this.unexpectedError=false;
       }
-      }
-  });
+      
+  }});
         
   }
 
